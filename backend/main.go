@@ -6,11 +6,14 @@ import (
 	"github.com/go-sql-driver/mysql"
 	"html/template"
 	"log"
+	. "main/sql"
+	"main/utils"
 	"net/http"
 	"strings"
+	"time"
+
 )
 
-var db *sql.DB
 
 func main() {
 	templ, err := template.New("").ParseGlob("../templates/*.gohtml")
@@ -56,26 +59,40 @@ func main() {
 
 	// Capture connection properties.
 	cfg := mysql.Config{
-		User:                 "root",
-		Passwd:               "",
+		User:                 "xhmyjae",
+		Passwd:               "xhmyjae",
 		Net:                  "tcp",
-		Addr:                 "127.0.0.1:3306",
+		Addr:                 "10.13.33.123:3306",
 		DBName:               "forum",
 		AllowNativePasswords: true,
 	}
 	// Get a database handle.
-	db, err = sql.Open("mysql", cfg.FormatDSN())
+	DB, err = sql.Open("mysql", cfg.FormatDSN())
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	pingErr := db.Ping()
+	pingErr := DB.Ping()
 	if pingErr != nil {
 		log.Fatal(pingErr)
 	}
 	fmt.Println("Connected!")
 
-	db.Exec("UPDATE users SET id_user = 4, username = 'test', is_online = 0, password = 'password', email = 'email', locale = 'fr', profile_pic = null, description = null, created_at = '2022-03-21 12:38:58', role_type = 'admin' WHERE id_user = 4")
+	_, err = SaveUser(User{
+		ID:          utils.GenerateID(),
+		Username:    "test test2",
+		IsOnline: false,
+		Password:    "vdsvs0",
+		Email:       "vsvsdv2",
+		Locale:      "en",
+		ProfilePic:  "vdevd",
+		Description: "vdvd",
+		CreationDate:    time.Time{},
+		Role:        "admin",
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	err = http.ListenAndServe(":8091", nil)
 	if err != nil {
