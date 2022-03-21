@@ -2,6 +2,10 @@
 
 .idea
 
+# Go
+
+pkg
+
 # Config file
 
 .env
