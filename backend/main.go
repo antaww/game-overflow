@@ -7,13 +7,9 @@ import (
 	"html/template"
 	"log"
 	. "main/sql"
-	"main/utils"
 	"net/http"
 	"strings"
-	"time"
-
 )
-
 
 func main() {
 	templ, err := template.New("").ParseGlob("../templates/*.gohtml")
@@ -78,18 +74,11 @@ func main() {
 	}
 	fmt.Println("Connected!")
 
-	_, err = SaveUser(User{
-		ID:          utils.GenerateID(),
-		Username:    "test test2",
-		IsOnline: false,
-		Password:    "vdsvs0",
-		Email:       "vsvsdv2",
-		Locale:      "en",
-		ProfilePic:  "vdevd",
-		Description: "vdvd",
-		CreationDate:    time.Time{},
-		Role:        "admin",
-	})
+	err = SaveUser(NewUser(
+		"xhmyjae",
+		"xhmyjae",
+		"tomatis.mt@gmail.com",
+	))
 	if err != nil {
 		log.Fatal(err)
 	}
