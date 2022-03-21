@@ -21,7 +21,8 @@ type User struct {
 }
 
 
-func SaveUser(user User) (int64, error) {
+func SaveUser(SavedUser User) (int64, error) {
+	result, err := db.Exec("INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", SavedUser.ID, SavedUser.Username, SavedUser.Password, SavedUser.Email, SavedUser.Locale, SavedUser.ProfilePic, SavedUser.Description, SavedUser.Creation, SavedUser.Role)
 
 }
 
