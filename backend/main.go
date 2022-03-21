@@ -26,6 +26,7 @@ func main() {
 			return
 		}
 		if path == "" {
+			fmt.Println("index page loaded")
 			err := templ.ExecuteTemplate(w, "index.gohtml", nil)
 			if err != nil {
 				log.Fatal(err)
@@ -34,7 +35,16 @@ func main() {
 	})
 
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("login page loaded")
 		err := templ.ExecuteTemplate(w, "login.gohtml", nil)
+		if err != nil {
+			log.Fatal(err)
+		}
+	})
+
+	http.HandleFunc("/sign-up", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("sign-up page loaded")
+		err := templ.ExecuteTemplate(w, "sign-up.gohtml", nil)
 		if err != nil {
 			log.Fatal(err)
 		}
