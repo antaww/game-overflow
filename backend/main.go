@@ -1,7 +1,8 @@
-package backend
+package main
 
 import (
 	"html/template"
+	"log"
 	"net/http"
 )
 
@@ -12,9 +13,15 @@ func main(){
 	http.Handle("/static/", http.StripPrefix("/static/", fs)) //set css file to static
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-			templ.ExecuteTemplate(w, "index.gohtml", nil)
+		err := templ.ExecuteTemplate(w, "index.gohtml", nil)
+		if err != nil {
+			log.Fatal(err)
+		}
 	})
 
-	http.ListenAndServe(":8091", nil)
+	err := http.ListenAndServe(":8091", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 }
