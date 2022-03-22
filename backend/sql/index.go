@@ -3,6 +3,7 @@ package sql
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"main/utils"
 	"time"
 )
@@ -48,4 +49,44 @@ func SaveUser(user User) error {
 		return fmt.Errorf("SaveUser error: %v", err)
 	}
 	return nil
+}
+
+func EditUsername(oldUsername string, newUsername string) error {
+	_, err := DB.Exec("UPDATE users SET username = (?) WHERE username = (?)", newUsername, oldUsername)
+	if err != nil {
+		return fmt.Errorf("SaveUser error: %v", err)
+	}
+	return nil
+}
+
+func UserLogin(username string, password string) (bool, error) {
+	fmt.Println(username)
+	fmt.Println(password)
+	result, err := DB.Query("SELECT username, password FROM users WHERE username = ? AND password = ?", username, password)
+
+	if err != nil {
+		return false, fmt.Errorf("SaveUser error: %v", err)
+	}
+
+	defer func(result *sql.Rows) {
+		err := result.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}(result)
+
+	err = result.Err()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if result.Next() {
+		fmt.Println("result OK => login page loading")
+		return true, nil
+	} else {
+		fmt.Println("result inexistant")
+		return false, nil
+	}
+
+	return true, nil
 }

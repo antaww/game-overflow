@@ -13,15 +13,13 @@
             </div>
             <form method="POST">
                 <div class="input_area">
-                    <input type="text" placeholder="Username" name="username"/>
-                    <input type="text" placeholder="Password" name="password"/>
+                    <label for="old username"></label>
+                    <input type="text" placeholder="Old username" name="oldusername" required/>
+                    <label for="new username"></label>
+                    <input type="text" placeholder="New username" name="newusername" required/>
                 </div>
                 <div class="actions">
-                    <button type="submit" value="Login">Login</button>
-                    <p>
-                        Don't have a account ?
-                        <a href="/sign-up" class="Sign_up_link">Sign Up</a>
-                    </p>
+                    <button type="submit" name="submit" value="Submit">Submit</button>
                 </div>
             </form>
         </div>
