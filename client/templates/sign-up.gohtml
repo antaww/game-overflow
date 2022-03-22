@@ -11,15 +11,21 @@
             <div class="header">
                 <h1>Sign up</h1>
             </div>
-            <div class="input_area">
-                <input type="text" placeholder="Email" />
-                <input type="text" placeholder="Username" />
-                <input type="text" placeholder="Password" />
-                <input type="text" placeholder="Confirm password" />
-            </div>
-            <div class="actions">
-                <button type="submit" value="Sign-up">Sign up</button>
-            </div>
+            <form method="POST">
+                <div class="input_area">
+                    <label for="username"></label>
+                    <input type="text" placeholder="Username" id="username"/>
+                    <label for="email"></label>
+                    <input type="text" placeholder="Email" id="email"/>
+                    <label for="password"></label>
+                    <input type="text" placeholder="Password" id="password"/>
+                    <label for="confirm-password"></label>
+                    <input type="text" placeholder="Confirm password" id="confirm-password"/>
+                </div>
+                <div class="actions">
+                    <button type="submit" name="submit" value="Sign-up">Sign up</button>
+                </div>
+            </form>
         </div>
     </body>
 </html>
