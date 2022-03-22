@@ -12,15 +12,15 @@ import (
 )
 
 func main() {
-	templ, err := template.New("").ParseGlob("../templates/*.gohtml")
+	templ, err := template.New("").ParseGlob("../client/templates/*.gohtml")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	css := http.FileServer(http.Dir("../style/"))              //define css file
+	css := http.FileServer(http.Dir("../client/style/"))              //define css file
 	http.Handle("/static/", http.StripPrefix("/static/", css)) //set css file to static
 
-	resources := http.FileServer(http.Dir("../resources/"))                //define css file
+	resources := http.FileServer(http.Dir("../backend/resources/"))                //define css file
 	http.Handle("/resources/", http.StripPrefix("/resources/", resources)) //set css file to static
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -51,6 +51,24 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
+
+		if r.Method == "POST" {
+			err := r.ParseForm()
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			err = SaveUser(NewUser(
+				r.FormValue("username"),
+				r.FormValue("password"),
+				r.FormValue("email"),
+			))
+			if err != nil {
+				log.Fatal(err)
+			}
+			return
+		}
+
 	})
 
 	// Capture connection properties.
@@ -73,15 +91,6 @@ func main() {
 		log.Fatal(pingErr)
 	}
 	fmt.Println("Connected!")
-
-	err = SaveUser(NewUser(
-		"xhmyjae",
-		"xhmyjae",
-		"tomatis.mt@gmail.com",
-	))
-	if err != nil {
-		log.Fatal(err)
-	}
 
 	err = http.ListenAndServe(":8091", nil)
 	if err != nil {
