@@ -9,7 +9,11 @@ import (
 
 type Role string
 
-const RoleUser Role = "user"
+const (
+	RoleAdmin     Role = "admin"
+	RoleModerator Role = "moderator"
+	RoleUser      Role = "user"
+)
 
 type User struct {
 	Id           int64     `db:"id_user"`
@@ -66,7 +70,7 @@ func GetUserById(id int64) *User {
 
 // GetUserByUsername finds a user by username, returns nil if not found
 func GetUserByUsername(username string) *User {
-	result, err := DB.Query("SELECT * FROM users WHERE id_user = ?", username)
+	result, err := DB.Query("SELECT * FROM users WHERE username = ?", username)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -100,18 +104,18 @@ func LoginByIdentifiants(username, password string) (bool, error) {
 
 // LoginBySession logs in a user by sessionId (cookie), returns user found if success, else nil
 func LoginBySession(sessionId string) (*User, error) {
-	result, err := DB.Query("SELECT * FROM sessions WHERE id_session = ?", sessionId)
+	result, err := DB.Query("SELECT id_user FROM sessions WHERE id_session = ?", sessionId)
 	if err != nil {
 		return nil, fmt.Errorf("SaveUser error: %v", err)
 	}
-
-	HandleSQLErrors(result)
-
+	
 	var idUser int64
 	err = Results(result, &idUser)
 	if err != nil {
 		return nil, fmt.Errorf("SaveUser error: %v", err)
 	}
+
+	HandleSQLErrors(result)
 
 	return GetUserById(idUser), nil
 }
