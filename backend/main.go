@@ -43,9 +43,6 @@ func main() {
 			TemplatesData.ConnectedUser = user
 		}
 
-		if path == "favicon.ico" {
-			return
-		}
 		if path == "" {
 			err := templates.ExecuteTemplate(w, "index.gohtml", TemplatesData)
 			if err != nil {
@@ -202,8 +199,15 @@ func main() {
 	fmt.Println("Connected!")
 
 	fmt.Println("Server started at localhost:8091")
-	err = http.ListenAndServe(":8091", nil)
+	err = http.ListenAndServe(":8091", http.HandlerFunc(LogHandler))
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func LogHandler(w http.ResponseWriter, r *http.Request) {
+	if !strings.HasSuffix(".css", r.URL.String()) && !strings.HasSuffix(".png", r.URL.String()) {
+		log.Printf("%v %v", r.Method, r.URL.String())
+	}
+	http.DefaultServeMux.ServeHTTP(w, r)
 }
