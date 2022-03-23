@@ -5,12 +5,8 @@ import (
 	"log"
 )
 
-func Select(query string, args ...interface{}) (*sql.Rows, error) {
-	rows, err := DB.Query(query, args...)
-	if err != nil {
-		return nil, err
-	}
-
+// HandleSQLErrors closes the connection to the database and logs the error if any
+func HandleSQLErrors(rows *sql.Rows) {
 	defer func(rows *sql.Rows) {
 		err := rows.Close()
 		if err != nil {
@@ -24,12 +20,11 @@ func Select(query string, args ...interface{}) (*sql.Rows, error) {
 			log.Fatal(err)
 		}
 	}(rows)
-
-	return rows, nil
 }
 
+// Results parse the first Row of results, and put the values into dest parameters
 func Results(rows *sql.Rows, dest ...interface{}) error {
-	for rows.Next() {
+	if rows.Next() {
 		err := rows.Scan(dest...)
 		if err != nil {
 			return err
