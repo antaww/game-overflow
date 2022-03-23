@@ -20,3 +20,14 @@ func GenerateID() int64 {
 func GenerateNumbers(length int) int64 {
 	return rand.Int63n(int64(length))
 }
+
+func RandomString(n int) string {
+	rand.Seed(time.Now().UnixNano())
+	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+
+	s := make([]rune, n)
+	for i := range s {
+		s[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(s)
+}

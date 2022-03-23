@@ -53,8 +53,9 @@ func main() {
 				log.Fatal(err)
 			}
 
+			username := r.FormValue("username")
 			exists, err := UserLogin(
-				r.FormValue("username"),
+				username,
 				r.FormValue("password"),
 			)
 			if err != nil {
@@ -62,6 +63,8 @@ func main() {
 			}
 
 			if exists {
+				user := GetUser(username)
+				SessionID(*user, w)
 				http.Redirect(w, r, "/", http.StatusSeeOther)
 				return
 			} else {
@@ -124,6 +127,57 @@ func main() {
 		}
 	})
 
+	http.HandleFunc("/editusername", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("edit username page loaded")
+		err := templ.ExecuteTemplate(w, "edit_username.gohtml", nil)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if r.Method == "POST" {
+			err := r.ParseForm()
+			if err != nil {
+				log.Fatal(err)
+			}
+			//get cookie from browser
+			cookie, err := r.Cookie("session")
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			//select user from session
+			result, err := DB.Query("SELECT id_user FROM sessions WHERE id_session = ?", cookie.Value)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			//close select query
+			defer func(result *sql.Rows) {
+				err := result.Close()
+				if err != nil {
+					log.Fatal(err)
+				}
+			}(result)
+
+			//get result from query
+			var idUser int64
+			if result.Next() {
+				err = result.Scan(&idUser)
+			}
+
+			//edit username of idUser
+			err = EditUsername(
+				idUser,
+				r.FormValue("newusername"),
+			)
+
+			if err != nil {
+				log.Fatal(err)
+			}
+			return
+		}
+	})
+
 	// Capture connection properties.
 	cfg := mysql.Config{
 		User:                 "root",
@@ -132,6 +186,7 @@ func main() {
 		Addr:                 "",
 		DBName:               "forum",
 		AllowNativePasswords: true,
+		ParseTime:            true,
 	}
 	// Get a database handle.
 	DB, err = sql.Open("mysql", cfg.FormatDSN())
