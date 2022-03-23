@@ -11,6 +11,12 @@ import (
 	"strings"
 )
 
+type TemplatesDataType struct {
+	ConnectedUser *User
+}
+
+var TemplatesData = TemplatesDataType{}
+
 func main() {
 	templates, err := template.New("").ParseGlob("../client/templates/*.gohtml")
 	if err != nil {
@@ -30,17 +36,14 @@ func main() {
 		cookie, err := r.Cookie("session")
 		if err != nil {
 			fmt.Println("not logged in")
-			WebsiteInfo_var.ConnectedUser = nil
+			TemplatesData.ConnectedUser = nil
 		} else {
 			fmt.Println("logged in")
 			user, err := UserLoginBySession(cookie.Value)
 			if err != nil {
 				log.Fatal(err)
 			}
-			WebsiteInfo_var.ConnectedUser = user
-			fmt.Println(WebsiteInfo_var, user)
-			fmt.Println(WebsiteInfo_var.ConnectedUser)
-
+			TemplatesData.ConnectedUser = user
 		}
 
 		if path == "favicon.ico" {
@@ -48,9 +51,9 @@ func main() {
 		}
 		if path == "" {
 			fmt.Println("index page loaded")
-			fmt.Println(WebsiteInfo_var)
-			fmt.Println(WebsiteInfo_var.ConnectedUser)
-			err := templates.ExecuteTemplate(w, "index.gohtml", WebsiteInfo_var)
+			fmt.Println(TemplatesData)
+			fmt.Println(TemplatesData.ConnectedUser)
+			err := templates.ExecuteTemplate(w, "index.gohtml", TemplatesData)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -90,13 +93,10 @@ func main() {
 				http.Redirect(w, r, "/login", http.StatusSeeOther)
 				return
 			}
-
-			return
 		}
 	})
 
 	http.HandleFunc("/sign-up", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("sign-up page loaded")
 		err := templates.ExecuteTemplate(w, "sign-up.gohtml", nil)
 		if err != nil {
 			log.Fatal(err)
@@ -116,13 +116,11 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			return
 		}
 
 	})
 
 	http.HandleFunc("/admin/edit-username", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("admin edit username page loaded")
 		err := templates.ExecuteTemplate(w, "admin_edit_username.gohtml", nil)
 		if err != nil {
 			log.Fatal(err)
@@ -147,7 +145,6 @@ func main() {
 	})
 
 	http.HandleFunc("/edit-username", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("edit username page loaded")
 		err := templates.ExecuteTemplate(w, "edit_username.gohtml", nil)
 		if err != nil {
 			log.Fatal(err)
@@ -185,7 +182,7 @@ func main() {
 			}
 
 			userConnected := GetUserById(idUser)
-			WebsiteInfo_var.ConnectedUser = userConnected
+			TemplatesData.ConnectedUser = userConnected
 
 			//edit username of idUser
 			err = EditUsername(
