@@ -64,27 +64,35 @@
                     <button type="submit" name="submit" class="search-btn"><i class="fa fa-search"></i></button>
                     <label for="search">
                         <input type="search" name="search" spellcheck="false" placeholder=" Search..."
-                               value="{{.Search}}"
+                                {{/*                               value="{{.Search}}"*/}}
                                class="search-input">
                     </label>
                 </form>
             </div>
             <div class="account-options">
-                <div class="actions">
-                    <a href="/login">
-                        <button value="Login" class="log-in">Login</button>
-                    </a>
-                </div>
-                <div class="actions">
-                    <a href="/sign-up">
-                        <button value="Sign-up" class="sign-up">Sign Up</button>
-                    </a>
-                </div>
-                <div class="actions">
-                    <a href="/editusername">
-                        <button value="Edit-username" class="edit-username">Edit username</button>
-                    </a>
-                </div>
+                {{if not .ConnectedUser}}
+                    <div class="actions">
+                        <a href="/login">
+                            <button value="Login" class="log-in">Login</button>
+                        </a>
+                    </div>
+                    <div class="actions">
+                        <a href="/sign-up">
+                            <button value="Sign-up" class="sign-up">Sign Up</button>
+                        </a>
+                    </div>
+                {{else}}
+                    <div class="actions">
+                        <a href="#">
+                            <button value="Login" class="log-in">{{.ConnectedUser.Username}}</button>
+                        </a>
+                    </div>
+                    <div class="actions">
+                        <a href="/editusername">
+                            <button value="Edit-username" class="sign-up">Edit username</button>
+                        </a>
+                    </div>
+                {{end}}
             </div>
         </div>
         <a href="/admineditusername">

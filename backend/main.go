@@ -24,14 +24,33 @@ func main() {
 	http.Handle("/resources/", http.StripPrefix("/resources/", resources)) //set css file to static
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+
 		fmt.Println("route / request")
 		path := strings.TrimPrefix(r.URL.Path, "/")
+		cookie, err := r.Cookie("session")
+		if err != nil {
+			fmt.Println("not logged in")
+			WebsiteInfo_var.ConnectedUser = nil
+		} else {
+			fmt.Println("logged in")
+			user, err := UserLoginBySession(cookie.Value)
+			if err != nil {
+				log.Fatal(err)
+			}
+			WebsiteInfo_var.ConnectedUser = user
+			fmt.Println(WebsiteInfo_var, user)
+			fmt.Println(WebsiteInfo_var.ConnectedUser)
+
+		}
+
 		if path == "favicon.ico" {
 			return
 		}
 		if path == "" {
 			fmt.Println("index page loaded")
-			err := templ.ExecuteTemplate(w, "index.gohtml", nil)
+			fmt.Println(WebsiteInfo_var)
+			fmt.Println(WebsiteInfo_var.ConnectedUser)
+			err := templ.ExecuteTemplate(w, "index.gohtml", WebsiteInfo_var)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -63,7 +82,7 @@ func main() {
 			}
 
 			if exists {
-				user := GetUser(username)
+				user := GetUserByUsername(username)
 				SessionID(*user, w)
 				http.Redirect(w, r, "/", http.StatusSeeOther)
 				return
@@ -164,6 +183,9 @@ func main() {
 			if result.Next() {
 				err = result.Scan(&idUser)
 			}
+
+			userConnected := GetUserById(idUser)
+			WebsiteInfo_var.ConnectedUser = userConnected
 
 			//edit username of idUser
 			err = EditUsername(

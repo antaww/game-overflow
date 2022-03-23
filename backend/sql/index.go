@@ -30,6 +30,12 @@ type LoginSession struct {
 	IdSession string `db:"id_session"`
 }
 
+type WebsiteInfo struct {
+	ConnectedUser *User
+}
+
+var WebsiteInfo_var = WebsiteInfo{}
+
 type Role string
 
 const (
@@ -120,7 +126,40 @@ func SessionID(user User, w http.ResponseWriter) {
 	}
 }
 
-func GetUser(username string) *User {
+func GetUserById(id_user int64) *User {
+	result, err := DB.Query("SELECT * FROM users WHERE id_user = ?", id_user)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func(result *sql.Rows) {
+		err := result.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}(result)
+	user := &User{}
+	if result.Next() {
+		err = result.Scan(
+			&user.ID,
+			&user.Username,
+			&user.IsOnline,
+			&user.Password,
+			&user.Email,
+			&user.Locale,
+			&user.ProfilePic,
+			&user.Description,
+			&user.CreationDate,
+			&user.Role,
+		)
+		if err != nil {
+			log.Fatal(err)
+		}
+		return user
+	}
+	return nil
+}
+
+func GetUserByUsername(username string) *User {
 	result, err := DB.Query("SELECT * FROM users WHERE username = ?", username)
 	if err != nil {
 		log.Fatal(err)
@@ -151,4 +190,31 @@ func GetUser(username string) *User {
 		return user
 	}
 	return nil
+}
+
+func UserLoginBySession(session_id string) (*User, error) {
+	result, err := DB.Query("SELECT id_user FROM sessions WHERE id_session = ?", session_id)
+
+	if err != nil {
+		return nil, fmt.Errorf("SaveUser error: %v", err)
+	}
+
+	defer func(result *sql.Rows) {
+		err := result.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}(result)
+
+	err = result.Err()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var idUser int64
+	if result.Next() {
+		err = result.Scan(&idUser)
+	}
+
+	return GetUserById(idUser), nil
 }
