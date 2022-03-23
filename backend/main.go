@@ -4,10 +4,12 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 	"html/template"
 	"log"
 	. "main/sql"
 	"net/http"
+	"os"
 	"strings"
 )
 
@@ -18,6 +20,11 @@ type TemplatesDataType struct {
 var TemplatesData = TemplatesDataType{}
 
 func main() {
+	err := godotenv.Load("../.env")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	templates, err := template.New("").ParseGlob("../client/templates/*.gohtml")
 	if err != nil {
 		log.Fatal(err)
@@ -224,10 +231,10 @@ func main() {
 
 	// Capture connection properties.
 	cfg := mysql.Config{
-		User:                 "root",
-		Passwd:               "",
+		User:                 os.Getenv("DB_USER"),
+		Passwd:               os.Getenv("DB_PASSWORD"),
 		Net:                  "tcp",
-		Addr:                 "",
+		Addr:                 os.Getenv("DB_ADDRESS"),
 		DBName:               "forum",
 		AllowNativePasswords: true,
 		ParseTime:            true,
