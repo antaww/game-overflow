@@ -179,6 +179,52 @@ func main() {
 		}
 	})
 
+	http.HandleFunc("/edit-password", func(w http.ResponseWriter, r *http.Request) {
+		err := templates.ExecuteTemplate(w, "edit-password", nil)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if r.Method == "POST" {
+			err := r.ParseForm()
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			//get cookie from browser
+			cookie, err := r.Cookie("session")
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			//select user from session
+			result, err := DB.Query("SELECT id_user FROM sessions WHERE id_session = ?", cookie.Value)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			//get result from query
+			var idUser int64
+			if result.Next() {
+				err = result.Scan(&idUser)
+			}
+
+			//Handle sql errors, close the query to avoid memory leaks
+			HandleSQLErrors(result)
+
+			// Get User, save for TemplatesData (to show user logged in in templates)
+			userConnected := GetUserById(idUser)
+			TemplatesData.ConnectedUser = userConnected
+
+			//edit username of idUser
+			err = EditPassword(idUser, r.FormValue("old-password"), r.FormValue("new-password"))
+
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
+	})
+
 	// Capture connection properties.
 	cfg := mysql.Config{
 		User:                 "root",
