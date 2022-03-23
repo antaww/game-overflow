@@ -39,6 +39,23 @@ func EditUsername(idUser int64, newUsername string) error {
 	return nil
 }
 
+func EditPassword(idUser int64, oldPassword string, newPassword string) error {
+	r, err := DB.Exec("UPDATE users SET password = (?) WHERE id_user = (?) AND password = (?)", newPassword, idUser, oldPassword)
+	if err != nil {
+		return fmt.Errorf("SaveUser error: %v", err)
+	}
+	affected, err := r.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("SaveUser error: %v", err)
+	}
+	if affected > 0 {
+		fmt.Println(idUser, "password : ", oldPassword, "=>", newPassword)
+	} else {
+		fmt.Println(idUser, "tried to change his password but `", oldPassword, "` is incorrect")
+	}
+	return nil
+}
+
 // CreateUser creates a new user with generated Id, creation date to now and locale to english
 func CreateUser(username, password, email string) User {
 	return User{
@@ -108,7 +125,7 @@ func LoginBySession(sessionId string) (*User, error) {
 	if err != nil {
 		return nil, fmt.Errorf("SaveUser error: %v", err)
 	}
-	
+
 	var idUser int64
 	err = Results(result, &idUser)
 	if err != nil {
