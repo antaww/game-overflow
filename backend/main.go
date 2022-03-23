@@ -30,16 +30,13 @@ func main() {
 	http.Handle("/resources/", http.StripPrefix("/resources/", resources)) //set css file to static
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-
-		fmt.Println("route / request")
 		path := strings.TrimPrefix(r.URL.Path, "/")
 		cookie, err := r.Cookie("session")
+
 		if err != nil {
-			fmt.Println("not logged in")
 			TemplatesData.ConnectedUser = nil
 		} else {
-			fmt.Println("logged in")
-			user, err := UserLoginBySession(cookie.Value)
+			user, err := LoginBySession(cookie.Value)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -50,9 +47,6 @@ func main() {
 			return
 		}
 		if path == "" {
-			fmt.Println("index page loaded")
-			fmt.Println(TemplatesData)
-			fmt.Println(TemplatesData.ConnectedUser)
 			err := templates.ExecuteTemplate(w, "index.gohtml", TemplatesData)
 			if err != nil {
 				log.Fatal(err)
@@ -62,8 +56,7 @@ func main() {
 
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "GET" {
-			fmt.Println("login page loaded")
-			err := templates.ExecuteTemplate(w, "login.gohtml", nil)
+			err := templates.ExecuteTemplate(w, "login", nil)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -76,10 +69,7 @@ func main() {
 			}
 
 			username := r.FormValue("username")
-			exists, err := UserLogin(
-				username,
-				r.FormValue("password"),
-			)
+			exists, err := LoginByIdentifiants(username, r.FormValue("password"))
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -97,7 +87,7 @@ func main() {
 	})
 
 	http.HandleFunc("/sign-up", func(w http.ResponseWriter, r *http.Request) {
-		err := templates.ExecuteTemplate(w, "sign-up.gohtml", nil)
+		err := templates.ExecuteTemplate(w, "sign-up", nil)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -108,7 +98,7 @@ func main() {
 				log.Fatal(err)
 			}
 
-			err = SaveUser(NewUser(
+			err = SaveUser(CreateUser(
 				r.FormValue("username"),
 				r.FormValue("password"),
 				r.FormValue("email"),
@@ -117,11 +107,10 @@ func main() {
 				log.Fatal(err)
 			}
 		}
-
 	})
 
 	http.HandleFunc("/admin/edit-username", func(w http.ResponseWriter, r *http.Request) {
-		err := templates.ExecuteTemplate(w, "admin_edit_username.gohtml", nil)
+		err := templates.ExecuteTemplate(w, "admin-edit-username", nil)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -145,7 +134,7 @@ func main() {
 	})
 
 	http.HandleFunc("/edit-username", func(w http.ResponseWriter, r *http.Request) {
-		err := templates.ExecuteTemplate(w, "edit_username.gohtml", nil)
+		err := templates.ExecuteTemplate(w, "edit-username", nil)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -155,6 +144,7 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
+
 			//get cookie from browser
 			cookie, err := r.Cookie("session")
 			if err != nil {
@@ -167,42 +157,34 @@ func main() {
 				log.Fatal(err)
 			}
 
-			//close select query
-			defer func(result *sql.Rows) {
-				err := result.Close()
-				if err != nil {
-					log.Fatal(err)
-				}
-			}(result)
-
 			//get result from query
 			var idUser int64
 			if result.Next() {
 				err = result.Scan(&idUser)
 			}
 
+			//Handle sql errors, close the query to avoid memory leaks
+			HandleSQLErrors(result)
+
+			// Get User, save for TemplatesData (to show user logged in in templates)
 			userConnected := GetUserById(idUser)
 			TemplatesData.ConnectedUser = userConnected
 
 			//edit username of idUser
-			err = EditUsername(
-				idUser,
-				r.FormValue("new-username"),
-			)
+			err = EditUsername(idUser, r.FormValue("new-username"))
 
 			if err != nil {
 				log.Fatal(err)
 			}
-			return
 		}
 	})
 
 	// Capture connection properties.
 	cfg := mysql.Config{
-		User:                 "root",
-		Passwd:               "",
+		User:                 "Ayfri",
+		Passwd:               "ayfri",
 		Net:                  "tcp",
-		Addr:                 "",
+		Addr:                 "10.13.33.123:3306",
 		DBName:               "forum",
 		AllowNativePasswords: true,
 		ParseTime:            true,
@@ -224,5 +206,4 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 }
