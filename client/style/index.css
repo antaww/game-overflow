@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap');
+
+* {
+    font-family: "Poppins", sans-serif;
+    outline: none;
+    font-style: normal;
+}
+
+body {
+    margin: 0;
+    background-color: #1E2529;
+}
+
+/* MENU BAR */
+
+.menu {
+    background-color: #2E3944;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    height: 10vh;
+    font-weight: 800;
+}
+
+.logo {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    padding-left: 1vw;
+    cursor: pointer;
+}
+
+.logo img {
+    filter: drop-shadow(0px 0px 12px rgba(0, 0, 0, 0.75));
+}
+
+.logo-name {
+    display: flex;
+    align-items: center;
+}
+
+.logo > img {
+    width: auto;
+    height: 82%;
+}
+
+.categories {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FFF;
+    cursor: pointer;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    background: #1F1F23;
+    border-radius: 11px;
+    width: 30vw;
+    height: 4vh;
+    border: none;
+}
+
+.search-btn {
+    background: #1F1F23;
+    border-radius: 11px;
+    border: none;
+    height: 4vh;
+    cursor: pointer;
+}
+
+.account-options {
+    padding-right: 1.5vw;
+    display: flex;
+    align-items: center;
+}
+
+.actions {
+    padding-left: 1vw;
+    text-align: center;
+}
+
+.actions button {
+    font-weight: 700;
+    border-radius: 11px;
+    padding: 5px 25px;
+    cursor: pointer;
+    border: 2px solid #17629E;
+    color: #FFF;
+}
+
+.log-in {
+    background-color: #17629E;
+}
+
+.sign-up {
+    background-color: #FFF0;
+}
