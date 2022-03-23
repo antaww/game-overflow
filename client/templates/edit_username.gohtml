@@ -1,3 +1,4 @@
+{{define "edit-username"}}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -13,8 +14,9 @@
             </div>
             <form method="POST">
                 <div class="input_area">
-                    <label for="new username"></label>
-                    <input type="text" placeholder="New username" name="newusername" required/>
+                    <label>
+                        <input type="text" placeholder="New username" name="new-username" required/>
+                    </label>
                 </div>
                 <div class="actions">
                     <button type="submit" name="submit" value="Submit">Submit</button>
@@ -23,3 +25,4 @@
         </div>
     </body>
 </html>
+{{end}}

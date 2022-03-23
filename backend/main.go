@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	templ, err := template.New("").ParseGlob("../client/templates/*.gohtml")
+	templates, err := template.New("").ParseGlob("../client/templates/*.gohtml")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -50,7 +50,7 @@ func main() {
 			fmt.Println("index page loaded")
 			fmt.Println(WebsiteInfo_var)
 			fmt.Println(WebsiteInfo_var.ConnectedUser)
-			err := templ.ExecuteTemplate(w, "index.gohtml", WebsiteInfo_var)
+			err := templates.ExecuteTemplate(w, "index.gohtml", WebsiteInfo_var)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -60,7 +60,7 @@ func main() {
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "GET" {
 			fmt.Println("login page loaded")
-			err := templ.ExecuteTemplate(w, "login.gohtml", nil)
+			err := templates.ExecuteTemplate(w, "login.gohtml", nil)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -97,7 +97,7 @@ func main() {
 
 	http.HandleFunc("/sign-up", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("sign-up page loaded")
-		err := templ.ExecuteTemplate(w, "sign-up.gohtml", nil)
+		err := templates.ExecuteTemplate(w, "sign-up.gohtml", nil)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -121,9 +121,9 @@ func main() {
 
 	})
 
-	http.HandleFunc("/admineditusername", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/admin/edit-username", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("admin edit username page loaded")
-		err := templ.ExecuteTemplate(w, "admin_edit_username.gohtml", nil)
+		err := templates.ExecuteTemplate(w, "admin_edit_username.gohtml", nil)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -135,8 +135,8 @@ func main() {
 			}
 
 			err = AdminEditUsername(
-				r.FormValue("oldusername"),
-				r.FormValue("newusername"),
+				r.FormValue("old-username"),
+				r.FormValue("new-username"),
 			)
 
 			if err != nil {
@@ -146,9 +146,9 @@ func main() {
 		}
 	})
 
-	http.HandleFunc("/editusername", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/edit-username", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("edit username page loaded")
-		err := templ.ExecuteTemplate(w, "edit_username.gohtml", nil)
+		err := templates.ExecuteTemplate(w, "edit_username.gohtml", nil)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -190,7 +190,7 @@ func main() {
 			//edit username of idUser
 			err = EditUsername(
 				idUser,
-				r.FormValue("newusername"),
+				r.FormValue("new-username"),
 			)
 
 			if err != nil {
