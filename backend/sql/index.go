@@ -51,17 +51,27 @@ func SaveUser(user User) error {
 	return nil
 }
 
-func EditUsername(oldUsername string, newUsername string) error {
+func AdminEditUsername(oldUsername string, newUsername string) error {
 	_, err := DB.Exec("UPDATE users SET username = (?) WHERE username = (?)", newUsername, oldUsername)
 	if err != nil {
 		return fmt.Errorf("SaveUser error: %v", err)
 	}
+	fmt.Println(oldUsername, "nick =>", newUsername)
+	return nil
+}
+
+func EditUsername(user User, newUsername string) error {
+	_, err := DB.Exec("UPDATE users SET username = (?) WHERE username = (?)", newUsername, user.Username)
+	if err != nil {
+		return fmt.Errorf("SaveUser error: %v", err)
+	}
+	fmt.Println(user.Username, "nick =>", newUsername)
 	return nil
 }
 
 func UserLogin(username string, password string) (bool, error) {
-	fmt.Println(username)
-	fmt.Println(password)
+	fmt.Println("username :", username)
+	fmt.Println("password : ", password)
 	result, err := DB.Query("SELECT username, password FROM users WHERE username = ? AND password = ?", username, password)
 
 	if err != nil {

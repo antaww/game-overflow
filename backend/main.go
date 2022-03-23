@@ -39,10 +39,12 @@ func main() {
 	})
 
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("login page loaded")
-		err := templ.ExecuteTemplate(w, "login.gohtml", nil)
-		if err != nil {
-			log.Fatal(err)
+		if r.Method == "GET" {
+			fmt.Println("login page loaded")
+			err := templ.ExecuteTemplate(w, "login.gohtml", nil)
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 
 		if r.Method == "POST" {
@@ -60,9 +62,10 @@ func main() {
 			}
 
 			if exists {
-				fmt.Println("REDIRECT")
-				http.Redirect(w, r, "/", http.StatusOK)
-				fmt.Println("apres")
+				http.Redirect(w, r, "/", http.StatusSeeOther)
+				return
+			} else {
+				http.Redirect(w, r, "/login", http.StatusSeeOther)
 				return
 			}
 
@@ -96,9 +99,9 @@ func main() {
 
 	})
 
-	http.HandleFunc("/editusername", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("edit username page loaded")
-		err := templ.ExecuteTemplate(w, "edit_username.gohtml", nil)
+	http.HandleFunc("/admineditusername", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("admin edit username page loaded")
+		err := templ.ExecuteTemplate(w, "admin_edit_username.gohtml", nil)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -109,7 +112,7 @@ func main() {
 				log.Fatal(err)
 			}
 
-			err = EditUsername(
+			err = AdminEditUsername(
 				r.FormValue("oldusername"),
 				r.FormValue("newusername"),
 			)
