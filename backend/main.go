@@ -138,6 +138,7 @@ func main() {
 	})
 
 	http.HandleFunc("/edit-username", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("editusername DEBBUG")
 		err := templates.ExecuteTemplate(w, "edit-username", nil)
 		if err != nil {
 			log.Fatal(err)
@@ -180,6 +181,7 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
+			fmt.Println("pierre")
 		}
 	})
 
