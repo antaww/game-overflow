@@ -236,27 +236,8 @@ func main() {
 			log.Fatal(err)
 		}
 
-		//select user from session
-		result, err := DB.Query("SELECT id_user FROM sessions WHERE id_session = ?", cookie.Value)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		//get result from query
-		var idUser int64
-		if result.Next() {
-			err = result.Scan(&idUser)
-		}
-
-		//Handle sql errors, close the query to avoid memory leaks
-		HandleSQLErrors(result)
-
-		// Get User, save for TemplatesData (to show user logged in in templates)
-		userConnected := GetUserById(idUser)
-		TemplatesData.ConnectedUser = userConnected
-
 		//logout user
-		err = CookieLogout(idUser, w)
+		err = CookieLogout(*cookie, w)
 
 		if err != nil {
 			log.Fatal(err)
