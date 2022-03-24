@@ -90,7 +90,7 @@ body {
     text-align: center;
 }
 
-.actions button {
+.actions button, .actions .btn {
     font-weight: 700;
     border-radius: 11px;
     padding: 5px 25px;
@@ -105,6 +105,7 @@ body {
 
 .log-out {
     background-color: #a41d22;
+    border: 2px solid #f6151c !important;
 }
 
 .sign-up {

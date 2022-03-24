@@ -10,7 +10,6 @@ import (
 	"main/utils"
 	"net/http"
 	"os"
-	"runtime/debug"
 	"strings"
 )
 
@@ -26,11 +25,14 @@ func main() {
 		log.Fatal(err)
 	}
 
-	css := http.FileServer(http.Dir("../client/style/"))       //define css file
-	http.Handle("/static/", http.StripPrefix("/static/", css)) //set css file to static
+	css := http.FileServer(http.Dir("../client/style/"))
+	http.Handle("/static/", http.StripPrefix("/static/", css))
 
-	resources := http.FileServer(http.Dir("../backend/resources/"))        //define css file
-	http.Handle("/resources/", http.StripPrefix("/resources/", resources)) //set css file to static
+	resources := http.FileServer(http.Dir("../backend/resources/"))
+	http.Handle("/resources/", http.StripPrefix("/resources/", resources))
+
+	scripts := http.FileServer(http.Dir("../client/scripts/"))
+	http.Handle("/scripts/", http.StripPrefix("/scripts/", scripts))
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		path := strings.TrimPrefix(r.URL.Path, "/")
@@ -58,7 +60,6 @@ func main() {
 		if r.Method == "GET" {
 			err := utils.CallTemplate("login", TemplatesData, w)
 			if err != nil {
-				debug.PrintStack()
 				log.Fatal(err)
 			}
 		}
