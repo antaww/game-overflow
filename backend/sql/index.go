@@ -37,6 +37,7 @@ func SessionID(user User, w http.ResponseWriter) {
 		HttpOnly: false,
 		Name:     "session",
 		Value:    session.IdSession,
+		MaxAge:   1000,
 	}
 	http.SetCookie(w, cookie)
 
@@ -44,4 +45,27 @@ func SessionID(user User, w http.ResponseWriter) {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func CookieLogout(idUser int64, w http.ResponseWriter) error {
+	SessionID := utils.RandomString(32)
+	fmt.Println("session id:", SessionID)
+
+	session := LoginSession{
+		IdSession: SessionID,
+		IdUser:    strconv.FormatInt(idUser, 10),
+	}
+	cookie := &http.Cookie{
+		HttpOnly: false,
+		Name:     "session",
+		Value:    session.IdSession,
+		MaxAge:   -1,
+	}
+	http.SetCookie(w, cookie)
+
+	_, err := DB.Exec("INSERT INTO sessions VALUES (?, ?)", session.IdSession, session.IdUser)
+	if err != nil {
+		return err
+	}
+	return nil
 }
