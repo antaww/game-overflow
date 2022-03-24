@@ -59,7 +59,7 @@ body {
     align-items: center;
 }
 
-.search-input {
+#search-input {
     background: #1F1F23;
     border-radius: 11px;
     width: 30vw;
@@ -73,6 +73,10 @@ body {
     border: none;
     height: 4vh;
     cursor: pointer;
+}
+
+#search-input:placeholder-shown ~ .search-btn {
+    pointer-events: none;
 }
 
 .account-options {
