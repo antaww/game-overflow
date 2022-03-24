@@ -28,17 +28,20 @@ type User struct {
 	Role         Role      `db:"role_type"`
 }
 
-// EditUsername edits the username of the user
-func EditUsername(idUser int64, newUsername string) error {
-	_, err := DB.Exec("UPDATE users SET username = (?) WHERE id_user = (?)", newUsername, idUser)
-	if err != nil {
-		return fmt.Errorf("SaveUser error: %v", err)
+// CreateUser creates a new user with generated Id, creation date to now and locale to english
+func CreateUser(username, password, email string) User {
+	return User{
+		Id:           utils.GenerateID(),
+		Username:     username,
+		Password:     password,
+		Email:        email,
+		Locale:       "en",
+		CreationDate: time.Now(),
+		Role:         RoleUser,
 	}
-
-	fmt.Println(idUser, "nick =>", newUsername)
-	return nil
 }
 
+// EditPassword edits the password of the user
 func EditPassword(idUser int64, oldPassword string, newPassword string) error {
 	r, err := DB.Exec("UPDATE users SET password = (?) WHERE id_user = (?) AND password = (?)", newPassword, idUser, oldPassword)
 	if err != nil {
@@ -56,17 +59,15 @@ func EditPassword(idUser int64, oldPassword string, newPassword string) error {
 	return nil
 }
 
-// CreateUser creates a new user with generated Id, creation date to now and locale to english
-func CreateUser(username, password, email string) User {
-	return User{
-		Id:           utils.GenerateID(),
-		Username:     username,
-		Password:     password,
-		Email:        email,
-		Locale:       "en",
-		CreationDate: time.Now(),
-		Role:         RoleUser,
+// EditUsername edits the username of the user
+func EditUsername(idUser int64, newUsername string) error {
+	_, err := DB.Exec("UPDATE users SET username = (?) WHERE id_user = (?)", newUsername, idUser)
+	if err != nil {
+		return fmt.Errorf("SaveUser error: %v", err)
 	}
+
+	fmt.Println(idUser, "nick =>", newUsername)
+	return nil
 }
 
 // GetUserById finds a user by id, returns nil if not found
