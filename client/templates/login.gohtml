@@ -1,24 +1,26 @@
 {{define "content"}}
-    <div class="container">
-        <div class="header">
-            <h1>Welcome</h1>
+    <div class="fit-page">
+        <div class="container">
+            <div class="header">
+                <img src="/resources/Logo.png" alt="logo">
+            </div>
+            <form method="POST">
+                <div class="input_area log-in-input">
+                    <label>
+                        <input type="text" placeholder="Username" name="username"/>
+                    </label>
+                    <label>
+                        <input type="password" placeholder="Password" name="password"/>
+                    </label>
+                </div>
+                <div class="actions">
+                    <button type="submit" value="Login">Login</button>
+                    <p>
+                        Don't have an account ?
+                        <a href="/sign-up" class="Sign_up_link">Sign Up</a>
+                    </p>
+                </div>
+            </form>
         </div>
-        <form method="POST">
-            <div class="input_area">
-                <label>
-                    <input type="text" placeholder="Username" name="username"/>
-                </label>
-                <label>
-                    <input type="text" placeholder="Password" name="password"/>
-                </label>
-            </div>
-            <div class="actions">
-                <button type="submit" value="Login">Login</button>
-                <p>
-                    Don't have an account ?
-                    <a href="/sign-up" class="Sign_up_link">Sign Up</a>
-                </p>
-            </div>
-        </form>
     </div>
 {{end}}

@@ -1,51 +1,57 @@
 {{define "content"}}
-    <script defer src="/scripts/sign-up.js"></script>
-    <div class="container">
-        <div class="header">
-            <h1>Sign up</h1>
+<script defer src="/scripts/sign-up.js"></script>
+    <div class="fit-page">
+        <div class="container">
+            <div class="header">
+                <img src="/resources/Logo.png" alt="logo">
+            </div>
+            <form method="POST">
+                <div class="input_area">
+                    <label>
+                        <input autocomplete="username"
+                               autofocus
+                               maxlength="32"
+                               minlength="2"
+                               name="username"
+                               placeholder="Username"
+                               required
+                               type="text"/>
+                    </label>
+                    <label>
+                        <input autocomplete="email"
+                               maxlength="255"
+                               name="email"
+                               placeholder="Email"
+                               required
+                               type="email"/>
+                    </label>
+                    <label>
+                        <input autocomplete="password"
+                               id="password"
+                               maxlength="40"
+                               name="password"
+                               placeholder="Password"
+                               required
+                               type="password"/>
+                    </label>
+                    <label>
+                        <input autocomplete="password"
+                               id="confirm-password"
+                               maxlength="40"
+                               name="confirm-password"
+                               placeholder="Confirm password"
+                               required
+                               type="password"/>
+                    </label>
+                </div>
+                <div class="actions">
+                    <button type="submit" name="submit" value="Sign-up">Sign up</button>
+                    <p>
+                        Already have an account ?
+                        <a href="/login" class="Sign_up_link">Log in</a>
+                    </p>
+                </div>
+            </form>
         </div>
-        <form method="POST">
-            <div class="input_area">
-                <label>
-                    <input autocomplete="username"
-                           autofocus
-                           maxlength="32"
-                           minlength="2"
-                           name="username"
-                           placeholder="Username"
-                           required
-                           type="text"/>
-                </label>
-                <label>
-                    <input autocomplete="email"
-                           maxlength="255"
-                           name="email"
-                           placeholder="Email"
-                           required
-                           type="email"/>
-                </label>
-                <label>
-                    <input autocomplete="password"
-                           id="password"
-                           maxlength="40"
-                           name="password"
-                           placeholder="Password"
-                           required
-                           type="password"/>
-                </label>
-                <label>
-                    <input autocomplete="password"
-                           id="confirm-password"
-                           maxlength="40"
-                           name="confirm-password"
-                           placeholder="Confirm password"
-                           required
-                           type="password"/>
-                </label>
-            </div>
-            <div class="actions">
-                <input class="btn" id="btn-sign-up" name="submit" type="submit" value="Sign-up">
-            </div>
-        </form>
     </div>
 {{end}}
