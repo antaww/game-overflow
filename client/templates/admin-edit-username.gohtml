@@ -6,18 +6,14 @@
         <form method="POST">
             <div class="input_area">
                 <label>
-                    <input type="text" placeholder="Username" name="username"/>
+                    <input type="text" placeholder="Old username" name="old-username" required/>
                 </label>
                 <label>
-                    <input type="text" placeholder="Password" name="password"/>
+                    <input type="text" placeholder="New username" name="new-username" required/>
                 </label>
             </div>
             <div class="actions">
-                <button type="submit" value="Login">Login</button>
-                <p>
-                    Don't have an account ?
-                    <a href="/sign-up" class="Sign_up_link">Sign Up</a>
-                </p>
+                <button type="submit" name="submit" value="Submit">Submit</button>
             </div>
         </form>
     </div>

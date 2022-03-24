@@ -1,37 +1,26 @@
-{{define "sign-up"}}
-    <!DOCTYPE html>
-    <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <title>Sign up</title>
-            <link rel="icon" href="/resources/Logo.png">
-            <link rel="stylesheet" href="/static/login.css">
-        </head>
-        <body>
-            <div class="container">
-                <div class="header">
-                    <h1>Sign up</h1>
-                </div>
-                <form method="POST">
-                    <div class="input_area">
-                        <label>
-                            <input type="text" placeholder="Username" name="username" required/>
-                        </label>
-                        <label>
-                            <input type="text" placeholder="Email" name="email" required/>
-                        </label>
-                        <label>
-                            <input type="text" placeholder="Password" name="password" required/>
-                        </label>
-                        <label>
-                            <input type="text" placeholder="Confirm password" name="confirm-password" required/>
-                        </label>
-                    </div>
-                    <div class="actions">
-                        <button type="submit" name="submit" value="Sign-up">Sign up</button>
-                    </div>
-                </form>
+{{define "content"}}
+    <div class="container">
+        <div class="header">
+            <h1>Sign up</h1>
+        </div>
+        <form method="POST">
+            <div class="input_area">
+                <label>
+                    <input type="text" placeholder="Username" name="username" required/>
+                </label>
+                <label>
+                    <input type="text" placeholder="Email" name="email" required/>
+                </label>
+                <label>
+                    <input type="text" placeholder="Password" name="password" required/>
+                </label>
+                <label>
+                    <input type="text" placeholder="Confirm password" name="confirm-password" required/>
+                </label>
             </div>
-        </body>
-    </html>
+            <div class="actions">
+                <button type="submit" name="submit" value="Sign-up">Sign up</button>
+            </div>
+        </form>
+    </div>
 {{end}}
