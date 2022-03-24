@@ -89,9 +89,11 @@ func main() {
 	})
 
 	http.HandleFunc("/sign-up", func(w http.ResponseWriter, r *http.Request) {
-		err := utils.CallTemplate("sign-up", TemplatesData, w)
-		if err != nil {
-			log.Fatal(err)
+		if r.Method == "GET" {
+			err := utils.CallTemplate("sign-up", TemplatesData, w)
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 
 		if r.Method == "POST" {
@@ -100,13 +102,24 @@ func main() {
 				log.Fatal(err)
 			}
 
-			err = SaveUser(CreateUser(
+			valid, err := SaveUser(CreateUser(
 				r.FormValue("username"),
 				r.FormValue("password"),
 				r.FormValue("email"),
 			))
+
 			if err != nil {
 				log.Fatal(err)
+			}
+
+			if valid {
+				fmt.Println("aa")
+				http.Redirect(w, r, "/login", http.StatusSeeOther)
+				return
+			} else {
+				fmt.Println("bb")
+				http.Redirect(w, r, "/sign-up", http.StatusSeeOther)
+				return
 			}
 		}
 	})
@@ -136,9 +149,13 @@ func main() {
 	})
 
 	http.HandleFunc("/edit-username", func(w http.ResponseWriter, r *http.Request) {
-		err := utils.CallTemplate("edit-username", TemplatesData, w)
-		if err != nil {
-			log.Fatal(err)
+		fmt.Println("cc")
+		if r.Method == "GET" {
+			fmt.Println("dd")
+			err := utils.CallTemplate("edit-username", TemplatesData, w)
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 
 		if r.Method == "POST" {
@@ -173,18 +190,30 @@ func main() {
 			TemplatesData.ConnectedUser = userConnected
 
 			//edit username of idUser
-			err = EditUsername(idUser, r.FormValue("new-username"))
-
+			exists, err := EditUsername(idUser, r.FormValue("new-username"))
 			if err != nil {
 				log.Fatal(err)
 			}
+
+			if exists {
+				fmt.Println("aa")
+				http.Redirect(w, r, "/", http.StatusSeeOther)
+				return
+			} else {
+				fmt.Println("bb")
+				http.Redirect(w, r, "/edit-username", http.StatusSeeOther)
+				return
+			}
+
 		}
 	})
 
 	http.HandleFunc("/edit-password", func(w http.ResponseWriter, r *http.Request) {
-		err := utils.CallTemplate("edit-password", TemplatesData, w)
-		if err != nil {
-			log.Fatal(err)
+		if r.Method == "GET" {
+			err := utils.CallTemplate("edit-password", TemplatesData, w)
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 
 		if r.Method == "POST" {
@@ -219,10 +248,20 @@ func main() {
 			TemplatesData.ConnectedUser = userConnected
 
 			//edit username of idUser
-			err = EditPassword(idUser, r.FormValue("old-password"), r.FormValue("new-password"))
+			exists, err := EditPassword(idUser, r.FormValue("old-password"), r.FormValue("new-password"))
 
 			if err != nil {
 				log.Fatal(err)
+			}
+
+			if exists {
+				fmt.Println("aa")
+				http.Redirect(w, r, "/", http.StatusSeeOther)
+				return
+			} else {
+				fmt.Println("bb")
+				http.Redirect(w, r, "/edit-password", http.StatusSeeOther)
+				return
 			}
 		}
 	})
