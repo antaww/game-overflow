@@ -181,7 +181,10 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			fmt.Println("pierre")
+			err = templates.ExecuteTemplate(w, "index", nil)
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 	})
 
