@@ -1,0 +1,24 @@
+{{define "main"}}
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>Game overflow</title>
+            <link rel="icon" href="/resources/Logo.png">
+            <link rel="stylesheet" href="/static/index.css">
+            <script src="https://kit.fontawesome.com/74fed0e2b5.js" crossorigin="anonymous"></script>
+        </head>
+        <body>
+            {{block "content" .}}
+                {{template "navbar" .}}
+                {{block "page" .}}
+                    <a href="/admin/edit-username">
+                        <button value="Admin_edit_username" style="position: absolute; top: 50%; left: 50%;">
+                            Admin edit username
+                        </button>
+                    </a>
+                {{end}}
+            {{end}}
+        </body>
+    </html>
+{{end}}

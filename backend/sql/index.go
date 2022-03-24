@@ -47,23 +47,16 @@ func SessionID(user User, w http.ResponseWriter) {
 	}
 }
 
-func CookieLogout(idUser int64, w http.ResponseWriter) error {
-	SessionID := utils.RandomString(32)
-	fmt.Println("session id:", SessionID)
-
-	session := LoginSession{
-		IdSession: SessionID,
-		IdUser:    strconv.FormatInt(idUser, 10),
-	}
+func CookieLogout(getCookie http.Cookie, w http.ResponseWriter) error {
 	cookie := &http.Cookie{
 		HttpOnly: false,
 		Name:     "session",
-		Value:    session.IdSession,
+		Value:    "",
 		MaxAge:   -1,
 	}
 	http.SetCookie(w, cookie)
 
-	_, err := DB.Exec("INSERT INTO sessions VALUES (?, ?)", session.IdSession, session.IdUser)
+	_, err := DB.Exec("DELETE FROM sessions WHERE sessions.id_session = (?)", getCookie.Value)
 	if err != nil {
 		return err
 	}
