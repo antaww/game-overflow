@@ -90,7 +90,7 @@ body {
     text-align: center;
 }
 
-.actions button {
+.actions button, .actions .btn {
     font-weight: 700;
     border-radius: 11px;
     padding: 5px 25px;

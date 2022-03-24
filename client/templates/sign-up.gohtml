@@ -1,4 +1,5 @@
 {{define "content"}}
+    <script defer src="/scripts/sign-up.js"></script>
     <div class="container">
         <div class="header">
             <h1>Sign up</h1>
@@ -6,20 +7,44 @@
         <form method="POST">
             <div class="input_area">
                 <label>
-                    <input type="text" placeholder="Username" name="username" required/>
+                    <input autocomplete="username"
+                           autofocus
+                           maxlength="32"
+                           minlength="2"
+                           name="username"
+                           placeholder="Username"
+                           required
+                           type="text"/>
                 </label>
                 <label>
-                    <input type="text" placeholder="Email" name="email" required/>
+                    <input autocomplete="email"
+                           maxlength="255"
+                           name="email"
+                           placeholder="Email"
+                           required
+                           type="email"/>
                 </label>
                 <label>
-                    <input type="text" placeholder="Password" name="password" required/>
+                    <input autocomplete="password"
+                           id="password"
+                           maxlength="40"
+                           name="password"
+                           placeholder="Password"
+                           required
+                           type="password"/>
                 </label>
                 <label>
-                    <input type="text" placeholder="Confirm password" name="confirm-password" required/>
+                    <input autocomplete="password"
+                           id="confirm-password"
+                           maxlength="40"
+                           name="confirm-password"
+                           placeholder="Confirm password"
+                           required
+                           type="password"/>
                 </label>
             </div>
             <div class="actions">
-                <button type="submit" name="submit" value="Sign-up">Sign up</button>
+                <input class="btn" id="btn-sign-up" name="submit" type="submit" value="Sign-up">
             </div>
         </form>
     </div>
