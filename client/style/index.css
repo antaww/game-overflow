@@ -97,6 +97,7 @@ body {
     cursor: pointer;
     border: 2px solid #17629E;
     color: #FFF;
+    width: fit-content;
 }
 
 .log-in {
@@ -104,10 +105,24 @@ body {
 }
 
 .log-out {
-    background-color: #a41d22;
+    background-color: #a41d22 !important;
     border: 2px solid #f6151c !important;
 }
 
 .sign-up {
     background-color: #FFF0;
+}
+
+.actions.username {
+    position: relative;
+}
+
+.block {
+    display: block !important;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    margin-top: 10px;
 }
