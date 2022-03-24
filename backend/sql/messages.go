@@ -10,12 +10,12 @@ type Message struct {
 	Likes     int       `db:"likes"`
 	Dislikes  int       `db:"dislikes"`
 	IdTopic   string    `db:"id_topic"`
-	IdUser    int64     `db:"id_user" `
+	AuthorId  int64     `db:"id_user" `
 }
 
 // GetMessages returns all messages from a topic id
 func GetMessages(postId int64) ([]Message, error) {
-	rows, err := DB.Query("SELECT * FROM messages WHERE id_topic = $1 ORDER BY created_at", postId)
+	rows, err := DB.Query("SELECT * FROM messages WHERE id_topic = ? ORDER BY created_at", postId)
 	if err != nil {
 		return nil, err
 	}
@@ -23,7 +23,7 @@ func GetMessages(postId int64) ([]Message, error) {
 	var messages []Message
 	for rows.Next() {
 		var message Message
-		err = rows.Scan(&message.Id, &message.Content, &message.CreatedAt, &message.IsFirst, &message.Likes, &message.Dislikes, &message.IdTopic, &message.IdUser)
+		err = rows.Scan(&message.Id, &message.Content, &message.CreatedAt, &message.IsFirst, &message.Likes, &message.Dislikes, &message.IdTopic, &message.AuthorId)
 		if err != nil {
 			return nil, err
 		}
@@ -34,4 +34,12 @@ func GetMessages(postId int64) ([]Message, error) {
 	HandleSQLErrors(rows)
 
 	return messages, nil
+}
+
+func (message *Message) CalculatePoints() int {
+	return message.Likes - message.Dislikes
+}
+
+func (message *Message) GetUser() *User {
+	return GetUserById(message.AuthorId)
 }
