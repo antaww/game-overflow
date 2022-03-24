@@ -15,6 +15,7 @@ import (
 
 type TemplatesDataType struct {
 	ConnectedUser *User
+	ShownTopics   []Topic
 }
 
 var TemplatesData = TemplatesDataType{}
@@ -281,6 +282,25 @@ func main() {
 		}
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
+	})
+
+	http.HandleFunc("/test", func(w http.ResponseWriter, r *http.Request) {
+		topic, err := GetPost(1)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		err = topic.FetchMessages()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		TemplatesData.ShownTopics = append(TemplatesData.ShownTopics, *topic)
+
+		err = utils.CallTemplate("topic", TemplatesData.ShownTopics[0], w)
+		if err != nil {
+			log.Fatal(err)
+		}
 	})
 
 	// Capture connection properties.
