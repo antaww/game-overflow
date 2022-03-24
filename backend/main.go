@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
-	"html/template"
 	"log"
 	. "main/sql"
+	"main/utils"
 	"net/http"
 	"os"
+	"runtime/debug"
 	"strings"
 )
 
@@ -21,11 +22,6 @@ var TemplatesData = TemplatesDataType{}
 
 func main() {
 	err := godotenv.Load("../.env")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	templates, err := template.New("").ParseGlob("../client/templates/*.gohtml")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -51,7 +47,7 @@ func main() {
 		}
 
 		if path == "" {
-			err := templates.ExecuteTemplate(w, "index.gohtml", TemplatesData)
+			err := utils.CallTemplate("main", TemplatesData, w)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -60,8 +56,9 @@ func main() {
 
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "GET" {
-			err := templates.ExecuteTemplate(w, "login", nil)
+			err := utils.CallTemplate("login", TemplatesData, w)
 			if err != nil {
+				debug.PrintStack()
 				log.Fatal(err)
 			}
 		}
@@ -91,7 +88,7 @@ func main() {
 	})
 
 	http.HandleFunc("/sign-up", func(w http.ResponseWriter, r *http.Request) {
-		err := templates.ExecuteTemplate(w, "sign-up", nil)
+		err := utils.CallTemplate("sign-up", TemplatesData, w)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -114,7 +111,7 @@ func main() {
 	})
 
 	http.HandleFunc("/admin/edit-username", func(w http.ResponseWriter, r *http.Request) {
-		err := templates.ExecuteTemplate(w, "admin-edit-username", nil)
+		err := utils.CallTemplate("admin-edit-username", TemplatesData, w)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -138,7 +135,7 @@ func main() {
 	})
 
 	http.HandleFunc("/edit-username", func(w http.ResponseWriter, r *http.Request) {
-		err := templates.ExecuteTemplate(w, "edit-username", nil)
+		err := utils.CallTemplate("edit-username", TemplatesData, w)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -184,7 +181,7 @@ func main() {
 	})
 
 	http.HandleFunc("/edit-password", func(w http.ResponseWriter, r *http.Request) {
-		err := templates.ExecuteTemplate(w, "edit-password", nil)
+		err := utils.CallTemplate("edit-password", TemplatesData, w)
 		if err != nil {
 			log.Fatal(err)
 		}
