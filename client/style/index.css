@@ -105,6 +105,7 @@ body {
 
 .log-out {
     background-color: #a41d22;
+    border: 2px solid #f6151c !important;
 }
 
 .sign-up {

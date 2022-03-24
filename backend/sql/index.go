@@ -37,7 +37,7 @@ func SessionID(user User, w http.ResponseWriter) {
 		HttpOnly: false,
 		Name:     "session",
 		Value:    session.IdSession,
-		MaxAge:   1000,
+		MaxAge:   7 * 24 * 60 * 60,
 	}
 	http.SetCookie(w, cookie)
 

@@ -10,7 +10,6 @@ import (
 	"main/utils"
 	"net/http"
 	"os"
-	"runtime/debug"
 	"strings"
 )
 
@@ -61,7 +60,6 @@ func main() {
 		if r.Method == "GET" {
 			err := utils.CallTemplate("login", TemplatesData, w)
 			if err != nil {
-				debug.PrintStack()
 				log.Fatal(err)
 			}
 		}
