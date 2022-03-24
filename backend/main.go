@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
-	"html/template"
 	"log"
 	. "main/sql"
+	"main/utils"
 	"net/http"
 	"os"
 	"strings"
@@ -25,16 +25,14 @@ func main() {
 		log.Fatal(err)
 	}
 
-	templates, err := template.New("").ParseGlob("../client/templates/*.gohtml")
-	if err != nil {
-		log.Fatal(err)
-	}
+	css := http.FileServer(http.Dir("../client/style/"))
+	http.Handle("/static/", http.StripPrefix("/static/", css))
 
-	css := http.FileServer(http.Dir("../client/style/"))       //define css file
-	http.Handle("/static/", http.StripPrefix("/static/", css)) //set css file to static
+	resources := http.FileServer(http.Dir("../backend/resources/"))
+	http.Handle("/resources/", http.StripPrefix("/resources/", resources))
 
-	resources := http.FileServer(http.Dir("../backend/resources/"))        //define css file
-	http.Handle("/resources/", http.StripPrefix("/resources/", resources)) //set css file to static
+	scripts := http.FileServer(http.Dir("../client/scripts/"))
+	http.Handle("/scripts/", http.StripPrefix("/scripts/", scripts))
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		path := strings.TrimPrefix(r.URL.Path, "/")
@@ -51,7 +49,7 @@ func main() {
 		}
 
 		if path == "" {
-			err := templates.ExecuteTemplate(w, "index.gohtml", TemplatesData)
+			err := utils.CallTemplate("main", TemplatesData, w)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -60,7 +58,7 @@ func main() {
 
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "GET" {
-			err := templates.ExecuteTemplate(w, "login", nil)
+			err := utils.CallTemplate("login", TemplatesData, w)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -91,9 +89,11 @@ func main() {
 	})
 
 	http.HandleFunc("/sign-up", func(w http.ResponseWriter, r *http.Request) {
-		err := templates.ExecuteTemplate(w, "sign-up", nil)
-		if err != nil {
-			log.Fatal(err)
+		if r.Method == "GET" {
+			err := utils.CallTemplate("sign-up", TemplatesData, w)
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 
 		if r.Method == "POST" {
@@ -102,19 +102,30 @@ func main() {
 				log.Fatal(err)
 			}
 
-			err = SaveUser(CreateUser(
+			valid, err := SaveUser(CreateUser(
 				r.FormValue("username"),
 				r.FormValue("password"),
 				r.FormValue("email"),
 			))
+
 			if err != nil {
 				log.Fatal(err)
+			}
+
+			if valid {
+				fmt.Println("aa")
+				http.Redirect(w, r, "/login", http.StatusSeeOther)
+				return
+			} else {
+				fmt.Println("bb")
+				http.Redirect(w, r, "/sign-up", http.StatusSeeOther)
+				return
 			}
 		}
 	})
 
 	http.HandleFunc("/admin/edit-username", func(w http.ResponseWriter, r *http.Request) {
-		err := templates.ExecuteTemplate(w, "admin-edit-username", nil)
+		err := utils.CallTemplate("admin-edit-username", TemplatesData, w)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -138,10 +149,13 @@ func main() {
 	})
 
 	http.HandleFunc("/edit-username", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("editusername DEBBUG")
-		err := templates.ExecuteTemplate(w, "edit-username", nil)
-		if err != nil {
-			log.Fatal(err)
+		fmt.Println("cc")
+		if r.Method == "GET" {
+			fmt.Println("dd")
+			err := utils.CallTemplate("edit-username", TemplatesData, w)
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 
 		if r.Method == "POST" {
@@ -176,22 +190,30 @@ func main() {
 			TemplatesData.ConnectedUser = userConnected
 
 			//edit username of idUser
-			err = EditUsername(idUser, r.FormValue("new-username"))
+			exists, err := EditUsername(idUser, r.FormValue("new-username"))
+			if err != nil {
+				log.Fatal(err)
+			}
 
-			if err != nil {
-				log.Fatal(err)
+			if exists {
+				fmt.Println("aa")
+				http.Redirect(w, r, "/", http.StatusSeeOther)
+				return
+			} else {
+				fmt.Println("bb")
+				http.Redirect(w, r, "/edit-username", http.StatusSeeOther)
+				return
 			}
-			err = templates.ExecuteTemplate(w, "index", nil)
-			if err != nil {
-				log.Fatal(err)
-			}
+
 		}
 	})
 
 	http.HandleFunc("/edit-password", func(w http.ResponseWriter, r *http.Request) {
-		err := templates.ExecuteTemplate(w, "edit-password", nil)
-		if err != nil {
-			log.Fatal(err)
+		if r.Method == "GET" {
+			err := utils.CallTemplate("edit-password", TemplatesData, w)
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 
 		if r.Method == "POST" {
@@ -226,10 +248,20 @@ func main() {
 			TemplatesData.ConnectedUser = userConnected
 
 			//edit username of idUser
-			err = EditPassword(idUser, r.FormValue("old-password"), r.FormValue("new-password"))
+			exists, err := EditPassword(idUser, r.FormValue("old-password"), r.FormValue("new-password"))
 
 			if err != nil {
 				log.Fatal(err)
+			}
+
+			if exists {
+				fmt.Println("aa")
+				http.Redirect(w, r, "/", http.StatusSeeOther)
+				return
+			} else {
+				fmt.Println("bb")
+				http.Redirect(w, r, "/edit-password", http.StatusSeeOther)
+				return
 			}
 		}
 	})

@@ -29,31 +29,31 @@ type User struct {
 }
 
 // EditUsername edits the username of the user
-func EditUsername(idUser int64, newUsername string) error {
+func EditUsername(idUser int64, newUsername string) (bool, error) {
 	_, err := DB.Exec("UPDATE users SET username = (?) WHERE id_user = (?)", newUsername, idUser)
 	if err != nil {
-		return fmt.Errorf("SaveUser error: %v", err)
+		return false, fmt.Errorf("SaveUser error: %v", err)
 	}
 
 	fmt.Println(idUser, "nick =>", newUsername)
-	return nil
+	return true, nil
 }
 
-func EditPassword(idUser int64, oldPassword string, newPassword string) error {
+func EditPassword(idUser int64, oldPassword string, newPassword string) (bool, error) {
 	r, err := DB.Exec("UPDATE users SET password = (?) WHERE id_user = (?) AND password = (?)", newPassword, idUser, oldPassword)
 	if err != nil {
-		return fmt.Errorf("SaveUser error: %v", err)
+		return false, fmt.Errorf("SaveUser error: %v", err)
 	}
 	affected, err := r.RowsAffected()
 	if err != nil {
-		return fmt.Errorf("SaveUser error: %v", err)
+		return false, fmt.Errorf("SaveUser error: %v", err)
 	}
 	if affected > 0 {
 		fmt.Println(idUser, "password : ", oldPassword, "=>", newPassword)
 	} else {
 		fmt.Println(idUser, "tried to change his password but `", oldPassword, "` is incorrect")
 	}
-	return nil
+	return true, nil
 }
 
 // CreateUser creates a new user with generated Id, creation date to now and locale to english
@@ -138,11 +138,11 @@ func LoginBySession(sessionId string) (*User, error) {
 }
 
 // SaveUser saves a user in the database
-func SaveUser(user User) error {
+func SaveUser(user User) (bool, error) {
 	_, err := DB.Exec("INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", user.Id, user.Username, user.IsOnline, user.Password, user.Email, user.Locale, user.ProfilePic, user.Description, user.CreationDate, user.Role)
 	if err != nil {
-		return fmt.Errorf("SaveUser error: %v", err)
+		return false, fmt.Errorf("SaveUser error: %v", err)
 	}
 
-	return nil
+	return true, nil
 }
