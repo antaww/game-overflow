@@ -98,7 +98,7 @@ body {
     text-align: center;
 }
 
-.actions button, .actions .btn {
+.actions > a > button, .actions .btn, .actions > button {
     font-weight: 700;
     border-radius: 11px;
     padding: 5px 25px;
@@ -110,11 +110,6 @@ body {
 
 .log-in {
     background-color: #17629E;
-}
-
-.log-out {
-    background-color: #a41d22 !important;
-    border: 2px solid #f6151c !important;
 }
 
 .sign-up {
@@ -133,8 +128,37 @@ body {
     display: block !important;
 }
 
-.dropdown, .dropdown_categories {
+.dropdown, .dropdown-categories {
     display: none;
     position: absolute;
-    margin-top: 10px;
+}
+
+.dropdown {
+    top: 7vh;
+    background-color: #263137;
+    border-radius: 15px;
+    width: 138%;
+    right: -0.5vh;
+    padding: 7% 0;
+}
+
+.dropdown-categories {
+    top: 10vh;
+    background-color: #263137;
+    border-radius: 15px;
+    padding: 1%;
+}
+
+.dropdown-options {
+    background-color: #263137;
+    border: none;
+    cursor: pointer;
+    width: 80%;
+    text-align: left;
+    font-weight: 600;
+    color: #FFF;
+}
+
+.log-out {
+    color: #FF7373;
 }
