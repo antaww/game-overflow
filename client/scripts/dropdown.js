@@ -1,6 +1,7 @@
 const username = document.querySelector(".username")
 const dropdown = document.querySelector(".dropdown")
 const categories = document.querySelector(".categories")
+const dropdown_categories = document.querySelector(".dropdown_categories")
 
 username.addEventListener('click', event => {
     console.log("username clicked")
@@ -9,5 +10,5 @@ username.addEventListener('click', event => {
 
 categories.addEventListener('click', event => {
     console.log("categories clicked")
-    dropdown.classList.toggle("block")
+    dropdown_categories.classList.toggle("block")
 })

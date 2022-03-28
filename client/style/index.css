@@ -125,7 +125,7 @@ body {
     display: block !important;
 }
 
-.dropdown {
+.dropdown, .dropdown_categories {
     display: none;
     position: absolute;
     margin-top: 10px;
