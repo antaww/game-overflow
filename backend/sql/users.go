@@ -87,12 +87,15 @@ func GetUserById(id int64) *User {
 	if err != nil {
 		return nil
 	}
+	var profilePicture []byte
 
 	user := &User{}
-	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &user.ProfilePic, &user.Description, &user.CreationDate, &user.Role)
+	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description, &user.CreationDate, &user.Role)
 	if err != nil {
 		log.Fatal(err)
 	}
+	user.ProfilePic = string(profilePicture)
+
 	HandleSQLErrors(result)
 	return user
 }
@@ -104,11 +107,15 @@ func GetUserByUsername(username string) *User {
 		log.Fatal(err)
 	}
 
+	var profilePicture []byte
+
 	user := &User{}
-	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &user.ProfilePic, &user.Description, &user.CreationDate, &user.Role)
+	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description, &user.CreationDate, &user.Role)
 	if err != nil {
 		log.Fatal(err)
 	}
+	user.ProfilePic = string(profilePicture)
+
 	HandleSQLErrors(result)
 	return user
 }
