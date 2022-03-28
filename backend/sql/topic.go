@@ -37,3 +37,24 @@ func (topic *Topic) FetchMessages() error {
 	topic.Messages = message
 	return nil
 }
+
+func GetTopicsByCategories(category string) ([]Topic, error) {
+	rows, err := DB.Query("SELECT * FROM topic WHERE category_name = ? ORDER BY ", category)
+	if err != nil {
+		return nil, err
+	}
+	var topics []Topic
+	for rows.Next() {
+		var topic Topic
+		err = rows.Scan(&topic.Id, &topic.Title, &topic.IsClosed, &topic.Views, &topic.Category)
+		if err != nil {
+			return nil, err
+		}
+
+		topics = append(topics, topic)
+	}
+
+	HandleSQLErrors(rows)
+
+	return topics, nil
+}
