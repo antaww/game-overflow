@@ -66,6 +66,8 @@ body {
     width: 30vw;
     height: 4vh;
     border: none;
+    color: white;
+    padding: 0 3%;
 }
 
 .search-btn {
@@ -74,6 +76,7 @@ body {
     border: none;
     height: 4vh;
     cursor: pointer;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 #search-input:placeholder-shown ~ .search-btn {
@@ -84,6 +87,11 @@ body {
     padding-right: 1.5vw;
     display: flex;
     align-items: center;
+}
+
+.account-options > div {
+    margin: 1%;
+    white-space: nowrap;
 }
 
 .actions {
@@ -110,7 +118,7 @@ body {
 }
 
 .sign-up {
-    background-color: #FFF0;
+    background-color: #FFF0!important;
 }
 
 .actions.username {
