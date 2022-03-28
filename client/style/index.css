@@ -66,6 +66,8 @@ body {
     width: 30vw;
     height: 4vh;
     border: none;
+    color: white;
+    padding: 0 3%;
 }
 
 .search-btn {
@@ -74,6 +76,7 @@ body {
     border: none;
     height: 4vh;
     cursor: pointer;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 #search-input:placeholder-shown ~ .search-btn {
@@ -86,11 +89,16 @@ body {
     align-items: center;
 }
 
+.account-options > div {
+    margin: 1%;
+    white-space: nowrap;
+}
+
 .actions {
     text-align: center;
 }
 
-.actions button, .actions .btn {
+.actions > a > button, .actions .btn, .actions > button {
     font-weight: 700;
     border-radius: 11px;
     padding: 5px 25px;
@@ -104,13 +112,8 @@ body {
     background-color: #17629E;
 }
 
-.log-out {
-    background-color: #a41d22 !important;
-    border: 2px solid #f6151c !important;
-}
-
 .sign-up {
-    background-color: #FFF0;
+    background-color: #FFF0 !important;
 }
 
 .actions.username {
@@ -125,10 +128,9 @@ body {
     display: block !important;
 }
 
-.dropdown, .dropdown_categories {
+.dropdown, .dropdown-categories {
     display: none;
     position: absolute;
-    margin-top: 10px;
 }
 
 .username a {
@@ -145,4 +147,34 @@ body {
 
 .avatar:hover {
     cursor: pointer;
+}
+
+.dropdown {
+    top: 7vh;
+    background-color: #263137;
+    border-radius: 15px;
+    width: 138%;
+    right: -0.5vh;
+    padding: 7% 0;
+}
+
+.dropdown-categories {
+    top: 10vh;
+    background-color: #263137;
+    border-radius: 15px;
+    padding: 1%;
+}
+
+.dropdown-options {
+    background-color: #263137;
+    border: none;
+    cursor: pointer;
+    width: 80%;
+    text-align: left;
+    font-weight: 600;
+    color: #FFF;
+}
+
+.log-out {
+    color: #FF7373;
 }

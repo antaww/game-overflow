@@ -47,30 +47,35 @@
         </div>
         <div class="categories">
             <p>Categories</p>
-            <div class="dropdown_categories">
-                <div class="actions">
+            <div class="dropdown-categories">
+                <div class="dropdown-actions">
                     <a href="#">
-                        <button value="PC" class="sign-up">PC</button>
+                        <button value="PC" class="dropdown-options">PC</button>
                     </a>
                 </div>
-                <div class="actions">
+                <div class="dropdown-actions">
                     <a href="#">
-                        <button value="Xbox" class="sign-up">Xbox</button>
+                        <button value="Xbox" class="dropdown-options">Xbox</button>
                     </a>
                 </div>
-                <div class="actions">
+                <div class="dropdown-actions">
                     <a href="#">
-                        <button value="Playstation" class="sign-up">Playstation</button>
+                        <button value="Playstation" class="dropdown-options">Playstation</button>
                     </a>
                 </div>
-                <div class="actions">
+                <div class="dropdown-actions">
                     <a href="#">
-                        <button value="Nintendo" class="sign-up">Nintendo</button>
+                        <button value="Nintendo" class="dropdown-options">Nintendo</button>
                     </a>
                 </div>
-                <div class="actions">
+                <div class="dropdown-actions">
                     <a href="#">
-                        <button value="Accessories" class="sign-up">Others</button>
+                        <button value="Nintendo" class="dropdown-options">Mobile</button>
+                    </a>
+                </div>
+                <div class="dropdown-actions">
+                    <a href="#">
+                        <button value="Accessories" class="dropdown-options">Others</button>
                     </a>
                 </div>
             </div>
@@ -104,19 +109,29 @@
                         <img class="avatar username_dropdown" src="{{.ConnectedUser.ProfilePic}}">
                     </a>
                     <div class="dropdown">
-                        <div class="actions">
-                            <a href="/edit-username">
-                                <button value="Edit-username" class="sign-up">Edit username</button>
+                        <div class="dropdown-actions">
+                            <a href="/">
+                                <button value="Edit-username" class="dropdown-options">Profile</button>
                             </a>
                         </div>
-                        <div class="actions">
-                            <a href="/edit-password">
-                                <button value="Edit-password" class="sign-up">Edit password</button>
+                        <div class="dropdown-actions">
+                            <a href="/">
+                                <button value="Edit-password" class="dropdown-options">My posts</button>
                             </a>
                         </div>
-                        <div class="actions">
+                        <div class="dropdown-actions">
+                            <a href="/">
+                                <button value="Edit-password" class="dropdown-options">My answers</button>
+                            </a>
+                        </div>
+                        <div class="dropdown-actions">
+                            <a href="/settings">
+                                <button value="Edit-password" class="dropdown-options">Settings</button>
+                            </a>
+                        </div>
+                        <div class="dropdown-actions">
                             <a href="/logout">
-                                <button value="Edit-password" class="log-out">Log out</button>
+                                <button value="Edit-password" class="dropdown-options log-out">Log out</button>
                             </a>
                         </div>
                     </div>
