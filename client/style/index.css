@@ -117,6 +117,10 @@ body {
     position: relative;
 }
 
+.actions.categories {
+    position: relative;
+}
+
 .block {
     display: block !important;
 }
