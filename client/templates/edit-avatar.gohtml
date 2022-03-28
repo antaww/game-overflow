@@ -1,0 +1,17 @@
+{{define "content"}}
+    <div class="container">
+        <div class="header">
+            <h1>Welcome</h1>
+        </div>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="input_area">
+                <label>
+                    <input type="file" name="avatar" required/>
+                </label>
+            </div>
+            <div class="actions">
+                <button type="submit" value="Submit">Submit</button>
+            </div>
+        </form>
+    </div>
+{{end}}

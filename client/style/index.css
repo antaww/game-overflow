@@ -130,3 +130,19 @@ body {
     position: absolute;
     margin-top: 10px;
 }
+
+.username a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar {
+    width: 7vh;
+    height: 7vh;
+    margin-left: 10px;
+}
+
+.avatar:hover {
+    cursor: pointer;
+}

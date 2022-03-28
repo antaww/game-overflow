@@ -70,6 +70,17 @@ func EditUsername(idUser int64, newUsername string) (bool, error) {
 	return true, nil
 }
 
+// EditAvatar edits the username of the user
+func EditAvatar(idUser int64, avatarUrl string) (bool, error) {
+	_, err := DB.Exec("UPDATE users SET profile_pic = (?) WHERE id_user = (?)", avatarUrl, idUser)
+	if err != nil {
+		return false, fmt.Errorf("SaveUser error: %v", err)
+	}
+
+	fmt.Println(idUser, "avatar =>", avatarUrl)
+	return true, nil
+}
+
 // GetUserById finds a user by id, returns nil if not found
 func GetUserById(id int64) *User {
 	result, err := DB.Query("SELECT * FROM users WHERE id_user = ?", id)

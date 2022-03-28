@@ -100,7 +100,8 @@
             {{else}}
                 <div class="actions username">
                     <a>
-                        <button value="Login" class="log-in">{{.ConnectedUser.Username}}</button>
+                        <button value="Login" class="log-in username_dropdown">{{.ConnectedUser.Username}}</button>
+                        <img class="avatar username_dropdown" src="{{.ConnectedUser.ProfilePic}}">
                     </a>
                     <div class="dropdown">
                         <div class="actions">
