@@ -115,7 +115,7 @@ body {
 }
 
 .sign-up {
-    background-color: #FFF0!important;
+    background-color: #FFF0 !important;
 }
 
 .actions.username {
@@ -135,11 +135,28 @@ body {
     position: absolute;
 }
 
+.username a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.avatar {
+    width: 7vh;
+    height: 7vh;
+    margin-left: 10px;
+}
+
+.avatar:hover {
+    cursor: pointer;
+}
+
 .dropdown {
-    top: 7vh;
+    top: 8.5vh;
     background-color: #263137;
     border-radius: 15px;
-    width: 138%;
+    width: 83%;
     right: -0.5vh;
     padding: 7% 0;
 }

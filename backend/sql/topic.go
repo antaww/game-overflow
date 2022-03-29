@@ -39,7 +39,7 @@ func (topic *Topic) FetchMessages() error {
 }
 
 func GetTopicsByCategories(category string) ([]Topic, error) {
-	rows, err := DB.Query("SELECT * FROM topic WHERE category_name = ? ORDER BY ", category)
+	rows, err := DB.Query("SELECT * FROM topic WHERE category_name = ?", category)
 	if err != nil {
 		return nil, err
 	}
