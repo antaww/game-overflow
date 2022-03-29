@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"main/utils"
+	"strconv"
 	"time"
 )
 
@@ -182,4 +183,22 @@ func DislikeMessage(idMessage int64) (bool, error) {
 	}
 
 	return true, nil
+}
+
+func AddMessage(idUser int64, idTopic int64, message string) error {
+	_, err := DB.Exec("INSERT INTO messages VALUES (?, ?, ?, ?, ?, ?, ?)", utils.GenerateID(), message, time.Now(), 0, 0, idTopic, idUser)
+	if err != nil {
+		return fmt.Errorf("SaveUser error: %v", err)
+	}
+	fmt.Printf("message added to the topic %v\n", strconv.FormatInt(idTopic, 10))
+	return nil
+}
+
+func CreateTopic(title string, category string) error {
+	_, err := DB.Exec("INSERT INTO topics VALUES (?, ?, ?, ?, ?, ?)", utils.GenerateID(), title, 0, 0, category, nil)
+	if err != nil {
+		return fmt.Errorf("SaveUser error: %v", err)
+	}
+	fmt.Printf("topic '%v' added to the category '%v'", title, category)
+	return nil
 }
