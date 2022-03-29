@@ -126,6 +126,8 @@ body {
 
 .block {
     display: block !important;
+    animation: rotateX 300ms ease-in-out forwards;
+    transform-origin: top center;
 }
 
 .dropdown, .dropdown-categories {
@@ -177,4 +179,19 @@ body {
 
 .log-out {
     color: #FF7373;
+}
+
+@keyframes rotateX {
+    0% {
+
+        transform: rotateX(-90deg)
+    }
+
+    70% {
+        transform: rotateX(20deg)
+    }
+
+    100% {
+        transform: rotateX(0deg)
+    }
 }
