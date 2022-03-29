@@ -384,24 +384,23 @@ func main() {
 	})
 
 	http.HandleFunc("/feed", func(w http.ResponseWriter, r *http.Request) {
-		err := utils.CallTemplate("feed", TemplatesData, w)
-		if err != nil {
-			log.Fatal(err)
-		}
-
 		queries := r.URL.Query()
 
 		if queries.Has("category") {
 			category := queries.Get("category")
-		}
 
-		category := "pc"
-		topics, err := GetTopicsByCategories(category)
-		if err != nil {
-			log.Fatal(err)
-		}
+			topics, err := GetTopicsByCategories(category)
+			if err != nil {
+				log.Fatal(err)
+			}
 
-		TemplatesData.ShownTopics = topics
+			TemplatesData.ShownTopics = topics
+
+			err = utils.CallTemplate("feed", TemplatesData, w)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
 
 		return
 	})
