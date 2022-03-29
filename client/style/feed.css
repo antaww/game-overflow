@@ -1,13 +1,74 @@
+/* FEED */
+
 .feed-content {
     display: flex;
     justify-content: center;
-    flex-direction: column;
 }
 
 .feed {
     display: flex;
     margin-top: 12vh;
+    flex-direction: column;
+    width: 40%;
 }
+
+.feed > a {
+    display: flex;
+    margin-bottom: 3vh;
+    align-items: center;
+}
+
+.feed > a > img {
+    height: 8vh;
+}
+
+.feed > a > div {
+    margin-left: 6%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.feed > a > div > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 85%;
+}
+
+.feed > a > div > div > div > div {
+    display: flex;
+    flex-direction: row;
+}
+
+.feed > a > div > div > div > div > div {
+    margin-right: 1vh;
+}
+
+.topic-category {
+    background: #5B37A8;
+    border-radius: 9px;
+    text-transform: uppercase;
+    color: #BFBEFF;
+    font-weight: 800;
+    padding: 0 1vh;
+}
+
+.topic-title, .topic-likes {
+    font-weight: 700;
+    color: #FFFFFF;
+    font-size: 2.5vh;
+}
+
+.topic-open {
+    color: #4EEE40;
+}
+
+.topic-closed {
+    color: #FF7373;
+}
+
+/* TREND */
 
 .trends {
     position: fixed;

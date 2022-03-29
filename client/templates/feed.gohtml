@@ -5,17 +5,30 @@
     <div class="feed">
         {{range .ShownTopics}}
             <a>
-                <div>image</div>
+                <img src="/resources/test.png" alt="avatar">
                 <div>
                     <div>
-                        <div>{{.Category}}</div>
-                        <div>{{.IsClosed}}</div>
+                        <div>
+                            <div>
+                                <div class="topic-category">{{.Category}}</div>
+                                {{if eq .IsClosed false}}
+                                    <div class="topic-open">Open<i class="fa-solid fa-lock-open"></i></div>
+                                        {{else}}
+                                    <div class="topic-closed">Closed<i class="fa-solid fa-lock"></i></div>
+                                        {{end}}
+                                <div>answers</div>
+                            </div>
+                            <div>
+                                <p class="topic-title">{{.Title}}</p>
+                            </div>
+                        </div>
+                        <div class="topic-likes">3</div>
                     </div>
+
                     <div>
-                        <p>{{.Title}}</p>
-                    </div>
-                    <div>
-                        <div>{{.Views}}</div>
+                        <div>{{.Views}} views</div>
+                        <div>tags</div>
+                        <div>date</div>
                     </div>
                 </div>
             </a>

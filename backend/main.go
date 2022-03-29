@@ -405,6 +405,10 @@ func main() {
 		return
 	})
 
+	http.HandleFunc("/messages", func(w http.ResponseWriter, r *http.Request) {
+
+	})
+
 	// Capture connection properties.
 	cfg := mysql.Config{
 		User:                 os.Getenv("DB_USER"),
