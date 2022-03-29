@@ -127,18 +127,32 @@ func EditUsername(idUser int64, newUsername string) (bool, error) {
 	return true, nil
 }
 
+// EditAvatar edits the username of the user
+func EditAvatar(idUser int64, avatarUrl string) (bool, error) {
+	_, err := DB.Exec("UPDATE users SET profile_pic = (?) WHERE id_user = (?)", avatarUrl, idUser)
+	if err != nil {
+		return false, fmt.Errorf("SaveUser error: %v", err)
+	}
+
+	fmt.Println(idUser, "avatar =>", avatarUrl)
+	return true, nil
+}
+
 // GetUserById finds a user by id, returns nil if not found
 func GetUserById(id int64) *User {
 	result, err := DB.Query("SELECT * FROM users WHERE id_user = ?", id)
 	if err != nil {
 		return nil
 	}
+	var profilePicture []byte
 
 	user := &User{}
-	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &user.ProfilePic, &user.Description, &user.CreationDate, &user.Role)
+	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description, &user.CreationDate, &user.Role)
 	if err != nil {
 		log.Fatal(err)
 	}
+	user.ProfilePic = string(profilePicture)
+
 	HandleSQLErrors(result)
 	return user
 }
@@ -168,11 +182,15 @@ func GetUserByUsername(username string) *User {
 		log.Fatal(err)
 	}
 
+	var profilePicture []byte
+
 	user := &User{}
-	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &user.ProfilePic, &user.Description, &user.CreationDate, &user.Role)
+	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description, &user.CreationDate, &user.Role)
 	if err != nil {
 		log.Fatal(err)
 	}
+	user.ProfilePic = string(profilePicture)
+
 	HandleSQLErrors(result)
 	return user
 }

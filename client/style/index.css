@@ -1,10 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap');
 @import url("./login.css");
+@import url("./feed.css");
 
 * {
     font-family: "Poppins", sans-serif;
     outline: none;
     font-style: normal;
+    color: #FFF;
 }
 
 body {
@@ -66,6 +68,8 @@ body {
     width: 30vw;
     height: 4vh;
     border: none;
+    color: white;
+    padding: 0 3%;
 }
 
 .search-btn {
@@ -74,6 +78,7 @@ body {
     border: none;
     height: 4vh;
     cursor: pointer;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 #search-input:placeholder-shown ~ .search-btn {
@@ -86,11 +91,16 @@ body {
     align-items: center;
 }
 
+.account-options > div {
+    margin: 1%;
+    white-space: nowrap;
+}
+
 .actions {
     text-align: center;
 }
 
-.actions button, .actions .btn {
+.actions > a > button, .actions .btn, .actions > button {
     font-weight: 700;
     border-radius: 11px;
     padding: 5px 25px;
@@ -104,25 +114,108 @@ body {
     background-color: #17629E;
 }
 
-.log-out {
-    background-color: #a41d22 !important;
-    border: 2px solid #f6151c !important;
-}
-
 .sign-up {
-    background-color: #FFF0;
+    background-color: #FFF0 !important;
 }
 
 .actions.username {
     position: relative;
 }
 
+.actions.categories {
+    position: relative;
+}
+
 .block {
     display: block !important;
+    animation: rotateX 300ms ease-in-out forwards;
+    transform-origin: top center;
+}
+
+.dropdown, .dropdown-categories {
+    display: none;
+    position: absolute;
+}
+
+.username a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.avatar:hover {
+    cursor: pointer;
 }
 
 .dropdown {
-    display: none;
+    top: 8.5vh;
+    background-color: #263137;
+    border-radius: 15px;
+    width: 83%;
+}
+
+.dropdown-categories {
+    top: 10vh;
+    background-color: #263137;
+    border-radius: 15px;
+}
+
+.dropdown-options {
+    background-color: #263137;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    font-weight: 600;
+    color: #FFF;
+    padding: 10px;
+}
+
+.log-out {
+    color: #FF7373;
+}
+
+@keyframes rotateX {
+    0% {
+
+        transform: rotateX(-90deg)
+    }
+
+    70% {
+        transform: rotateX(20deg)
+    }
+
+    100% {
+        transform: rotateX(0deg)
+    }
+}
+
+.dropdown-actions .dropdown-options:hover {
+    background-color: #1a1e23;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    margin-left: 17px;
+    border-radius: 50%;
+    display: block;
+    filter: drop-shadow(0 0 0.35rem #222);
+}
+
+.circle::after {
+    content: "";
+    background-color: rgba(24, 100, 24, 0.85);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
     position: absolute;
-    margin-top: 10px;
+    display: block;
+    top: 0;
+    right: 0;
+}
+
+.circle {
+    position: relative;
 }

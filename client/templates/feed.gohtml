@@ -1,6 +1,28 @@
-<div></div>
+{{define "content"}}
 
-<div class="feed"></div>
+{{template "navbar"}}
+<div class="feed-content">
+    <div class="feed">
+        {{range .ShownTopics}}
+            <a>
+                <div>image</div>
+                <div>
+                    <div>
+                        <div>{{.Category}}</div>
+                        <div>{{.IsClosed}}</div>
+                    </div>
+                    <div>
+                        <p>{{.Title}}</p>
+                    </div>
+                    <div>
+                        <div>{{.Views}}</div>
+                    </div>
+                </div>
+            </a>
+        {{end}}
+    </div>
 
-<div class="trends"></div>
-    
+    <div class="trends"></div>
+</div>
+
+{{end}}

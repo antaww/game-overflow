@@ -47,6 +47,38 @@
         </div>
         <div class="categories">
             <p>Categories</p>
+            <div class="dropdown-categories">
+                <div class="dropdown-actions">
+                    <a href="/feed?category=pc">
+                        <button value="PC" class="dropdown-options">PC</button>
+                    </a>
+                </div>
+                <div class="dropdown-actions">
+                    <a href="/feed?category=xbox">
+                        <button value="Xbox" class="dropdown-options">Xbox</button>
+                    </a>
+                </div>
+                <div class="dropdown-actions">
+                    <a href="/feed?category=playstation">
+                        <button value="Playstation" class="dropdown-options">Playstation</button>
+                    </a>
+                </div>
+                <div class="dropdown-actions">
+                    <a href="/feed?category=nintendo">
+                        <button value="Nintendo" class="dropdown-options">Nintendo</button>
+                    </a>
+                </div>
+                <div class="dropdown-actions">
+                    <a href="/feed?category=mobile">
+                        <button value="Nintendo" class="dropdown-options">Mobile</button>
+                    </a>
+                </div>
+                <div class="dropdown-actions">
+                    <a href="/feed?category=others">
+                        <button value="Accessories" class="dropdown-options">Others</button>
+                    </a>
+                </div>
+            </div>
         </div>
         <div class="search-bar">
             <form class="search-form" method="post">
@@ -73,26 +105,40 @@
             {{else}}
                 <div class="actions username">
                     <a>
-                        <button value="Login" class="log-in">{{.ConnectedUser.Username}}</button>
+                        <button value="Login" class="log-in username_dropdown">{{.ConnectedUser.Username}}</button>
+                        {{/*                        <p>{{.ConnectedUser.ProfilePic}}</p>*/}}
+                        <div class="circle">
+                            <img class="avatar" src="{{safeURL .ConnectedUser.ProfilePic}}" alt="test">
+                        </div>
                     </a>
                     <div class="dropdown">
-                        <div class="actions">
-                            <a href="/edit-username">
-                                <button value="Edit-username" class="sign-up">Edit username</button>
+                        <div class="dropdown-actions">
+                            <a href="/">
+                                <button value="Edit-username" class="dropdown-options">Profile</button>
                             </a>
-                            <a href="/edit-password">
-                                <button value="Edit-password" class="sign-up">Edit password</button>
+                        </div>
+                        <div class="dropdown-actions">
+                            <a href="/">
+                                <button value="Edit-password" class="dropdown-options">My posts</button>
                             </a>
+                        </div>
+                        <div class="dropdown-actions">
+                            <a href="/">
+                                <button value="Edit-password" class="dropdown-options">My answers</button>
+                            </a>
+                        </div>
+                        <div class="dropdown-actions">
                             <a href="/settings">
-                                <button value="settings" class="settings btn">Settings</button>
+                                <button value="Edit-password" class="dropdown-options">Settings</button>
                             </a>
+                        </div>
+                        <div class="dropdown-actions">
                             <a href="/logout">
-                                <button value="Edit-password" class="log-out">Log out</button>
+                                <button value="Edit-password" class="dropdown-options log-out">Log out</button>
                             </a>
                         </div>
                     </div>
                 </div>
-
             {{end}}
         </div>
     </div>

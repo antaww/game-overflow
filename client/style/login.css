@@ -50,7 +50,7 @@
     margin-bottom: 44%;
 }
 
-.actions button {
+.actions > a > button, .actions > button {
     font-size: 12px;
     outline: none;
     color: grey;

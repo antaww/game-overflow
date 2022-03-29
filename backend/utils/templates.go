@@ -5,8 +5,15 @@ import (
 	"net/http"
 )
 
+var templateMap = template.FuncMap{
+	"safeURL": func(u string) template.URL {
+		return template.URL(u)
+	},
+}
+
 func CallTemplate(templateName string, data interface{}, w http.ResponseWriter) error {
-	templates, err := template.ParseFiles("../client/templates/main.gohtml", "../client/templates/"+templateName+".gohtml")
+	templates := template.New("").Funcs(templateMap)
+	templates, err := templates.ParseFiles("../client/templates/main.gohtml", "../client/templates/"+templateName+".gohtml")
 	if err != nil {
 		return err
 	}
