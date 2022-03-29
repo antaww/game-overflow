@@ -11,7 +11,7 @@ type Topic struct {
 
 // GetPost returns topic by id
 func GetPost(id int64) (*Topic, error) {
-	rows, err := DB.Query("SELECT * FROM topic WHERE id_topic = ?", id)
+	rows, err := DB.Query("SELECT * FROM topics WHERE id_topic = ?", id)
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +39,7 @@ func (topic *Topic) FetchMessages() error {
 }
 
 func GetTopicsByCategories(category string) ([]Topic, error) {
-	rows, err := DB.Query("SELECT * FROM topic WHERE category_name = ?", category)
+	rows, err := DB.Query("SELECT * FROM topics WHERE category_name = ?", category)
 	if err != nil {
 		return nil, err
 	}
