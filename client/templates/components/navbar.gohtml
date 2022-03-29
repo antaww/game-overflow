@@ -107,9 +107,7 @@
                     <a>
                         <button value="Login" class="log-in username_dropdown">{{.ConnectedUser.Username}}</button>
                         {{/*                        <p>{{.ConnectedUser.ProfilePic}}</p>*/}}
-                        <div class="circle">
-                            <img class="avatar" src="{{safeURL .ConnectedUser.ProfilePic}}" alt="test">
-                        </div>
+                        <img class="avatar" src="{{safeURL .ConnectedUser.ProfilePic}}" alt="test">
                     </a>
                     <div class="dropdown">
                         <div class="dropdown-actions">
