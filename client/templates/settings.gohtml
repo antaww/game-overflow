@@ -1,0 +1,61 @@
+{{define "content"}}
+    <link rel="stylesheet" href="/static/settings.css">
+    <script defer src="/scripts/settings.js"></script>
+
+    {{template "navbar" .}}
+    <div class="container">
+        <div class="row">
+            <div class="header">
+                <h1>Settings</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div id="settings">
+                <form action="/settings" method="POST" id="settings-form">
+                    <div class="form-group name must-confirm">
+                        <label>
+                            Name
+                            <input type="text" class="form-control" name="username" value="{{.ConnectedUser.Username}}">
+                        </label>
+                    </div>
+                    <div class="form-group must-confirm">
+                        <label>
+                            Email
+                            <input type="email" class="form-control" name="email" value="{{.ConnectedUser.Email}}">
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            Description
+                            <input type="text" class="form-control" name="description" value="{{.ConnectedUser.Description}}">
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="locale">Locale
+                            <select name="locale">
+                                {{range $key, $value := .Locales}}
+                                    <option value="{{$key}}" {{if eq $key .}}selected{{end}}>{{$value}}</option>
+                                {{end}}
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="form-group confirm">
+                        <label>
+                            Confirm Password
+                            <input autocomplete="password"
+                                   id="re-confirm-input"
+                                   maxlength="40"
+                                   name="confirmation"
+                                   placeholder="Confirm Password"
+                                   required
+                                   type="password">
+                        </label>
+                    </div>
+                    <button class="btn confirm" name="submit" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{{end}}

@@ -28,6 +28,22 @@ type User struct {
 	Role         Role      `db:"role_type"`
 }
 
+func ConfirmPassword(userId int64, password string) bool {
+	var user User
+	rows, err := DB.Query("SELECT password FROM users WHERE id_user = ?", userId)
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+	err = Results(rows, &user.Password)
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+
+	return password == user.Password
+}
+
 // CreateUser creates a new user with generated Id, creation date to now and locale to english
 func CreateUser(username, password, email string) User {
 	return User{
@@ -59,6 +75,47 @@ func EditPassword(idUser int64, oldPassword string, newPassword string) (bool, e
 	return true, nil
 }
 
+// EditUser edits the user with the given id
+// can edit Description, Locale, ProfilePic, Username, Email
+func EditUser(idUser int64, newUser User) (bool, error) {
+	request := "UPDATE users SET "
+	var arguments []interface{}
+	if newUser.Email != "" {
+		request += "email = ?, "
+		arguments = append(arguments, newUser.Email)
+	}
+	if newUser.Locale != "" {
+		request += "locale = ?, "
+		arguments = append(arguments, newUser.Locale)
+	}
+	if newUser.ProfilePic != "" {
+		request += "profile_pic = ?, "
+		arguments = append(arguments, newUser.ProfilePic)
+	}
+	if newUser.Description != "" {
+		request += "description = ?, "
+		arguments = append(arguments, newUser.Description)
+	}
+	if newUser.Username != "" {
+		request += "username = ?"
+		arguments = append(arguments, newUser.Username)
+	}
+
+	request += " WHERE id_user = ?"
+	arguments = append(arguments, idUser)
+
+	r, err := DB.Exec(request, arguments...)
+	if err != nil {
+		return false, fmt.Errorf("SaveUser error: %v", err)
+	}
+	_, err = r.RowsAffected()
+	if err != nil {
+		return false, fmt.Errorf("SaveUser error: %v", err)
+	}
+
+	return true, nil
+}
+
 // EditUsername edits the username of the user
 func EditUsername(idUser int64, newUsername string) (bool, error) {
 	_, err := DB.Exec("UPDATE users SET username = (?) WHERE id_user = (?)", newUsername, idUser)
@@ -84,6 +141,24 @@ func GetUserById(id int64) *User {
 	}
 	HandleSQLErrors(result)
 	return user
+}
+
+// GetUserBySession logs in a user by sessionId (cookie), returns user found if success, else nil
+func GetUserBySession(sessionId string) (*User, error) {
+	result, err := DB.Query("SELECT id_user FROM sessions WHERE id_session = ?", sessionId)
+	if err != nil {
+		return nil, fmt.Errorf("SaveUser error: %v", err)
+	}
+
+	var idUser int64
+	err = Results(result, &idUser)
+	if err != nil {
+		return nil, fmt.Errorf("SaveUser error: %v", err)
+	}
+
+	HandleSQLErrors(result)
+
+	return GetUserById(idUser), nil
 }
 
 // GetUserByUsername finds a user by username, returns nil if not found
@@ -114,28 +189,10 @@ func LoginByIdentifiants(username, password string) (bool, error) {
 		HandleSQLErrors(result)
 		return true, nil
 	} else {
-		fmt.Println("result inexistant")
+		fmt.Println("result not found")
 		HandleSQLErrors(result)
 		return false, nil
 	}
-}
-
-// LoginBySession logs in a user by sessionId (cookie), returns user found if success, else nil
-func LoginBySession(sessionId string) (*User, error) {
-	result, err := DB.Query("SELECT id_user FROM sessions WHERE id_session = ?", sessionId)
-	if err != nil {
-		return nil, fmt.Errorf("SaveUser error: %v", err)
-	}
-
-	var idUser int64
-	err = Results(result, &idUser)
-	if err != nil {
-		return nil, fmt.Errorf("SaveUser error: %v", err)
-	}
-
-	HandleSQLErrors(result)
-
-	return GetUserById(idUser), nil
 }
 
 // SaveUser saves a user in the database

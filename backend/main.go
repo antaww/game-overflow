@@ -2,9 +2,11 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
+	"io"
 	"log"
 	. "main/sql"
 	"main/utils"
@@ -15,10 +17,13 @@ import (
 
 type TemplatesDataType struct {
 	ConnectedUser *User
+	Locales       map[string]string
 	ShownTopics   []Topic
 }
 
-var TemplatesData = TemplatesDataType{}
+var TemplatesData = TemplatesDataType{
+	Locales: map[string]string{"en": "English", "fr": "Français"},
+}
 
 func main() {
 	err := godotenv.Load("../.env")
@@ -42,7 +47,7 @@ func main() {
 		if err != nil {
 			TemplatesData.ConnectedUser = nil
 		} else {
-			user, err := LoginBySession(cookie.Value)
+			user, err := GetUserBySession(cookie.Value)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -114,13 +119,61 @@ func main() {
 			}
 
 			if valid {
-				fmt.Println("aa")
 				http.Redirect(w, r, "/login", http.StatusSeeOther)
 				return
 			} else {
-				fmt.Println("bb")
 				http.Redirect(w, r, "/sign-up", http.StatusSeeOther)
 				return
+			}
+		}
+	})
+
+	http.HandleFunc("/confirm-password", func(w http.ResponseWriter, r *http.Request) {
+		if TemplatesData.ConnectedUser == nil {
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			return
+		}
+
+		if r.Method == "PUT" {
+			var data struct {
+				Password string `json:"password"`
+			}
+
+			bytes, err := io.ReadAll(r.Body)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			err = json.Unmarshal(bytes, &data)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			cookie, err := r.Cookie("session")
+			if err != nil {
+				log.Fatal(err)
+			}
+			user, err := GetUserBySession(cookie.Value)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			valid := ConfirmPassword(user.Id, data.Password)
+			var success = struct {
+				Success bool `json:"success"`
+			}{
+				Success: valid,
+			}
+
+			w.Header().Set("Content-Type", "application/json")
+			marshal, err := json.Marshal(success)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			_, err = w.Write(marshal)
+			if err != nil {
+				log.Fatal(err)
 			}
 		}
 	})
@@ -150,9 +203,7 @@ func main() {
 	})
 
 	http.HandleFunc("/edit-username", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("cc")
 		if r.Method == "GET" {
-			fmt.Println("dd")
 			err := utils.CallTemplate("edit-username", TemplatesData, w)
 			if err != nil {
 				log.Fatal(err)
@@ -197,15 +248,12 @@ func main() {
 			}
 
 			if exists {
-				fmt.Println("aa")
 				http.Redirect(w, r, "/", http.StatusSeeOther)
 				return
 			} else {
-				fmt.Println("bb")
 				http.Redirect(w, r, "/edit-username", http.StatusSeeOther)
 				return
 			}
-
 		}
 	})
 
@@ -256,11 +304,9 @@ func main() {
 			}
 
 			if exists {
-				fmt.Println("aa")
 				http.Redirect(w, r, "/", http.StatusSeeOther)
 				return
 			} else {
-				fmt.Println("bb")
 				http.Redirect(w, r, "/edit-password", http.StatusSeeOther)
 				return
 			}
@@ -282,6 +328,52 @@ func main() {
 		}
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
+	})
+
+	http.HandleFunc("/settings", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == "GET" {
+			if TemplatesData.ConnectedUser == nil {
+				http.Redirect(w, r, "/", http.StatusSeeOther)
+				return
+			}
+			err := utils.CallTemplate("settings", TemplatesData, w)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
+
+		if r.Method == "POST" {
+			err := r.ParseForm()
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			newUser := User{
+				Username:    r.FormValue("username"),
+				Email:       r.FormValue("email"),
+				Description: r.FormValue("description"),
+				Locale:      r.FormValue("locale"),
+			}
+
+			cookie, err := r.Cookie("session")
+			if err != nil {
+				log.Fatal(err)
+			}
+			user, err := GetUserBySession(cookie.Value)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			_, err = EditUser(user.Id, newUser)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			TemplatesData.ConnectedUser = GetUserById(user.Id)
+
+			r.Method = "GET"
+			http.Redirect(w, r, "/settings", http.StatusSeeOther)
+		}
 	})
 
 	http.HandleFunc("/test", func(w http.ResponseWriter, r *http.Request) {
