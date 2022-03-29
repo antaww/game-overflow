@@ -23,7 +23,9 @@ type TemplatesDataType struct {
 	ShownTopics   []Topic
 }
 
-var TemplatesData = TemplatesDataType{}
+var TemplatesData = TemplatesDataType{
+	Locales: map[string]string{"en": "English", "fr": "Français"},
+}
 
 func main() {
 	err := godotenv.Load("../.env")
@@ -119,7 +121,6 @@ func main() {
 			}
 
 			if valid {
-				fmt.Println("aa")
 				http.Redirect(w, r, "/login", http.StatusSeeOther)
 				return
 			} else {
@@ -243,63 +244,6 @@ func main() {
 			TemplatesData.ConnectedUser = userConnected
 
 			//edit username of idUser
-			exists, err := EditUsername(idUser, r.FormValue("new-username"))
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			if exists {
-				http.Redirect(w, r, "/", http.StatusSeeOther)
-				return
-			} else {
-				http.Redirect(w, r, "/edit-username", http.StatusSeeOther)
-				return
-			}
-		}
-	})
-
-	http.HandleFunc("/edit-avatar", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("cc")
-		if r.Method == "GET" {
-			fmt.Println("dd")
-			err := utils.CallTemplate("edit-avatar", TemplatesData, w)
-			if err != nil {
-				log.Fatal(err)
-			}
-		}
-
-		if r.Method == "POST" {
-			err := r.ParseForm()
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			//get cookie from browser
-			cookie, err := r.Cookie("session")
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			//select user from session
-			result, err := DB.Query("SELECT id_user FROM sessions WHERE id_session = ?", cookie.Value)
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			//get result from query
-			var idUser int64
-			if result.Next() {
-				err = result.Scan(&idUser)
-			}
-
-			//Handle sql errors, close the query to avoid memory leaks
-			HandleSQLErrors(result)
-
-			// Get User, save for TemplatesData (to show user logged in in templates)
-			userConnected := GetUserById(idUser)
-			TemplatesData.ConnectedUser = userConnected
-
-			//edit username of idUser
 			imgForm, file, err := r.FormFile("avatar")
 			if err != nil {
 				log.Fatal(err)
@@ -323,15 +267,12 @@ func main() {
 			}
 
 			if exists {
-				fmt.Println("aa")
 				http.Redirect(w, r, "/", http.StatusSeeOther)
 				return
 			} else {
-				fmt.Println("bb")
-				http.Redirect(w, r, "/edit-avatar", http.StatusSeeOther)
+				http.Redirect(w, r, "/edit-username", http.StatusSeeOther)
 				return
 			}
-
 		}
 	})
 
@@ -471,28 +412,6 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-	})
-
-	http.HandleFunc("/feed", func(w http.ResponseWriter, r *http.Request) {
-		queries := r.URL.Query()
-
-		if queries.Has("category") {
-			category := queries.Get("category")
-
-			topics, err := GetTopicsByCategories(category)
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			TemplatesData.ShownTopics = topics
-
-			err = utils.CallTemplate("feed", TemplatesData, w)
-			if err != nil {
-				log.Fatal(err)
-			}
-		}
-
-		return
 	})
 
 	// Capture connection properties.
