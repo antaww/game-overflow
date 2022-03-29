@@ -490,6 +490,28 @@ func main() {
 		}
 	})
 
+	http.HandleFunc("/feed", func(w http.ResponseWriter, r *http.Request) {
+		queries := r.URL.Query()
+
+		if queries.Has("category") {
+			category := queries.Get("category")
+
+			topics, err := GetTopicsByCategories(category)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			TemplatesData.ShownTopics = topics
+
+			err = utils.CallTemplate("feed", TemplatesData, w)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
+
+		return
+	})
+
 	// Capture connection properties.
 	cfg := mysql.Config{
 		User:                 os.Getenv("DB_USER"),
