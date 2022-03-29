@@ -389,6 +389,12 @@ func main() {
 			log.Fatal(err)
 		}
 
+		queries := r.URL.Query()
+
+		if queries.Has("category") {
+			category := queries.Get("category")
+		}
+
 		category := "pc"
 		topics, err := GetTopicsByCategories(category)
 		if err != nil {
