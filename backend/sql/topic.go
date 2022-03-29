@@ -6,12 +6,13 @@ type Topic struct {
 	IsClosed bool   `db:"is_closed"`
 	Views    int    `db:"views"`
 	Category string `db:"category_name"`
+	IdFirstMessage int64 `db:"id_first_message"`
 	Messages []Message
 }
 
 // GetPost returns topic by id
 func GetPost(id int64) (*Topic, error) {
-	rows, err := DB.Query("SELECT * FROM topic WHERE id_topic = ?", id)
+	rows, err := DB.Query("SELECT * FROM topics WHERE id_topic = ?", id)
 	if err != nil {
 		return nil, err
 	}
@@ -39,14 +40,14 @@ func (topic *Topic) FetchMessages() error {
 }
 
 func GetTopicsByCategories(category string) ([]Topic, error) {
-	rows, err := DB.Query("SELECT * FROM topic WHERE category_name = ?", category)
+	rows, err := DB.Query("SELECT * FROM topics WHERE category_name = ?", category)
 	if err != nil {
 		return nil, err
 	}
 	var topics []Topic
 	for rows.Next() {
 		var topic Topic
-		err = rows.Scan(&topic.Id, &topic.Title, &topic.IsClosed, &topic.Views, &topic.Category)
+		err = rows.Scan(&topic.Id, &topic.Title, &topic.IsClosed, &topic.Views, &topic.Category, &topic.IdFirstMessage)
 		if err != nil {
 			return nil, err
 		}

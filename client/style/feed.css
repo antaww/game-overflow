@@ -20,6 +20,7 @@
 
 .feed > a > img {
     height: 8vh;
+    border-radius: 12px;
 }
 
 .feed > a > div {
@@ -39,6 +40,7 @@
 .feed > a > div > div > div > div {
     display: flex;
     flex-direction: row;
+    white-space: nowrap;
 }
 
 .feed > a > div > div > div > div > div {
@@ -58,6 +60,11 @@
     font-weight: 700;
     color: #FFFFFF;
     font-size: 2.5vh;
+    margin: 0;
+}
+
+.topic-category + div i {
+    margin-left: 1vh;
 }
 
 .topic-open {
@@ -66,6 +73,51 @@
 
 .topic-closed {
     color: #FF7373;
+}
+
+.topic-answers {
+    color: #2975B2;
+    font-weight: 500;
+}
+
+.topic-views {
+    color: #435564;
+    font-weight: 600;
+    mix-blend-mode: normal;
+}
+
+.topic-tags {
+    background: #383359;
+    border-radius: 6px;
+    color: #9B9DD6;
+    font-weight: 700;
+    padding: 0 2%;
+    margin-left: 1vh;
+}
+
+.topic-date {
+    color: #6D808F;
+    font-style: italic;
+    font-weight: 400;
+}
+
+.topic-likes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.topic-likes p {
+    margin: 0;
+}
+
+.topic-likes i {
+    font-size: small;
+}
+
+.views-tags {
+    display: flex;
+    align-items: center;
 }
 
 /* TREND */

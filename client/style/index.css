@@ -144,12 +144,6 @@ body {
     text-decoration: none;
 }
 
-.avatar {
-    width: 7vh;
-    height: 7vh;
-    margin-left: 10px;
-}
-
 .avatar:hover {
     cursor: pointer;
 }
@@ -199,4 +193,29 @@ body {
 
 .dropdown-actions .dropdown-options:hover {
     background-color: #1a1e23;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    margin-left: 17px;
+    border-radius: 50%;
+    display: block;
+    filter: drop-shadow(0 0 0.35rem #222);
+}
+
+.circle::after {
+    content: "";
+    background-color: rgba(24, 100, 24, 0.85);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    position: absolute;
+    display: block;
+    top: 0;
+    right: 0;
+}
+
+.circle {
+    position: relative;
 }
