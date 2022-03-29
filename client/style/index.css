@@ -1,10 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap');
 @import url("./login.css");
+@import url("./feed.css");
 
 * {
     font-family: "Poppins", sans-serif;
     outline: none;
     font-style: normal;
+    color: #FFF;
 }
 
 body {
@@ -139,6 +141,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    text-decoration: none;
 }
 
 .avatar {
@@ -152,10 +155,10 @@ body {
 }
 
 .dropdown {
-    top: 7vh;
+    top: 8.5vh;
     background-color: #263137;
     border-radius: 15px;
-    width: 138%;
+    width: 83%;
     right: -0.5vh;
     padding: 7% 0;
 }

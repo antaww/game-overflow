@@ -1,0 +1,14 @@
+.feed-content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.feed {
+    display: flex;
+    margin-top: 12vh;
+}
+
+.trends {
+    position: fixed;
+}
