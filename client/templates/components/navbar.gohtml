@@ -107,9 +107,7 @@
                     <a>
                         <button value="Login" class="log-in username_dropdown">{{.ConnectedUser.Username}}</button>
                         {{/*                        <p>{{.ConnectedUser.ProfilePic}}</p>*/}}
-                        <div class="circle">
-                            <img class="avatar" src="{{safeURL .ConnectedUser.ProfilePic}}" alt="test">
-                        </div>
+                        <img class="avatar" src="{{safeURL .ConnectedUser.ProfilePic}}" alt="test">
                     </a>
                     <div class="dropdown">
                         <div class="dropdown-actions">
@@ -127,9 +125,14 @@
                                 <button value="Edit-password" class="dropdown-options">My answers</button>
                             </a>
                         </div>
-                        <div class="actions">
+                        <div class="dropdown-actions">
+                            <a href="/settings">
+                                <button value="Edit-password" class="dropdown-options">Settings</button>
+                            </a>
+                        </div>
+                        <div class="dropdown-actions">
                             <a href="/logout">
-                                <button value="Edit-password" class="log-out">Log out</button>
+                                <button value="Edit-password" class="dropdown-options log-out">Log out</button>
                             </a>
                         </div>
                     </div>
