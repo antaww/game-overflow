@@ -159,25 +159,23 @@ body {
     background-color: #263137;
     border-radius: 15px;
     width: 83%;
-    right: -0.5vh;
-    padding: 7% 0;
 }
 
 .dropdown-categories {
     top: 10vh;
     background-color: #263137;
     border-radius: 15px;
-    padding: 1%;
 }
 
 .dropdown-options {
     background-color: #263137;
     border: none;
     cursor: pointer;
-    width: 80%;
+    width: 100%;
     text-align: left;
     font-weight: 600;
     color: #FFF;
+    padding: 10px;
 }
 
 .log-out {
@@ -197,4 +195,8 @@ body {
     100% {
         transform: rotateX(0deg)
     }
+}
+
+.dropdown-actions .dropdown-options:hover {
+    background-color: #1a1e23;
 }
