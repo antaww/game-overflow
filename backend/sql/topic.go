@@ -6,6 +6,7 @@ type Topic struct {
 	IsClosed bool   `db:"is_closed"`
 	Views    int    `db:"views"`
 	Category string `db:"category_name"`
+	IdFirstMessage int64 `db:"id_first_message"`
 	Messages []Message
 }
 
@@ -46,7 +47,7 @@ func GetTopicsByCategories(category string) ([]Topic, error) {
 	var topics []Topic
 	for rows.Next() {
 		var topic Topic
-		err = rows.Scan(&topic.Id, &topic.Title, &topic.IsClosed, &topic.Views, &topic.Category)
+		err = rows.Scan(&topic.Id, &topic.Title, &topic.IsClosed, &topic.Views, &topic.Category, &topic.IdFirstMessage)
 		if err != nil {
 			return nil, err
 		}

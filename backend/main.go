@@ -332,6 +332,82 @@ func main() {
 		}
 	})
 
+	http.HandleFunc("/post-message", func(w http.ResponseWriter, r *http.Request) {
+		//get cookie from browser
+		cookie, err := r.Cookie("session")
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		//select user from session
+		result, err := DB.Query("SELECT id_user FROM sessions WHERE id_session = ?", cookie.Value)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		//get result from query
+		var idUser int64
+		if result.Next() {
+			err = result.Scan(&idUser)
+		}
+
+		//Handle sql errors, close the query to avoid memory leaks
+		HandleSQLErrors(result)
+
+		// Get User, save for TemplatesData (to show user logged in in templates)
+		userConnected := GetUserById(idUser)
+		TemplatesData.ConnectedUser = userConnected
+
+		err = AddMessage(idUser, 1, r.FormValue("post-text"))
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	})
+
+	http.HandleFunc("/create-topic", func(w http.ResponseWriter, r *http.Request) {
+		//get cookie from browser
+		cookie, err := r.Cookie("session")
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		//select user from session
+		result, err := DB.Query("SELECT id_user FROM sessions WHERE id_session = ?", cookie.Value)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		//get result from query
+		var idUser int64
+		if result.Next() {
+			err = result.Scan(&idUser)
+		}
+
+		//Handle sql errors, close the query to avoid memory leaks
+		HandleSQLErrors(result)
+
+		// Get User, save for TemplatesData (to show user logged in in templates)
+		userConnected := GetUserById(idUser)
+		TemplatesData.ConnectedUser = userConnected
+
+		err = CreateTopic(r.FormValue("topic-title"), r.FormValue("topic-category"))
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	})
+
 	http.HandleFunc("/logout", func(w http.ResponseWriter, r *http.Request) {
 		//get cookie from browser
 		cookie, err := r.Cookie("session")
@@ -412,6 +488,28 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
+	})
+
+	http.HandleFunc("/feed", func(w http.ResponseWriter, r *http.Request) {
+		queries := r.URL.Query()
+
+		if queries.Has("category") {
+			category := queries.Get("category")
+
+			topics, err := GetTopicsByCategories(category)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			TemplatesData.ShownTopics = topics
+
+			err = utils.CallTemplate("feed", TemplatesData, w)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
+
+		return
 	})
 
 	// Capture connection properties.

@@ -219,3 +219,12 @@ body {
 .circle {
     position: relative;
 }
+
+.message-area {
+    height: 165px;
+    width: 323px;
+    position: absolute;
+    top: 50%;
+    color: black;
+    left: 40%;
+}
