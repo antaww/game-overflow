@@ -3,120 +3,41 @@
     <script defer src="/scripts/settings.js"></script>
 
     {{template "navbar" .}}
-    <div class="container">
-        <div class="row">
-            <div class="header">
-                <h1>Settings</h1>
+    <div id="settings">
+        <form action="/settings" method="POST" id="settings-form">
+            <div class="form-group must-confirm">
+                <label for="username">Name</label>
+                <input class="form-control" id="username" name="username" type="text" value="{{.ConnectedUser.Username}}">
             </div>
-        </div>
-        <div class="row">
-            <div id="settings">
-                <form action="/settings" method="POST" id="settings-form">
-                    <div class="form-group name must-confirm">
-                        <label>
-                            Name
-                            <input type="text" class="form-control" name="username" value="{{.ConnectedUser.Username}}">
-                        </label>
-                    </div>
-                    <div class="form-group must-confirm">
-                        <label>
-                            Email
-                            <input type="email" class="form-control" name="email" value="{{.ConnectedUser.Email}}">
-                        </label>
-                    </div>
-
-                    <div class="form-group">
-                        <label>
-                            Description
-                            <input type="text" class="form-control" name="description" value="{{.ConnectedUser.Description}}">
-                        </label>
-                    </div>
-                    <div class="form-group">
-                        <label for="locale">Locale
-                            <select name="locale">
-                                {{range $key, $value := .Locales}}
-                                    <option value="{{$key}}" {{if eq $key .}}selected{{end}}>{{$value}}</option>
-                                {{end}}
-                            </select>
-                        </label>
-                    </div>
-
-                    <div class="form-group confirm">
-                        <label>
-                            Confirm Password
-                            <input autocomplete="password"
-                                   id="re-confirm-input"
-                                   maxlength="40"
-                                   name="confirmation"
-                                   placeholder="Confirm Password"
-                                   required
-                                   type="password">
-                        </label>
-                    </div>
-                    <button class="btn confirm" name="submit" type="submit">Submit</button>
-                </form>
+            <div class="form-group must-confirm">
+                <label for="email">Email</label>
+                <input class="form-control" id="email" name="email" type="email" value="{{.ConnectedUser.Email}}">
             </div>
-        </div>
-    </div>
-{{end}}
-{{define "content"}}
-    <link rel="stylesheet" href="/static/settings.css">
-    <script defer src="/scripts/settings.js"></script>
 
-    {{template "navbar" .}}
-    <div class="container">
-        <div class="row">
-            <div class="header">
-                <h1>Settings</h1>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" name="description">{{.ConnectedUser.Description}}</textarea>
             </div>
-        </div>
-        <div class="row">
-            <div id="settings">
-                <form action="/settings" method="POST" id="settings-form">
-                    <div class="form-group name must-confirm">
-                        <label>
-                            Name
-                            <input type="text" class="form-control" name="username" value="{{.ConnectedUser.Username}}">
-                        </label>
-                    </div>
-                    <div class="form-group must-confirm">
-                        <label>
-                            Email
-                            <input type="email" class="form-control" name="email" value="{{.ConnectedUser.Email}}">
-                        </label>
-                    </div>
-
-                    <div class="form-group">
-                        <label>
-                            Description
-                            <input type="text" class="form-control" name="description" value="{{.ConnectedUser.Description}}">
-                        </label>
-                    </div>
-                    <div class="form-group">
-                        <label for="locale">Locale
-                            <select name="locale">
-                                {{range $key, $value := .Locales}}
-                                    <option value="{{$key}}" {{if eq $key .}}selected{{end}}>{{$value}}</option>
-                                {{end}}
-                            </select>
-                        </label>
-                    </div>
-
-                    <div class="form-group confirm">
-                        <label>
-                            Confirm Password
-                            <input autocomplete="password"
-                                   id="re-confirm-input"
-                                   maxlength="40"
-                                   name="confirmation"
-                                   placeholder="Confirm Password"
-                                   required
-                                   type="password">
-                        </label>
-                    </div>
-                    <button class="btn confirm" name="submit" type="submit">Submit</button>
-                </form>
+            <div class="form-group">
+                <label for="locale">Locale</label>
+                <select id="locale" name="locale">
+                    {{range $key, $value := .Locales}}
+                        <option value="{{$key}}" {{if eq $key .}}selected{{end}}>{{$value}}</option>
+                    {{end}}
+                </select>
             </div>
-        </div>
+
+            <div class="form-group confirm">
+                <label for="re-confirm-input">Confirm Password</label>
+                <input autocomplete="password"
+                       id="re-confirm-input"
+                       maxlength="40"
+                       name="confirmation"
+                       placeholder="Confirm Password"
+                       required
+                       type="password">
+            </div>
+            <button class="btn confirm" name="submit" type="submit">Submit</button>
+        </form>
     </div>
 {{end}}
