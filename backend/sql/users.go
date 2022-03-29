@@ -165,3 +165,21 @@ func SaveUser(user User) (bool, error) {
 
 	return true, nil
 }
+
+func LikeMessage(idMessage int64) (bool, error) {
+	_, err := DB.Exec("UPDATE messages SET likes = likes + 1 WHERE id_message = ?", idMessage)
+	if err != nil {
+		return false, fmt.Errorf("SaveUser error: %v", err)
+	}
+
+	return true, nil
+}
+
+func DislikeMessage(idMessage int64) (bool, error) {
+	_, err := DB.Exec("UPDATE messages SET dislikes = dislikes + 1 WHERE id_message = ?", idMessage)
+	if err != nil {
+		return false, fmt.Errorf("SaveUser error: %v", err)
+	}
+
+	return true, nil
+}
