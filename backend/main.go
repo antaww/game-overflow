@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 )
 
 type TemplatesDataType struct {
@@ -54,6 +55,7 @@ func main() {
 				log.Fatal(err)
 			}
 			TemplatesData.ConnectedUser = user
+			//go ResetFirstTimer()
 		}
 
 		if path == "" {
@@ -534,6 +536,8 @@ func main() {
 	}
 	fmt.Println("Connected!")
 
+	go IsUserActive()
+
 	fmt.Println("Server started at localhost:8091")
 	err = http.ListenAndServe(":8091", http.HandlerFunc(LogHandler))
 	if err != nil {
@@ -544,6 +548,41 @@ func main() {
 func LogHandler(w http.ResponseWriter, r *http.Request) {
 	if !strings.HasSuffix(".css", r.URL.String()) && !strings.HasSuffix(".png", r.URL.String()) {
 		log.Printf("%v %v", r.Method, r.URL.String())
+		go func() {
+			PageLoadedTime = time.Now()
+		}()
 	}
 	http.DefaultServeMux.ServeHTTP(w, r)
+}
+
+var PageLoadedTime time.Time
+
+func IsUserActive() {
+	for {
+		if TemplatesData.ConnectedUser == nil {
+			continue
+		}
+		if PageLoadedTime.Add(10 * time.Second).After(time.Now()) {
+			fmt.Println("User is active")
+			if !TemplatesData.ConnectedUser.IsOnline {
+				err := SetUserOnline(TemplatesData.ConnectedUser.Id, true)
+				if err != nil {
+					log.Fatal(err)
+				}
+				TemplatesData.ConnectedUser = GetUserById(TemplatesData.ConnectedUser.Id)
+			}
+
+		} else {
+			fmt.Println("User is inactive")
+			if TemplatesData.ConnectedUser.IsOnline {
+				err := SetUserOnline(TemplatesData.ConnectedUser.Id, false)
+				if err != nil {
+					log.Fatal(err)
+				}
+				TemplatesData.ConnectedUser = GetUserById(TemplatesData.ConnectedUser.Id)
+			}
+
+		}
+		time.Sleep(5 * time.Second)
+	}
 }
