@@ -22,6 +22,7 @@ type TemplatesDataType struct {
 	ConnectedUser *User
 	Locales       map[string]string
 	ShownTopics   []Topic
+	ShownTopic Topic
 }
 
 var TemplatesData = TemplatesDataType{
@@ -534,9 +535,9 @@ func main() {
 				log.Fatal(err)
 			}
 
-			TemplatesData.ShownTopics = append(TemplatesData.ShownTopics, *topic)
+			TemplatesData.ShownTopic = *topic
 
-			err = utils.CallTemplate("topic", TemplatesData.ShownTopics[0], w)
+			err = utils.CallTemplate("topic", TemplatesData.ShownTopic, w)
 			if err != nil {
 				log.Fatal(err)
 			}

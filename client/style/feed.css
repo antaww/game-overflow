@@ -55,6 +55,7 @@
     color: #BFBEFF;
     font-weight: 800;
     padding: 0 1vh;
+    width: fit-content;
 }
 
 .topic-title, .topic-likes {
@@ -64,7 +65,7 @@
     margin: 0;
 }
 
-.topic-category + div i {
+.topic-open i, .topic-closed i {
     margin-left: 1vh;
 }
 
@@ -94,6 +95,7 @@
     font-weight: 700;
     padding: 0 2%;
     margin-left: 1vh;
+    width: fit-content;
 }
 
 .topic-date {
