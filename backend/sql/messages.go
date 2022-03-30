@@ -8,7 +8,6 @@ type Message struct {
 	Id        int64     `db:"id_message"`
 	Content   string    `db:"content"`
 	CreatedAt time.Time `db:"created_at"`
-	IsFirst   bool      `db:"is_first"`
 	Likes     int       `db:"likes"`
 	Dislikes  int       `db:"dislikes"`
 	IdTopic   string    `db:"id_topic"`
@@ -25,7 +24,7 @@ func GetMessages(postId int64) ([]Message, error) {
 	var messages []Message
 	for rows.Next() {
 		var message Message
-		err = rows.Scan(&message.Id, &message.Content, &message.CreatedAt, &message.IsFirst, &message.Likes, &message.Dislikes, &message.IdTopic, &message.AuthorId)
+		err = rows.Scan(&message.Id, &message.Content, &message.CreatedAt, &message.Likes, &message.Dislikes, &message.IdTopic, &message.AuthorId)
 		if err != nil {
 			return nil, err
 		}

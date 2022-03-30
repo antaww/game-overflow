@@ -5,6 +5,7 @@ import (
 	"log"
 	"main/utils"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -80,31 +81,33 @@ func EditPassword(idUser int64, oldPassword string, newPassword string) (bool, e
 // can edit Description, Locale, ProfilePic, Username, Email
 func EditUser(idUser int64, newUser User) (bool, error) {
 	request := "UPDATE users SET "
+	var requestEdits []string
 	var arguments []interface{}
 	if newUser.Email != "" {
-		request += "email = ?, "
+		requestEdits = append(requestEdits, "email = ?")
 		arguments = append(arguments, newUser.Email)
 	}
 	if newUser.Locale != "" {
-		request += "locale = ?, "
+		requestEdits = append(requestEdits, "locale = ?")
 		arguments = append(arguments, newUser.Locale)
 	}
 	if newUser.ProfilePic != "" {
-		request += "profile_pic = ?, "
+		requestEdits = append(requestEdits, "profile_pic = ?")
 		arguments = append(arguments, newUser.ProfilePic)
 	}
 	if newUser.Description != "" {
-		request += "description = ?, "
+		requestEdits = append(requestEdits, "description = ?")
 		arguments = append(arguments, newUser.Description)
 	}
 	if newUser.Username != "" {
-		request += "username = ?"
+		requestEdits = append(requestEdits, "username = ?")
 		arguments = append(arguments, newUser.Username)
 	}
 
-	request += " WHERE id_user = ?"
+	request += strings.Join(requestEdits, ",") + " WHERE id_user = ?"
 	arguments = append(arguments, idUser)
 
+	fmt.Println(request)
 	r, err := DB.Exec(request, arguments...)
 	if err != nil {
 		return false, fmt.Errorf("SaveUser error: %v", err)

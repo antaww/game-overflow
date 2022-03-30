@@ -16,6 +16,7 @@
     display: flex;
     margin-bottom: 3vh;
     align-items: center;
+    text-decoration: none;
 }
 
 .feed > a > img {
