@@ -14,6 +14,7 @@ import (
 	"main/utils"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -22,6 +23,7 @@ type TemplatesDataType struct {
 	ConnectedUser *User
 	Locales       map[string]string
 	ShownTopics   []Topic
+	ShownTopic    Topic
 }
 
 var TemplatesData = TemplatesDataType{
@@ -506,6 +508,38 @@ func main() {
 			TemplatesData.ShownTopics = topics
 
 			err = utils.CallTemplate("feed", TemplatesData, w)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
+
+		return
+	})
+
+	http.HandleFunc("/topic", func(w http.ResponseWriter, r *http.Request) {
+		queries := r.URL.Query()
+
+		if queries.Has("id") {
+			id := queries.Get("id")
+
+			Id, err := strconv.ParseInt(id, 10, 64)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			topic, err := GetPost(Id)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			err = topic.FetchMessages()
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			TemplatesData.ShownTopic = *topic
+
+			err = utils.CallTemplate("topic", TemplatesData.ShownTopic, w)
 			if err != nil {
 				log.Fatal(err)
 			}

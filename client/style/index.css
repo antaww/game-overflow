@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap');
 @import url("./login.css");
 @import url("./feed.css");
+@import url("./topic.css");
 
 * {
     font-family: "Poppins", sans-serif;
