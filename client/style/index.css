@@ -206,7 +206,6 @@ body {
 
 .circle::after {
     content: "";
-    background-color: rgba(24, 100, 24, 0.85);
     width: 12px;
     height: 12px;
     border-radius: 50%;
@@ -214,6 +213,14 @@ body {
     display: block;
     top: 0;
     right: 0;
+}
+
+.circle.connected::after {
+    background-color: #389d58;
+}
+
+.circle.disconnected::after {
+    background-color: #ed4245;
 }
 
 .circle {

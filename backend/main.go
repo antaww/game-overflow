@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"bytes"
 	"database/sql"
 	"encoding/base64"
 	"encoding/json"
@@ -13,10 +12,8 @@ import (
 	"log"
 	. "main/sql"
 	"main/utils"
-	"mime/multipart"
 	"net/http"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -455,30 +452,6 @@ func main() {
 				Locale:      r.FormValue("locale"),
 			}
 
-			var profilePicture string
-			file, header, err := r.FormFile("profile-picture")
-			defer func(file multipart.File) {
-				err := file.Close()
-				if err != nil {
-					log.Fatal(err)
-				}
-			}(file)
-			if err != nil {
-				if err != http.ErrMissingFile {
-					log.Fatal(err)
-				}
-			} else {
-				profilePicture = "data:" + header.Header.Get("Content-Type") + ";base64,"
-
-				buf := bytes.NewBuffer(nil)
-				if _, err := io.Copy(buf, file); err != nil {
-					log.Fatal(err)
-				}
-
-				profilePicture += base64.StdEncoding.EncodeToString(buf.Bytes())
-				newUser.ProfilePic = profilePicture
-			}
-
 			cookie, err := r.Cookie("session")
 			if err != nil {
 				log.Fatal(err)
@@ -541,38 +514,6 @@ func main() {
 		return
 	})
 
-	http.HandleFunc("/topic", func(w http.ResponseWriter, r *http.Request) {
-		queries := r.URL.Query()
-
-		if queries.Has("id") {
-			id := queries.Get("id")
-
-			Id, err := strconv.ParseInt(id, 10, 64)
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			topic, err := GetPost(Id)
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			err = topic.FetchMessages()
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			TemplatesData.ShownTopics = append(TemplatesData.ShownTopics, *topic)
-
-			err = utils.CallTemplate("topic", TemplatesData.ShownTopics[0], w)
-			if err != nil {
-				log.Fatal(err)
-			}
-		}
-
-		return
-	})
-
 	// Capture connection properties.
 	cfg := mysql.Config{
 		User:                 os.Getenv("DB_USER"),
@@ -621,8 +562,8 @@ func IsUserActive() {
 		if TemplatesData.ConnectedUser == nil {
 			continue
 		}
-		if PageLoadedTime.Add(10 * time.Second).After(time.Now()) {
-			fmt.Println("User is active")
+		if PageLoadedTime.Add(5 * time.Minute).After(time.Now()) {
+			fmt.Println("user active")
 			if !TemplatesData.ConnectedUser.IsOnline {
 				err := SetUserOnline(TemplatesData.ConnectedUser.Id, true)
 				if err != nil {
@@ -632,7 +573,7 @@ func IsUserActive() {
 			}
 
 		} else {
-			fmt.Println("User is inactive")
+			fmt.Println("user inactive")
 			if TemplatesData.ConnectedUser.IsOnline {
 				err := SetUserOnline(TemplatesData.ConnectedUser.Id, false)
 				if err != nil {
@@ -642,6 +583,6 @@ func IsUserActive() {
 			}
 
 		}
-		time.Sleep(5 * time.Second)
+		time.Sleep(30 * time.Second)
 	}
 }
