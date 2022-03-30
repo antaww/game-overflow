@@ -18,7 +18,7 @@ func GetPost(id int64) (*Topic, error) {
 	}
 
 	post := &Topic{}
-	err = Results(rows, &post.Id, &post.Title, &post.IsClosed, &post.Views, &post.Category)
+	err = Results(rows, &post.Id, &post.Title, &post.IsClosed, &post.Views, &post.Category, &post.IdFirstMessage)
 	if err != nil {
 		return nil, err
 	}
