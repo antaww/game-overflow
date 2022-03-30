@@ -458,18 +458,17 @@ func main() {
 
 			var profilePicture string
 			file, header, err := r.FormFile("profile-picture")
+			defer func(file multipart.File) {
+				err := file.Close()
+				if err != nil {
+					log.Fatal(err)
+				}
+			}(file)
 			if err != nil {
 				if err != http.ErrMissingFile {
 					log.Fatal(err)
 				}
 			} else {
-				defer func(file multipart.File) {
-					err := file.Close()
-					if err != nil {
-						log.Fatal(err)
-					}
-				}(file)
-
 				profilePicture = "data:" + header.Header.Get("Content-Type") + ";base64,"
 
 				buf := bytes.NewBuffer(nil)
