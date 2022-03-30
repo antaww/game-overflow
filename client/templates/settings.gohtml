@@ -7,7 +7,7 @@
         <form action="/settings" enctype="multipart/form-data" id="settings-form" method="POST">
             <div class="form-group">
                 <label for="avatar">Profile Picture</label>
-                <img alt="" id="avatar-preview" src="{{.ConnectedUser.ProfilePic}}" height="120" width="120">
+                <img alt="" id="avatar-preview" src="{{safeURL .ConnectedUser.ProfilePic}}" height="120" width="120">
                 <input accept="image/jpeg, image/png, image/gif" id="avatar-input" name="profile-picture" type="file" value="Edit"/>
             </div>
             <div class="form-group must-confirm">
@@ -42,7 +42,7 @@
                        required
                        type="password">
             </div>
-            <button class="btn confirm" name="submit" type="submit">Submit</button>
+            <button class="btn confirm" id="btn-submit" name="submit" type="submit">Submit</button>
         </form>
     </div>
 {{end}}

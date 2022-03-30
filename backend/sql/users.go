@@ -104,6 +104,9 @@ func EditUser(idUser int64, newUser User) (bool, error) {
 		arguments = append(arguments, newUser.Username)
 	}
 
+	if requestEdits == nil {
+		return false, nil
+	}
 	request += strings.Join(requestEdits, ",") + " WHERE id_user = ?"
 	arguments = append(arguments, idUser)
 
