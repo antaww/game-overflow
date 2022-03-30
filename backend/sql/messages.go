@@ -1,6 +1,8 @@
 package sql
 
-import "time"
+import (
+	"time"
+)
 
 type Message struct {
 	Id        int64     `db:"id_message"`

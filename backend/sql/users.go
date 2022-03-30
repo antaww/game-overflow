@@ -262,3 +262,12 @@ func CreateTopic(title string, category string) error {
 	fmt.Printf("topic '%v' added to the category '%v'", title, category)
 	return nil
 }
+
+//create a function that will set the user online (is_online = 1)
+func SetUserOnline(idUser int64, isOnline bool) error {
+	_, err := DB.Exec("UPDATE users SET is_online = ? WHERE id_user = ?", isOnline, idUser)
+	if err != nil {
+		return fmt.Errorf("SaveUser error: %v", err)
+	}
+	return nil
+}
