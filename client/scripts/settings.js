@@ -1,4 +1,5 @@
-const submit = document.querySelector('#settings-form > button');
+const avatarInput = document.querySelector('#avatar-input');
+const avatarPreview = document.querySelector('#avatar-preview');
 const confirmationInput = document.querySelector('#re-confirm-input');
 
 function checkPassword() {
@@ -23,10 +24,24 @@ function checkPassword() {
 }
 
 function setPasswordConfirmation() {
-    // submit.addEventListener('click', () => checkPassword());
     confirmationInput.addEventListener('keypress', () => checkPassword());
+}
+
+function updateAvatarPreview() {
+    avatarInput.addEventListener('change', () => {
+        const file = avatarInput.files[0];
+        const reader = new FileReader();
+
+        reader.addEventListener('load', () => {
+            console.log(reader);
+            avatarPreview.src = reader.result;
+        });
+
+        if (file) reader.readAsDataURL(file);
+    });
 }
 
 window.onload = () => {
     setPasswordConfirmation();
+    updateAvatarPreview();
 };

@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"database/sql"
 	"encoding/base64"
 	"encoding/json"
@@ -12,6 +13,7 @@ import (
 	"log"
 	. "main/sql"
 	"main/utils"
+	"mime/multipart"
 	"net/http"
 	"os"
 	"strconv"
@@ -450,6 +452,30 @@ func main() {
 				Email:       r.FormValue("email"),
 				Description: r.FormValue("description"),
 				Locale:      r.FormValue("locale"),
+			}
+
+			var profilePicture string
+			file, header, err := r.FormFile("profile-picture")
+			defer func(file multipart.File) {
+				err := file.Close()
+				if err != nil {
+					log.Fatal(err)
+				}
+			}(file)
+			if err != nil {
+				if err != http.ErrMissingFile {
+					log.Fatal(err)
+				}
+			} else {
+				profilePicture = "data:" + header.Header.Get("Content-Type") + ";base64,"
+
+				buf := bytes.NewBuffer(nil)
+				if _, err := io.Copy(buf, file); err != nil {
+					log.Fatal(err)
+				}
+
+				profilePicture += base64.StdEncoding.EncodeToString(buf.Bytes())
+				newUser.ProfilePic = profilePicture
 			}
 
 			cookie, err := r.Cookie("session")
