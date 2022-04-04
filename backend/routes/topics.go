@@ -5,6 +5,7 @@ import (
 	"main/sql"
 	"main/utils"
 	"net/http"
+	"net/url"
 	"strconv"
 )
 
@@ -30,19 +31,32 @@ func PostMessageRoute(w http.ResponseWriter, r *http.Request) {
 	//Handle sql errors, close the query to avoid memory leaks
 	sql.HandleSQLErrors(result)
 
-	// Get User, save for TemplatesData (to show user logged in in templates)
+	// Get User, save for TemplatesData (to show user logged in templates)
 	userConnected := sql.GetUserById(idUser)
 	TemplatesData.ConnectedUser = userConnected
 
-	err = sql.AddMessage(idUser, 1, r.FormValue("post-text"))
-	if err != nil {
-		log.Fatal(err)
+	// Get topic id from url
+	queries := r.URL.Query()
+
+	if queries.Has("id") {
+		id := queries.Get("id")
+
+		Id, err := strconv.ParseInt(id, 10, 64)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		err = sql.AddMessage(1, Id, r.FormValue("post-text"))
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		queriesId := url.Values{}
+		queriesId.Add("id", id)
+
+		http.Redirect(w, r, "/topic?" + queriesId.Encode(), http.StatusSeeOther)
 	}
 
-	if err != nil {
-		log.Fatal(err)
-	}
-	http.Redirect(w, r, "/", http.StatusSeeOther)
 	return
 }
 
