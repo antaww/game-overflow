@@ -50,6 +50,9 @@ func main() {
 
 	http.HandleFunc("/topic", TopicsRoute)
 
+	http.HandleFunc("/like", LikeRoute)
+	//http.HandleFunc("/like", DislikeRoute)
+
 	// Capture connection properties.
 	cfg := mysql.Config{
 		User:                 os.Getenv("DB_USER"),

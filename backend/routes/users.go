@@ -80,3 +80,24 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/Settings", http.StatusSeeOther)
 	}
 }
+
+func LikeRoute(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		err := r.ParseForm()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		cookie, err := r.Cookie("session")
+		if err != nil {
+			log.Fatal(err)
+		}
+		_, err = sql.GetUserBySession(cookie.Value)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		r.Method = "GET"
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	}
+}
