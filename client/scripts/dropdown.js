@@ -19,10 +19,11 @@ categories.addEventListener('click', event => {
         dropdown_arrow.classList.remove("rotate-reverse")
         dropdown_arrow.classList.add("rotate")
     }
+    const timeout = 300; //temps en ms (doit être identique à la valeur de l'animation css)
     if (dropdown_categories.classList.contains("block")) {
         dropdown_categories.classList.remove("block")
         dropdown_categories.classList.add("block-reverse")
-        setTimeout(() => dropdown_categories.classList.toggle("none"), 300)
+        setTimeout(() => dropdown_categories.classList.toggle("none"), timeout)
     } else {
         dropdown_categories.classList.remove("block-reverse")
         dropdown_categories.classList.add("block")
