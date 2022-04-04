@@ -364,15 +364,38 @@ func main() {
 		userConnected := GetUserById(idUser)
 		TemplatesData.ConnectedUser = userConnected
 
-		err = AddMessage(idUser, 1, r.FormValue("post-text"))
-		if err != nil {
-			log.Fatal(err)
-		}
+		queries := r.URL.Query()
 
-		if err != nil {
-			log.Fatal(err)
+		if queries.Has("id") {
+			id := queries.Get("id")
+
+			Id, err := strconv.ParseInt(id, 10, 64)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			err = AddMessage(16484529672, Id, r.FormValue("post-text"))
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			topic, err := GetPost(Id)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			err = topic.FetchMessages()
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			TemplatesData.ShownTopic = *topic
+
+			err = utils.CallTemplate("topic", TemplatesData.ShownTopic, w)
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
-		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	})
 

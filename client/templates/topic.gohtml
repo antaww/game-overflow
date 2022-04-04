@@ -43,6 +43,12 @@
                         {{template "message" .}}
                     {{end}}
                 </div>
+                <div class="write-message">
+                    <form action="/post-message" method="POST">
+                        <textarea name="message" placeholder="Write a message..."></textarea>
+                        <button type="submit">Send</button>
+                    </form>
+                </div>
             </div>
         </div>
 {{end}}
