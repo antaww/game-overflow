@@ -123,6 +123,11 @@
     align-items: center;
 }
 
+.topic-likes a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
 /* TREND */
 
 .trends {

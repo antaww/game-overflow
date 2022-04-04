@@ -49,6 +49,7 @@
                     <div class="topic-tags">tags</div>
                     <div class="topic-date">date</div>
                 </div>
+
             </div>
             <div class="messages">
                 {{range $index, $message := .Messages}}
@@ -56,6 +57,12 @@
                         {{template "message" .}}
                     {{end}}
                 {{end}}
+            </div>
+            <div class="write-message">
+                <form action="/post-message" method="POST">
+                    <textarea name="message" placeholder="Write a message..."></textarea>
+                    <button type="submit">Send</button>
+                </form>
             </div>
         </div>
     </div>
