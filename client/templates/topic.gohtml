@@ -1,50 +1,54 @@
 {{define "content"}}
-
     {{template "navbar"}}
-        <div class="feed-content">
-            <div class="feed topic-feed">
-                <div class="post">
+    <div class="feed-content">
+        <div class="feed topic-feed">
+            <div class="post">
+                <div>
                     <div>
-                        <div>
-                            {{if eq .IsClosed false}}
-                                <div class="topic-open">Open<i class="fa-solid fa-lock-open topic-open"></i></div>
-                            {{else}}
-                                <div class="topic-closed">Closed<i class="fa-solid fa-lock topic-closed"></i></div>
-                            {{end}}
-                            <a>
-                                <img src="/resources/test.png" alt="avatar">
-                            </a>
-                            <a class="topic-user">
-                                <p>Claudecraft</p>
-                            </a>
-                        </div>
-                        <div class="topic-content-likes">
-                            <div>
-                                <div class="topic-category">{{.Category}}</div>
-                                <p class="topic-title">{{.Title}}</p>
-                                <div class="topic-views posts-views">{{.Views}} views</div>
-                                <p class="posts-content">nqjen qwj;q3oifowbfjabf qwnqoaibnfoawfbafbowfbwoio 3oqnfowabnfoawbfoi</p>
-                            </div>
-                            <div class="topic-likes">
-                                <i class="fa-solid fa-angle-up"></i>
-                                <p>3</p>
-                                <i class="fa-solid fa-angle-down"></i>
-                            </div>
-                        </div>
+                        {{if eq .IsClosed false}}
+                            <div class="topic-open">Open<i class="fa-solid fa-lock-open topic-open"></i></div>
+                        {{else}}
+                            <div class="topic-closed">Closed<i class="fa-solid fa-lock topic-closed"></i></div>
+                        {{end}}
+                        <a>
+                            <img src="/resources/test.png" alt="avatar">
+                        </a>
+                        <a class="topic-user">
+                            <p>Claudecraft</p>
+                        </a>
                     </div>
-                    <div class="topic-general-info">
-                        <div class="topic-answers">answers</div>
-                        <div class="topic-tags">tags</div>
-                        <div class="topic-date">date</div>
+                    <div class="topic-content-likes">
+                        <div>
+                            <div class="topic-category">{{.Category}}</div>
+                            <p class="topic-title">{{.Title}}</p>
+                            <div class="topic-views posts-views">{{.Views}} views</div>
+                            <p class="posts-content">nqjen qwj;q3oifowbfjabf qwnqoaibnfoawfbafbowfbwoio
+                                3oqnfowabnfoawbfoi</p>
+                        </div>
+                        <div class="topic-likes">
+                            <a href="/like">
+                                <i class="fa-solid fa-angle-up like-function"></i>
+                            </a>
+                            <p>3</p>
+                            <a href="/dislike">
+                                <i class="fa-solid fa-angle-down dislike-function"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <div class="messages">
-                    {{range .Messages}}
-                        {{template "message" .}}
-                    {{end}}
+                <div class="topic-general-info">
+                    <div class="topic-answers">answers</div>
+                    <div class="topic-tags">tags</div>
+                    <div class="topic-date">date</div>
                 </div>
             </div>
+            <div class="messages">
+                {{range .Messages}}
+                    {{template "message" .}}
+                {{end}}
+            </div>
         </div>
+    </div>
 {{end}}
 
 {{define "message"}}
@@ -63,9 +67,13 @@
                     <p class="posts-content">{{.Content}}</p>
                 </div>
                 <div class="topic-likes">
-                    <i class="fa-solid fa-angle-up"></i>
+                    <a href="/like">
+                        <i class="fa-solid fa-angle-up like-function"></i>
+                    </a>
                     <p>{{.CalculatePoints}}</p>
-                    <i class="fa-solid fa-angle-down"></i>
+                    <a href="/dislike">
+                        <i class="fa-solid fa-angle-down dislike-function"></i>
+                    </a>
                 </div>
             </div>
         </div>

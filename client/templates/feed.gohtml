@@ -1,47 +1,54 @@
 {{define "content"}}
-
-{{template "navbar"}}
-<div class="feed-content">
-    <div class="feed">
-        {{range .ShownTopics}}
-            <a href="/topic?id={{.Id}}">
-                <img src="/resources/test.png" alt="avatar">
-                <div>
+    <script defer src="/scripts/review.js"></script>
+    <script defer src="/scripts/review.js"></script>
+    {{template "navbar"}}
+    <div class="feed-content">
+        <div class="feed">
+            {{range .ShownTopics}}
+                <a href="/topic?id={{.Id}}">
+                    <img src="/resources/test.png" alt="avatar">
                     <div>
                         <div>
                             <div>
-                                <div class="topic-category">{{.Category}}</div>
-                                {{if eq .IsClosed false}}
-                                    <div class="topic-open">Open<i class="fa-solid fa-lock-open topic-open"></i></div>
-                                        {{else}}
-                                    <div class="topic-closed">Closed<i class="fa-solid fa-lock topic-closed"></i></div>
-                                        {{end}}
-                                <div class="topic-answers">answers</div>
+                                <div>
+                                    <div class="topic-category">{{.Category}}</div>
+                                    {{if eq .IsClosed false}}
+                                        <div class="topic-open">Open<i class="fa-solid fa-lock-open topic-open"></i>
+                                        </div>
+                                    {{else}}
+                                        <div class="topic-closed">Closed<i class="fa-solid fa-lock topic-closed"></i>
+                                        </div>
+                                    {{end}}
+                                    <div class="topic-answers">answers</div>
+                                </div>
+                                <div>
+                                    <p class="topic-title">{{.Title}}</p>
+                                </div>
                             </div>
-                            <div>
-                                <p class="topic-title">{{.Title}}</p>
+                            <div class="topic-likes">
+                                <a href="/like">
+                                    <i class="fa-solid fa-angle-up like-function"></i>
+                                </a>
+                                <p>3</p>
+                                <a href="/dislike">
+                                    <i class="fa-solid fa-angle-down dislike-function"></i>
+                                </a>
                             </div>
                         </div>
-                        <div class="topic-likes">
-                            <i class="fa-solid fa-angle-up"></i>
-                            <p>3</p>
-                            <i class="fa-solid fa-angle-down"></i>
-                        </div>
-                    </div>
 
-                    <div>
-                        <div class="views-tags">
-                            <div class="topic-views">{{.Views}} views</div>
-                            <div class="topic-tags">tags</div>
+                        <div>
+                            <div class="views-tags">
+                                <div class="topic-views">{{.Views}} views</div>
+                                <div class="topic-tags">tags</div>
+                            </div>
+                            <div class="topic-date">date</div>
                         </div>
-                        <div class="topic-date">date</div>
                     </div>
-                </div>
-            </a>
-        {{end}}
+                </a>
+            {{end}}
+        </div>
+
+        <div class="trends"></div>
     </div>
-
-    <div class="trends"></div>
-</div>
 
 {{end}}

@@ -17,7 +17,7 @@
     display: flex;
 }
 
-.post > div > div:first-child{
+.post > div > div:first-child {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -62,4 +62,8 @@
 
 .sub-post {
     width: 80%;
+}
+
+.like-function:hover, .dislikes-function:hover {
+    cursor: pointer;
 }
