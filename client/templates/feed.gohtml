@@ -27,7 +27,7 @@
                             </div>
                             <div class="topic-likes">
                                 <i class="fa-solid fa-angle-up like-function"></i>
-                                <p>{{.CalculatePoitns}}</p>
+                                <p>{{.GetFirstMessage.CalculatePoints}}</p>
                                 <i class="fa-solid fa-angle-down dislike-function"></i>
                             </div>
                         </div>
@@ -37,14 +37,12 @@
                                 <div class="topic-views">{{.Views}} views</div>
                                 <div class="topic-tags">tags</div>
                             </div>
-                            <div class="topic-date">date</div>
+                            <div class="topic-date">{{formatDate .GetFirstMessage.CreatedAt}}</div>
                         </div>
                     </div>
                 </a>
             {{end}}
         </div>
-
         <div class="trends"></div>
     </div>
-
 {{end}}

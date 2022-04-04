@@ -1,13 +1,13 @@
 package sql
 
 type Topic struct {
-	Id       int64  `db:"id_topic"`
-	Title    string `db:"title"`
-	IsClosed bool   `db:"is_closed"`
-	Views    int    `db:"views"`
-	Category string `db:"category_name"`
-	IdFirstMessage int64 `db:"id_first_message"`
-	Messages []Message
+	Id             int64  `db:"id_topic"`
+	Title          string `db:"title"`
+	IsClosed       bool   `db:"is_closed"`
+	Views          int    `db:"views"`
+	Category       string `db:"category_name"`
+	IdFirstMessage int64  `db:"id_first_message"`
+	Messages       []Message
 }
 
 // GetPost returns topic by id
@@ -26,6 +26,23 @@ func GetPost(id int64) (*Topic, error) {
 	HandleSQLErrors(rows)
 
 	return post, nil
+}
+
+func (topic *Topic) GetFirstMessage() (*Message, error) {
+	rows, err := DB.Query("SELECT * FROM messages WHERE id_message = ?", topic.IdFirstMessage)
+	if err != nil {
+		return nil, err
+	}
+
+	message := &Message{}
+	err = Results(rows, &message.Id, &message.Content, &message.CreatedAt, &message.IdTopic, &message.AuthorId)
+	if err != nil {
+		return nil, err
+	}
+
+	HandleSQLErrors(rows)
+
+	return message, nil
 }
 
 // FetchMessages get messages into topic from db using post id
