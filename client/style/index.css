@@ -134,9 +134,17 @@ body {
     transform-origin: top center;
 }
 
+.block-reverse {
+    animation: rotateXreverse 300ms ease-in-out forwards;
+    transform-origin: top center;
+}
+
 .dropdown, .dropdown-categories {
-    display: none;
     position: absolute;
+}
+
+.none {
+    display: none;
 }
 
 .username a {
@@ -193,6 +201,21 @@ body {
     }
 }
 
+@keyframes rotateXreverse {
+    0% {
+
+        transform: rotateX(0deg)
+    }
+
+    70% {
+        transform: rotateX(20deg)
+    }
+
+    100% {
+        transform: rotateX(-90deg)
+    }
+}
+
 .dropdown-actions .dropdown-options:hover {
     background-color: #1a1e23;
 }
@@ -236,4 +259,32 @@ body {
     top: 50%;
     color: black;
     left: 40%;
+}
+
+.rotate {
+    animation: rotate180 .3s forwards;
+}
+
+.rotate-reverse {
+    animation: rotate180reverse .3s forwards;
+}
+
+@keyframes rotate180 {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(-180deg);
+    }
+}
+
+@keyframes rotate180reverse {
+    0% {
+        transform: rotate(-180deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
 }
