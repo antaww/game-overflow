@@ -14,9 +14,9 @@ type Message struct {
 }
 
 type MessageLike struct {
-	idMessage int64 `db:"id_message"`
-	idUser    int64 `db:"id_user"`
-	like      bool  `db:"like"`
+	IdMessage int64 `db:"id_message"`
+	IdUser    int64 `db:"id_user"`
+	Like      bool  `db:"like"`
 }
 
 // GetMessages returns all messages from a topic id
@@ -55,7 +55,7 @@ func GetLikes(messageId int64) ([]MessageLike, error) {
 	var likes []MessageLike
 	for rows.Next() {
 		var like MessageLike
-		err = rows.Scan(&like.idMessage, &like.idUser, &like.like)
+		err = rows.Scan(&like.IdMessage, &like.IdUser, &like.Like)
 		if err != nil {
 			return nil, err
 		}
@@ -88,7 +88,7 @@ func (message *Message) CalculatePoints() int {
 
 	var count int
 	for _, like := range message.Likes {
-		if like.like {
+		if like.Like {
 			count++
 		} else {
 			count--

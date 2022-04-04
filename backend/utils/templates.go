@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+var actualTemplate string
+
 var templateMap = template.FuncMap{
 	"safeURL": func(u string) template.URL {
 		return template.URL(u)
@@ -30,5 +32,11 @@ func CallTemplate(templateName string, data interface{}, w http.ResponseWriter) 
 	if err != nil {
 		return err
 	}
+
+	actualTemplate = templateName
 	return nil
+}
+
+func ReloadActualTemplate(data interface{}, w http.ResponseWriter) error {
+	return CallTemplate(actualTemplate, data, w)
 }
