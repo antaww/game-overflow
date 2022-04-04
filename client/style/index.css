@@ -134,9 +134,17 @@ body {
     transform-origin: top center;
 }
 
+.block-reverse {
+    animation: rotateXreverse 300ms ease-in-out forwards;
+    transform-origin: top center;
+}
+
 .dropdown, .dropdown-categories {
-    display: none;
     position: absolute;
+}
+
+.none {
+    display: none;
 }
 
 .username a {
@@ -190,6 +198,21 @@ body {
 
     100% {
         transform: rotateX(0deg)
+    }
+}
+
+@keyframes rotateXreverse {
+    0% {
+
+        transform: rotateX(0deg)
+    }
+
+    70% {
+        transform: rotateX(20deg)
+    }
+
+    100% {
+        transform: rotateX(-90deg)
     }
 }
 

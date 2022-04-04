@@ -2,6 +2,7 @@ const username = document.querySelector(".username_dropdown")
 const dropdown = document.querySelector(".dropdown")
 const categories = document.querySelector(".categories")
 const dropdown_categories = document.querySelector(".dropdown-categories")
+const dropdown_arrow = document.querySelector(".dropdown-arrow")
 
 
 username?.addEventListener('click', event => {
@@ -11,17 +12,21 @@ username?.addEventListener('click', event => {
 
 categories.addEventListener('click', event => {
     console.log("categories clicked")
-    dropdown_categories.classList.toggle("block")
-})
-
-const dropdown_arrow = document.querySelector(".dropdown-arrow")
-dropdown_arrow.addEventListener('click', event => {
     if (dropdown_arrow.classList.contains("rotate")) {
         dropdown_arrow.classList.remove("rotate")
         dropdown_arrow.classList.add("rotate-reverse")
     } else {
         dropdown_arrow.classList.remove("rotate-reverse")
         dropdown_arrow.classList.add("rotate")
+    }
+    if (dropdown_categories.classList.contains("block")) {
+        dropdown_categories.classList.remove("block")
+        dropdown_categories.classList.add("block-reverse")
+        setTimeout(() => dropdown_categories.classList.toggle("none"), 300)
+    } else {
+        dropdown_categories.classList.remove("block-reverse")
+        dropdown_categories.classList.add("block")
+        dropdown_categories.classList.toggle("none")
     }
 })
 
