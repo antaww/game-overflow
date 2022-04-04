@@ -12,8 +12,6 @@ function checkPassword() {
             password: confirmationInput.value,
         }),
     }).then(r => r.json()).then(r => {
-        console.log(r)
-
         if (r.success) {
             confirmationInput.setCustomValidity('');
         } else {
