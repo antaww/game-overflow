@@ -13,6 +13,9 @@ import (
 	"time"
 )
 
+const inactiveTime = 60 * time.Second
+const printDelay = 10 * time.Second
+
 func main() {
 	err := godotenv.Load("../.env")
 	if err != nil {
@@ -51,7 +54,7 @@ func main() {
 	http.HandleFunc("/topic", TopicsRoute)
 
 	http.HandleFunc("/like", LikeRoute)
-	//http.HandleFunc("/like", DislikeRoute)
+	http.HandleFunc("/dislike", DislikeRoute)
 
 	// Capture connection properties.
 	cfg := mysql.Config{
@@ -89,7 +92,7 @@ func IsUserActive() {
 		if TemplatesData.ConnectedUser == nil {
 			continue
 		}
-		if PageLoadedTime.Add(10 * time.Second).After(time.Now()) {
+		if PageLoadedTime.Add(inactiveTime).After(time.Now()) {
 			fmt.Println("User is active")
 			if !TemplatesData.ConnectedUser.IsOnline {
 				err := SetUserOnline(TemplatesData.ConnectedUser.Id, true)
@@ -110,6 +113,6 @@ func IsUserActive() {
 			}
 
 		}
-		time.Sleep(5 * time.Second)
+		time.Sleep(printDelay)
 	}
 }
