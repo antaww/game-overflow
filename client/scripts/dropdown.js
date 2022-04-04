@@ -14,3 +14,14 @@ categories.addEventListener('click', event => {
     dropdown_categories.classList.toggle("block")
 })
 
+const dropdown_arrow = document.querySelector(".dropdown-arrow")
+dropdown_arrow.addEventListener('click', event => {
+    if (dropdown_arrow.classList.contains("rotate")) {
+        dropdown_arrow.classList.remove("rotate")
+        dropdown_arrow.classList.add("rotate-reverse")
+    } else {
+        dropdown_arrow.classList.remove("rotate-reverse")
+        dropdown_arrow.classList.add("rotate")
+    }
+})
+

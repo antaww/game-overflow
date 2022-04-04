@@ -237,3 +237,31 @@ body {
     color: black;
     left: 40%;
 }
+
+.rotate {
+    animation: rotate180 .3s forwards;
+}
+
+.rotate-reverse {
+    animation: rotate180reverse .3s forwards;
+}
+
+@keyframes rotate180 {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(-180deg);
+    }
+}
+
+@keyframes rotate180reverse {
+    0% {
+        transform: rotate(-180deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}

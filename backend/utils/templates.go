@@ -3,11 +3,15 @@ package utils
 import (
 	"html/template"
 	"net/http"
+	"time"
 )
 
 var templateMap = template.FuncMap{
 	"safeURL": func(u string) template.URL {
 		return template.URL(u)
+	},
+	"formatDate": func(t time.Time) string {
+		return t.Format("2006-01-02 15:04:05")
 	},
 }
 

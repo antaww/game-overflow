@@ -46,7 +46,7 @@
                             <div class="topic-category">{{.Category}}</div>
                             <p class="topic-title">{{.Title}}</p>
                             <div class="topic-views posts-views">{{.Views}} views</div>
-                            <p class="posts-content">{{(index .Messages 0).Content}}</p>
+                            <p class="posts-content">{{$firstMessage.Content}}</p>
                         </div>
                         <div class="topic-likes">
                             <a href="#" class="like-function">
@@ -62,7 +62,7 @@
                 <div class="topic-general-info">
                     <div class="topic-answers">answers</div>
                     <div class="topic-tags">tags</div>
-                    <div class="topic-date">date</div>
+                    <div class="topic-date">{{formatDate $firstMessage.CreatedAt}}</div>
                 </div>
 
             </div>
@@ -135,7 +135,7 @@
             </div>
         </div>
         <div class="topic-general-info">
-            <div class="topic-date">{{.CreatedAt}}</div>
+            <div class="topic-date">{{formatDate .CreatedAt}}</div>
         </div>
     </div>
 {{end}}
