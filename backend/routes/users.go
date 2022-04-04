@@ -9,6 +9,7 @@ import (
 	"main/utils"
 	"mime/multipart"
 	"net/http"
+	"strconv"
 )
 
 func SettingsRoute(w http.ResponseWriter, r *http.Request) {
@@ -83,6 +84,33 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 
 func LikeRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
+		cookie, err := r.Cookie("session")
+		if err != nil {
+			log.Fatal(err)
+		}
+		_, err = sql.GetUserBySession(cookie.Value)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		messageId_arg := r.URL.Query().Get("id")
+		messageId, err := strconv.ParseInt(messageId_arg, 10, 64)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		_, err = sql.LikeMessage(TemplatesData.ConnectedUser.Id, messageId)
+		if err != nil {
+			log.Fatal(err)
+		}
+		w.WriteHeader(http.StatusOK)
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Header", "Content-Type")
+	}
+}
+
+func DislikeRoute(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
 		err := r.ParseForm()
 		if err != nil {
 			log.Fatal(err)
@@ -97,7 +125,14 @@ func LikeRoute(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 
-		r.Method = "GET"
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		messageId_arg := r.URL.Query().Get("id")
+		messageId, _ := strconv.ParseInt(messageId_arg, 10, 64)
+		_, err = sql.DislikeMessage(TemplatesData.ConnectedUser.Id, messageId)
+		if err != nil {
+			log.Fatal(err)
+		}
+		w.WriteHeader(http.StatusOK)
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Header", "Content-Type")
 	}
 }

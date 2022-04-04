@@ -1,11 +1,12 @@
 {{define "content"}}
+    <script defer src="/scripts/messages.js"></script>
     {{template "navbar"}}
     <div class="feed-content">
         <div class="feed topic-feed">
-            <div class="post" data-post-id="{{.Id}}">
+            {{$firstMessage := (index .Messages 0)}}
+            <div class="post" data-post-id="{{$firstMessage.Id}}">
                 <div>
                     <div>
-                        {{$firstMessage := (index .Messages 0)}}
                         {{if eq .IsClosed false}}
                             <div class="topic-open">Open<i class="fa-solid fa-lock-open topic-open"></i></div>
                         {{else}}
@@ -48,11 +49,11 @@
                             <p class="posts-content">{{(index .Messages 0).Content}}</p>
                         </div>
                         <div class="topic-likes">
-                            <a href="/like">
-                                <i class="fa-solid fa-angle-up like-function"></i>
+                            <a href="#" class="like-function">
+                                <i class="fa-solid fa-angle-up"></i>
                             </a>
-                            <p>3</p>
-                            <a href="/dislike">
+                            <p>{{$firstMessage.CalculatePoints}}</p>
+                            <a href="#">
                                 <i class="fa-solid fa-angle-down dislike-function"></i>
                             </a>
                         </div>
@@ -123,12 +124,12 @@
                     <p class="posts-content">{{.Content}}</p>
                 </div>
                 <div class="topic-likes">
-                    <a href="/like">
-                        <i class="fa-solid fa-angle-up like-function"></i>
+                    <a href="#" class="like-function">
+                        <i class="fa-solid fa-angle-up"></i>
                     </a>
                     <p>{{.CalculatePoints}}</p>
-                    <a href="/dislike">
-                        <i class="fa-solid fa-angle-down dislike-function"></i>
+                    <a href="/#" class="dislike-function">
+                        <i class="fa-solid fa-angle-down"></i>
                     </a>
                 </div>
             </div>
