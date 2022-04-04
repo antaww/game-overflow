@@ -5,8 +5,8 @@
             <div class="post" data-post-id="{{.Id}}">
                 <div>
                     <div>
-                        {{$firstMessage := (index .Messages 0)}}
-                        {{if eq .IsClosed false}}
+                        {{$firstMessage := (index .ShownTopic.Messages 0)}}
+                        {{if eq .ShownTopic.IsClosed false}}
                             <div class="topic-open">Open<i class="fa-solid fa-lock-open topic-open"></i></div>
                         {{else}}
                             <div class="topic-closed">Closed<i class="fa-solid fa-lock topic-closed"></i></div>
@@ -28,10 +28,10 @@
                     </div>
                     <div class="topic-content-likes">
                         <div>
-                            <div class="topic-category">{{.Category}}</div>
-                            <p class="topic-title">{{.Title}}</p>
-                            <div class="topic-views posts-views">{{.Views}} views</div>
-                            <p class="posts-content">{{(index .Messages 0).Content}}</p>
+                            <div class="topic-category">{{.ShownTopic.Category}}</div>
+                            <p class="topic-title">{{.ShownTopic.Title}}</p>
+                            <div class="topic-views posts-views">{{.ShownTopic.Views}} views</div>
+                            <p class="posts-content">{{$firstMessage.Content}}</p>
                         </div>
                         <div class="topic-likes">
                             <a href="/like">
@@ -52,20 +52,22 @@
 
             </div>
             <div class="messages">
-                {{range $index, $message := .Messages}}
+                {{range $index, $message := .ShownTopic.Messages}}
                     {{if ne $index 0}}
                         {{template "message" .}}
                     {{end}}
                 {{end}}
             </div>
-            <div class="write-message">
-                <form action="/post-message?id={{.Id}}" method="POST">
-                    <label>
-                        <textarea name="post-text" placeholder="Type something..." class="text-area" rows="8"></textarea>
-                    </label>
-                    <button type="submit"><i class="fa-thin fa-paper-plane-top submit-plane"></i></button>
-                </form>
-            </div>
+            {{if not .ConnectedUser}}
+                <div class="write-message">
+                    <form action="/post-message?id={{.ShownTopic.Id}}" method="POST">
+                        <label>
+                            <textarea name="post-text" placeholder="Type something..." class="text-area" rows="8"></textarea>
+                        </label>
+                        <button type="submit"><i class="fa-thin fa-paper-plane-top submit-plane"></i></button>
+                    </form>
+                </div>
+            {{end}}
         </div>
     </div>
 {{end}}

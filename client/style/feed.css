@@ -133,3 +133,22 @@
 .trends {
     position: fixed;
 }
+
+/* CREATE TOPIC */
+
+.create-topic {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #7B61FF;
+    border-radius: 15px;
+    font-weight: 700;
+    padding: 1vh 2vh 1vh 1vh;
+    margin: 2vh;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.create-topic i {
+    margin-left: 5%;
+}
