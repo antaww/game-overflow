@@ -26,6 +26,7 @@ body {
     top: 0;
     height: 10vh;
     font-weight: 800;
+    z-index: 100000000;
 }
 
 .logo {
