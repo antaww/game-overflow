@@ -36,9 +36,11 @@ func IndexRoute(w http.ResponseWriter, r *http.Request) {
 		TemplatesData.ConnectedUser = user
 	}
 
-	err = sql.SetUserOnline(TemplatesData.ConnectedUser.Id, true)
-	if err != nil {
-		log.Fatal(err)
+	if TemplatesData.ConnectedUser != nil {
+		err = sql.SetUserOnline(TemplatesData.ConnectedUser.Id, true)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 
 	if path == "" {
