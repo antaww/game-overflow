@@ -3,11 +3,12 @@
     {{template "navbar"}}
     <div class="feed-content">
         <div class="feed topic-feed">
-            {{$firstMessage := (index .Messages 0)}}
+            {{$firstMessage := (index .ShownTopic.Messages 0)}}
             <div class="post" data-post-id="{{$firstMessage.Id}}">
                 <div>
                     <div>
-                        {{if eq .IsClosed false}}
+                        {{if eq .ShownTopic.IsClosed false}}
+
                             <div class="topic-open">Open<i class="fa-solid fa-lock-open topic-open"></i></div>
                         {{else}}
                             <div class="topic-closed">Closed<i class="fa-solid fa-lock topic-closed"></i></div>
@@ -43,10 +44,9 @@
                     </div>
                     <div class="topic-content-likes">
                         <div>
-                            <div class="topic-category">{{.Category}}</div>
-                            <p class="topic-title">{{.Title}}</p>
-                            <div class="topic-views posts-views">{{.Views}} views</div>
-                            <p class="posts-content">{{$firstMessage.Content}}</p>
+                            <div class="topic-category">{{.ShownTopic.Category}}</div>
+                            <p class="topic-title">{{.ShownTopic.Title}}</p>
+                            <div class="topic-views posts-views">{{.ShownTopic.Views}} views</div>                            <p class="posts-content">{{$firstMessage.Content}}</p>
                         </div>
                         <div class="topic-likes">
                             <a href="#" class="like-function">
@@ -67,21 +67,24 @@
 
             </div>
             <div class="messages">
-                {{range $index, $message := .Messages}}
+                {{range $index, $message := .ShownTopic.Messages}}
                     {{if ne $index 0}}
                         {{template "message" .}}
                     {{end}}
                 {{end}}
             </div>
-            <div class="write-message">
-                <form action="/post-message?id={{.Id}}" method="POST">
-                    <label>
-                        <textarea name="post-text" placeholder="Type something..." class="text-area"
-                                  rows="8"></textarea>
-                    </label>
-                    <button type="submit"><i class="fa-thin fa-paper-plane-top submit-plane"></i></button>
-                </form>
-            </div>
+            {{if not .ConnectedUser}}
+                <div></div>
+            {{else}}
+                <div class="write-message">
+                    <form action="/post-message?id={{.ShownTopic.Id}}" method="POST">
+                        <label>
+                            <textarea name="post-text" placeholder="Type something..." class="text-area" rows="8"></textarea>
+                        </label>
+                        <button type="submit"><i class="fa-thin fa-paper-plane-top submit-plane"></i></button>
+                    </form>
+                </div>
+            {{end}}
         </div>
     </div>
 {{end}}

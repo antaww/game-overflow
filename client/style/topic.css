@@ -98,3 +98,62 @@
 .like-function:hover, .dislikes-function:hover {
     cursor: pointer;
 }
+
+/* NEW TOPIC */
+
+.new-topic {
+    margin-top: 13vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.new-topic > p {
+    font-size: 3vh;
+    font-weight: 800;
+}
+
+.create-topic-options {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 3vh;
+}
+
+.create-topic-options > p {
+    margin: 0;
+}
+
+.create-topic-category {
+    display: flex;
+}
+
+.create-topic-category > label {
+    margin-right: 1vh;
+}
+
+.btn {
+    background-color: #17629E;
+    border: none;
+    border-radius: 15px;
+    color: #FFF;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin: 2rem 0;
+    padding: 1vh 2vh 1vh 1vh;
+    width: fit-content;
+    white-space: nowrap;
+}
+
+.btn i {
+    margin-left: 1vh;
+}
+
+.create-topic-input {
+    margin-top: 1vh;
+    background-color: #1F1F23;
+    border: none;
+    font-size: 1.1rem;
+    margin-bottom: 0.5em;
+    padding: 1vh;
+}
+

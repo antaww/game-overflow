@@ -24,11 +24,14 @@
     border-radius: 12px;
 }
 
+.feed > a > div:not(.circle) {
+    width: 100%;
+}
+
 .feed > a > div {
     margin-left: 6%;
     display: flex;
     flex-direction: column;
-    width: 100%;
 }
 
 .feed > a > div > div {
@@ -132,4 +135,24 @@
 
 .trends {
     position: fixed;
+}
+
+/* CREATE TOPIC */
+
+.create-topic {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #7B61FF;
+    border-radius: 15px;
+    font-weight: 700;
+    padding: 1vh 2vh 1vh 1vh;
+    margin: 3vh;
+    white-space: nowrap;
+    text-decoration: none;
+    border: none;
+}
+
+.create-topic i {
+    margin-left: 1vh;
 }
