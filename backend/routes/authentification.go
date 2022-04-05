@@ -85,6 +85,11 @@ func LogoutRoute(w http.ResponseWriter, r *http.Request) {
 	//logout user
 	err = sql.CookieLogout(*cookie, w)
 
+	err = sql.SetUserOnline(TemplatesData.ConnectedUser.Id, false)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	if err != nil {
 		log.Fatal(err)
 	}

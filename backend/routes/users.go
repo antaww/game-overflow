@@ -198,3 +198,9 @@ func DislikeRoute(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
+//func IsActiveRoute(w http.ResponseWriter, r *http.Request) {
+//	fmt.Println(TemplatesData.ConnectedUser.IsOnline)
+//	w.Header().Set("Content-Type", "application/json")
+//	json.NewEncoder(w).Encode(TemplatesData.ConnectedUser.IsOnline)
+//}
