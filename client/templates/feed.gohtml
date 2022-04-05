@@ -5,7 +5,6 @@
     <div class="feed-content">
         <div class="feed">
             {{range .ShownTopics}}
-                {{$firstMessage := (index .Messages 0)}}
                 <a href="/topic?id={{.Id}}">
                     <img src="/resources/test.png" alt="avatar">
                     <div>
@@ -28,7 +27,7 @@
                             </div>
                             <div class="topic-likes">
                                 <i class="fa-solid fa-angle-up like-function"></i>
-                                <p>{{$firstMessage.CalculatePoints}}</p>
+                                <p>{{.GetFirstMessage.CalculatePoints}}</p>
                                 <i class="fa-solid fa-angle-down dislike-function"></i>
                             </div>
                         </div>
@@ -38,13 +37,12 @@
                                 <div class="topic-views">{{.Views}} views</div>
                                 <div class="topic-tags">tags</div>
                             </div>
-                            <div class="topic-date">date</div>
+                            <div class="topic-date">{{formatDate .GetFirstMessage.CreatedAt}}</div>
                         </div>
                     </div>
                 </a>
             {{end}}
         </div>
-
         <div class="trends"></div>
 
         <a href="create-topic" class="create-topic">Post a question <i class="fa-solid fa-arrow-right"></i></a>

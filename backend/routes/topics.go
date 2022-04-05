@@ -61,16 +61,21 @@ func PostMessageRoute(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateTopicRoute(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "GET" {
-		if TemplatesData.ConnectedUser == nil {
-			http.Redirect(w, r, "/", http.StatusSeeOther)
-			return
-		}
-		err := utils.CallTemplate("create-topic", TemplatesData, w)
-		if err != nil {
-			log.Fatal(err)
-		}
+
+	err := utils.CallTemplate("create-topic", TemplatesData, w)
+	if err != nil {
+		log.Fatal(err)
 	}
+	//if r.Method == "GET" {
+	//	if TemplatesData.ConnectedUser == nil {
+	//		http.Redirect(w, r, "/", http.StatusSeeOther)
+	//		return
+	//	}
+	//	err := utils.CallTemplate("create-topic", TemplatesData, w)
+	//	if err != nil {
+	//		log.Fatal(err)
+	//	}
+	//}
 
 	if r.Method == "POST" {
 		//get cookie from browser
