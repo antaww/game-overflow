@@ -14,7 +14,7 @@ import (
 )
 
 const inactiveTime = 60 * time.Second
-const printDelay = 10 * time.Second
+const updateDelay = 1 * time.Second
 
 func main() {
 	err := godotenv.Load("../.env")
@@ -113,6 +113,6 @@ func IsUserActive() {
 			}
 
 		}
-		time.Sleep(printDelay)
+		time.Sleep(updateDelay)
 	}
 }

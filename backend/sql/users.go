@@ -190,10 +190,19 @@ func SaveUser(user User) (bool, error) {
 	return true, nil
 }
 
-func LikeMessage(messageId, userId int64) (bool, error) {
-	_, err := DB.Exec("INSERT INTO message_like VALUES (?, ?, ?)", messageId, userId, true)
+func DeleteDislikeMessage(messageId, userId int64) (bool, error) {
+	_, err := DB.Exec("DELETE FROM message_like WHERE id_message = ? AND id_user = ?", messageId, userId)
 	if err != nil {
-		return false, fmt.Errorf("LikeMessage error: %v", err)
+		return false, fmt.Errorf("DeleteDislikeMessage error: %v", err)
+	}
+
+	return true, nil
+}
+
+func DeleteLikeMessage(messageId, userId int64) (bool, error) {
+	_, err := DB.Exec("DELETE FROM message_like WHERE id_message = ? AND id_user = ?", messageId, userId)
+	if err != nil {
+		return false, fmt.Errorf("DeleteLikeMessage error: %v", err)
 	}
 
 	return true, nil
@@ -206,6 +215,32 @@ func DislikeMessage(messageId, userId int64) (bool, error) {
 	}
 
 	return true, nil
+}
+
+func LikeMessage(messageId, userId int64) (bool, error) {
+	_, err := DB.Exec("INSERT INTO message_like VALUES (?, ?, ?)", messageId, userId, true)
+	if err != nil {
+		return false, fmt.Errorf("LikeMessage error: %v", err)
+	}
+
+	return true, nil
+}
+
+func MessageGetLikeFrom(messageId, userId int64) (*MessageLike, error) {
+	result, err := DB.Query("SELECT * FROM message_like WHERE id_message = ? AND id_user = ?", messageId, userId)
+	if err != nil {
+		return nil, fmt.Errorf("MessageGetLikeFrom error: %v", err)
+	}
+
+	messageLike := &MessageLike{}
+	if result.Next() {
+		err = result.Scan(&messageLike.IdMessage, &messageLike.IdUser, &messageLike.Like)
+		HandleSQLErrors(result)
+		return messageLike, nil
+	} else {
+		HandleSQLErrors(result)
+		return nil, nil
+	}
 }
 
 func AddMessage(idUser int64, idTopic int64, message string) error {
