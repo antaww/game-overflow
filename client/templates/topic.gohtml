@@ -74,6 +74,8 @@
                 {{end}}
             </div>
             {{if not .ConnectedUser}}
+                <div></div>
+            {{else}}
                 <div class="write-message">
                     <form action="/post-message?id={{.ShownTopic.Id}}" method="POST">
                         <label>

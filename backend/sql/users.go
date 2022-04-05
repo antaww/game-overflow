@@ -1,6 +1,7 @@
 package sql
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"main/utils"
@@ -243,22 +244,24 @@ func MessageGetLikeFrom(messageId, userId int64) (*MessageLike, error) {
 	}
 }
 
-func AddMessage(idUser int64, idTopic int64, message string) error {
-	_, err := DB.Exec("INSERT INTO messages VALUES (?, ?, ?, ?, ?, ?, ?)", utils.GenerateID(), message, time.Now(), 0, 0, idTopic, idUser)
+func AddMessage(idUser int64, idTopic int64, message string) (int64, error) {
+	id := utils.GenerateID()
+	_, err := DB.Exec("INSERT INTO messages VALUES (?, ?, ?, ?, ?)", id, message, time.Now(), idTopic, idUser)
 	if err != nil {
-		return fmt.Errorf("SaveUser error: %v", err)
+		return 0, fmt.Errorf("CreateTopic error: %v", err)
 	}
 	fmt.Printf("message added to the topic %v\n", strconv.FormatInt(idTopic, 10))
-	return nil
+	return id, nil
 }
 
-func CreateTopic(title string, category string) error {
-	_, err := DB.Exec("INSERT INTO topics VALUES (?, ?, ?, ?, ?, ?)", utils.GenerateID(), title, 0, 0, category, nil)
+func CreateTopic(title string, category string) (int64, error) {
+	id := utils.GenerateID()
+	_, err := DB.Exec("INSERT INTO topics VALUES (?, ?, ?, ?, ?, ?)", id, title, 0, 0, category, sql.NullInt64{})
 	if err != nil {
-		return fmt.Errorf("SaveUser error: %v", err)
+		return 0, fmt.Errorf("CreateTopic error: %v", err)
 	}
 	fmt.Printf("topic '%v' added to the category '%v'", title, category)
-	return nil
+	return id, nil
 }
 
 //create a function that will set the user online (is_online = 1)
