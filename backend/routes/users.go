@@ -9,7 +9,6 @@ import (
 	"main/utils"
 	"mime/multipart"
 	"net/http"
-	"strconv"
 )
 
 func SettingsRoute(w http.ResponseWriter, r *http.Request) {
@@ -79,123 +78,6 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 
 		r.Method = "GET"
 		http.Redirect(w, r, "/Settings", http.StatusSeeOther)
-	}
-}
-
-func LikeRoute(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "POST" {
-		cookie, err := r.Cookie("session")
-		if err != nil {
-			if err == http.ErrNoCookie {
-				return
-			}
-
-			log.Fatal(err)
-		}
-
-		user, err := sql.GetUserBySession(cookie.Value)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		TemplatesData.ConnectedUser = user
-
-		messageIdArg := r.URL.Query().Get("id")
-		messageId, err := strconv.ParseInt(messageIdArg, 10, 64)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		messageLike, err := sql.MessageGetLikeFrom(messageId, user.Id)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		if messageLike == nil {
-			_, err = sql.LikeMessage(messageId, user.Id)
-			if err != nil {
-				log.Fatal(err)
-			}
-		} else if messageLike.Like {
-			_, err = sql.DeleteLikeMessage(messageId, user.Id)
-			if err != nil {
-				log.Fatal(err)
-			}
-		} else {
-			_, err = sql.DeleteDislikeMessage(messageId, user.Id)
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			_, err = sql.LikeMessage(messageId, user.Id)
-			if err != nil {
-				log.Fatal(err)
-			}
-		}
-
-		err = TemplatesData.ShownTopic.FetchMessages()
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		err = utils.ReloadActualTemplate(TemplatesData.ShownTopic, w)
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-}
-
-func DislikeRoute(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "POST" {
-		cookie, err := r.Cookie("session")
-		if err != nil {
-			if err == http.ErrNoCookie {
-				return
-			}
-
-			log.Fatal(err)
-		}
-
-		user, err := sql.GetUserBySession(cookie.Value)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		TemplatesData.ConnectedUser = user
-
-		messageIdArg := r.URL.Query().Get("id")
-		messageId, _ := strconv.ParseInt(messageIdArg, 10, 64)
-
-		messageLike, err := sql.MessageGetLikeFrom(messageId, user.Id)
-		if err != nil {
-			log.Fatal(err)
-		}
-		if messageLike == nil {
-			_, err = sql.DislikeMessage(messageId, user.Id)
-			if err != nil {
-				log.Fatal(err)
-			}
-		} else if !messageLike.Like {
-			_, err = sql.DeleteDislikeMessage(messageId, user.Id)
-			if err != nil {
-				log.Fatal(err)
-			}
-		} else {
-			_, err = sql.DeleteLikeMessage(messageId, user.Id)
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			_, err = sql.DislikeMessage(messageId, user.Id)
-			if err != nil {
-				log.Fatal(err)
-			}
-		}
-
-		_, err = sql.DislikeMessage(TemplatesData.ConnectedUser.Id, messageId)
-		if err != nil {
-			log.Fatal(err)
-		}
 	}
 }
 

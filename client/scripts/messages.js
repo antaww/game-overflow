@@ -1,13 +1,32 @@
-const likeButton = document.querySelectorAll('.like-function');
+const likeButtons = document.querySelectorAll('.like-btn');
+const dislikeButtons = document.querySelectorAll('.dislike-btn');
 
-likeButton.forEach(button => {
+likeButtons.forEach(button => {
     button.addEventListener('click', (event) => {
         const postId = event.target.closest('.post').getAttribute('data-post-id');
         const url = `/like?id=${postId}`;
-        const method = 'POST';
+
         fetch(url, {
-            method,
+            method: 'PUT',
             mode: 'cors'
-        })
+        }).then(r => r.json()).then(data => {
+            const likes = document.querySelector(`[data-post-id="${postId}"] .points`);
+            likes.innerText = data.points;
+        });
+    });
+});
+
+dislikeButtons.forEach(button => {
+    button.addEventListener('click', (event) => {
+        const postId = event.target.closest('.post').getAttribute('data-post-id');
+        const url = `/dislike?id=${postId}`;
+
+        fetch(url, {
+            method: 'PUT',
+            mode: 'cors'
+        }).then(r => r.json()).then(data => {
+            const likes = document.querySelector(`[data-post-id="${postId}"] .points`);
+            likes.innerText = data.points;
+        });
     });
 });

@@ -95,7 +95,7 @@
     width: 80%;
 }
 
-.like-function:hover, .dislikes-function:hover {
+.like-btn:hover, .dislike-btn:hover {
     cursor: pointer;
 }
 
