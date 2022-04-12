@@ -110,6 +110,7 @@ body {
     border: 2px solid #17629E;
     color: #FFF;
     width: fit-content;
+    margin-right: 1vh;
 }
 
 .log-in {
