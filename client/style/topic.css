@@ -159,11 +159,17 @@
 }
 
 .create-topic-input {
-    margin-top: 1vh;
     background-color: #1F1F23;
     border: none;
+    border-radius: 0.5rem;
     font-size: 1.1rem;
+    margin-top: 1vh;
     margin-bottom: 0.5em;
     padding: 1vh;
 }
 
+textarea.create-topic-input {
+    resize: vertical;
+    min-height: 8em;
+    max-height: 100em;
+}
