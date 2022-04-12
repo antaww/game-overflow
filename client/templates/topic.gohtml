@@ -78,9 +78,9 @@
                 <div class="write-message">
                     <form action="/post-message?id={{.ShownTopic.Id}}" method="POST">
                         <label>
-                            <textarea name="post-text" placeholder="Type something..." class="text-area" rows="8"></textarea>
+                            <textarea name="post-text" placeholder="Type something..." class="text-area" rows="8" required></textarea>
                         </label>
-                        <button type="submit"><i class="fa-thin fa-paper-plane-top submit-plane"></i></button>
+                        <button type="submit" class="post-message-button"><i class="fa-solid fa-location-arrow submit-plane"></i></button>
                     </form>
                 </div>
             {{end}}
