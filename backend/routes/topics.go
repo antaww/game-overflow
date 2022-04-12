@@ -9,6 +9,7 @@ import (
 	"net/url"
 	"runtime/debug"
 	"strconv"
+	"strings"
 )
 
 type LikeResponse struct {
@@ -43,6 +44,10 @@ func CreateTopicRoute(w http.ResponseWriter, r *http.Request) {
 		category := r.Form["category"][0]
 		title := r.Form["title"][0]
 		content := r.Form["content"][0]
+		tags := r.Form["tags"][0]
+		replace := strings.ReplaceAll(tags, ",", " ")
+		replace = strings.ReplaceAll(replace, ";", " ")
+		fields := strings.Fields(replace)
 		//select user from session
 		result, err := sql.DB.Query("SELECT id_user FROM sessions WHERE id_session = ?", cookie.Value)
 		if err != nil {
@@ -64,7 +69,8 @@ func CreateTopicRoute(w http.ResponseWriter, r *http.Request) {
 
 		fmt.Println(category)
 		fmt.Println(title)
-		idTopic, err := sql.CreateTopic(title, category)
+		fmt.Println(tags)
+		idTopic, err := sql.CreateTopic(title, category, fields)
 		if err != nil {
 			log.Fatal(err)
 		}

@@ -254,11 +254,17 @@ func AddMessage(idUser int64, idTopic int64, message string) (int64, error) {
 	return id, nil
 }
 
-func CreateTopic(title string, category string) (int64, error) {
+func CreateTopic(title string, category string, tags []string) (int64, error) {
 	id := utils.GenerateID()
 	_, err := DB.Exec("INSERT INTO topics VALUES (?, ?, ?, ?, ?, ?)", id, title, 0, 0, category, sql.NullInt64{})
 	if err != nil {
 		return 0, fmt.Errorf("CreateTopic error: %v", err)
+	}
+	for _, tag := range tags {
+		_, err := DB.Exec("INSERT INTO have VALUES (?, ?)", id, tag)
+		if err != nil {
+			return 0, fmt.Errorf("Tags error: %v", err)
+		}
 	}
 	fmt.Printf("topic '%v' added to the category '%v'", title, category)
 	return id, nil

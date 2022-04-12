@@ -107,3 +107,26 @@ func (message *Message) CalculatePoints() int {
 
 	return count
 }
+
+// GetTags returns all tags from a topic id
+func GetTags(topicId int64) ([]string, error) {
+	rows, err := DB.Query("SELECT * FROM have WHERE id_topic = ?", topicId)
+	if err != nil {
+		return nil, err
+	}
+
+	var tags []string
+	for rows.Next() {
+		var tag string
+		err = rows.Scan(&tag)
+		if err != nil {
+			return nil, err
+		}
+
+		tags = append(tags, tag)
+	}
+
+	HandleSQLErrors(rows)
+
+	return tags, nil
+}
