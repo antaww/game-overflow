@@ -110,7 +110,7 @@ func (message *Message) CalculatePoints() int {
 
 // GetTags returns all tags from a topic id
 func GetTags(topicId int64) ([]string, error) {
-	rows, err := DB.Query("SELECT * FROM have WHERE id_topic = ?", topicId)
+	rows, err := DB.Query("SELECT tag_name FROM have WHERE id_topic = ?", topicId)
 	if err != nil {
 		return nil, err
 	}
@@ -129,4 +129,14 @@ func GetTags(topicId int64) ([]string, error) {
 	HandleSQLErrors(rows)
 
 	return tags, nil
+}
+
+func (topic *Topic) FetchTags() error {
+	tags, err := GetTags(topic.Id)
+	if err != nil {
+		return err
+	}
+
+	topic.Tags = tags
+	return nil
 }

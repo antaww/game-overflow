@@ -45,7 +45,8 @@
                         <div>
                             <div class="topic-category">{{.ShownTopic.Category}}</div>
                             <p class="topic-title">{{.ShownTopic.Title}}</p>
-                            <div class="topic-views posts-views">{{.ShownTopic.Views}} views</div>                            <p class="posts-content">{{$firstMessage.Content}}</p>
+                            <div class="topic-views posts-views">{{.ShownTopic.Views}} views</div>
+                            <p class="posts-content">{{$firstMessage.Content}}</p>
                         </div>
                         <div class="topic-likes">
                             <a href="#" class="like-btn">
@@ -60,7 +61,9 @@
                 </div>
                 <div class="topic-general-info">
                     <div class="topic-answers">{{MinusOne (len .ShownTopic.Messages) }} answers</div>
-                    <div class="topic-tags">tags</div>
+                    {{range .ShownTopic.Tags}}
+                        <div class="topic-tags">{{.}}</div>
+                    {{end}}
                     <div class="topic-date">{{formatDate $firstMessage.CreatedAt}}</div>
                 </div>
 
@@ -78,9 +81,11 @@
                 <div class="write-message">
                     <form action="/post-message?id={{.ShownTopic.Id}}" method="POST">
                         <label>
-                            <textarea name="post-text" placeholder="Type something..." class="text-area" rows="8" required></textarea>
+                            <textarea name="post-text" placeholder="Type something..." class="text-area" rows="8"
+                                      required></textarea>
                         </label>
-                        <button type="submit" class="post-message-button"><i class="fa-solid fa-location-arrow submit-plane"></i></button>
+                        <button type="submit" class="post-message-button"><i
+                                    class="fa-solid fa-location-arrow submit-plane"></i></button>
                     </form>
                 </div>
             {{end}}

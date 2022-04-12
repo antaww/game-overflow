@@ -57,7 +57,9 @@
                         <div>
                             <div class="views-tags">
                                 <div class="topic-views">{{.Views}} views</div>
-                                <div class="topic-tags">tags</div>
+                                {{range .Tags}}
+                                    <div class="topic-tags">{{.}}</div>
+                                {{end}}
                             </div>
                             <div class="topic-date">{{formatDate .GetFirstMessage.CreatedAt}}</div>
                         </div>
