@@ -67,7 +67,11 @@
         </div>
         <div class="trends"></div>
 
-        <a href="create-topic" class="create-topic">Post a question <i class="fa-solid fa-arrow-right"></i></a>
+        {{if or (not .ConnectedUser) (eq .ShownTopic.IsClosed true)}}
+            <div></div>
+        {{else}}
+            <a href="create-topic" class="create-topic">Post a question <i class="fa-solid fa-arrow-right"></i></a>
+        {{end}}
     </div>
 
 {{end}}
