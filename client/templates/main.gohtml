@@ -11,42 +11,6 @@
         <body>
             {{block "content" .}}
                 {{template "navbar" .}}
-                {{block "page" .}}
-                    <form method="POST" action="/post-message">
-                        <div>
-                            <label>
-                                <textarea class="message-area" id="wmd-input" name="post-text"
-                                          cols="92" rows="15" style="height: 102px;"></textarea>
-                            </label>
-                        </div>
-                        <div class="actions">
-                            <button type="submit" value="Post" style="position: relative;top: 484px;left: 160px;">
-                                Post
-                            </button>
-                        </div>
-                    </form>
-                    <form method="POST" action="/create-topic">
-                        <div class="input_area">
-                            <label>
-                                <input type="text" placeholder="Topic title" name="topic-title"/>
-                            </label>
-                            <select name="topic-category"
-                                    style="width: 100px;position: relative;left: 500px;color: black;">
-                                <option value="pc">PC</option>
-                                <option value="playstation">PlayStation</option>
-                                <option value="xbox">Xbox</option>
-                                <option value="nintendo">Nintendo</option>
-                                <option value="mobile">Mobile</option>
-                                <option value="others">Others</option>
-                            </select>
-                        </div>
-                        <div class="actions">
-                            <button type="submit" value="Post" style="position: relative;top: 0px;left: 150px;">
-                                Create
-                            </button>
-                        </div>
-                    </form>
-                {{end}}
             {{end}}
         </body>
     </html>
