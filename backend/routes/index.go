@@ -5,6 +5,7 @@ import (
 	"main/sql"
 	"main/utils"
 	"net/http"
+	"regexp"
 	"strings"
 	"time"
 )
@@ -38,7 +39,12 @@ func IndexRoute(w http.ResponseWriter, r *http.Request) {
 }
 
 func LogHandler(w http.ResponseWriter, r *http.Request) {
-	if !strings.HasSuffix(".css", r.URL.String()) && !strings.HasSuffix(".png", r.URL.String()) {
+	matches, err := regexp.MatchString("\\.(css|png)$", r.URL.String())
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if !matches {
 		log.Printf("%v %v", r.Method, r.URL.String())
 		go func() {
 			PageLoadedTime = time.Now()
