@@ -309,11 +309,12 @@ body {
     float: right;
     font-size: 28px;
     font-weight: bold;
+    transition: all .3s;
 }
 
 .close:hover,
 .close:focus {
-    color: #000;
+    color: #fff;
     text-decoration: none;
     cursor: pointer;
 }
@@ -322,9 +323,14 @@ body {
     background-color: #fefefe;
     margin: auto;
     padding: 20px;
-    border: 1px solid #888;
     width: fit-content;
-    min-width: 50vw;
-    min-height: 50vw;
+    min-width: 25vw;
+    min-height: 25vw;
     border-radius: 2vw;
+    background-color: #2E3944;
+}
+
+.modal-about {
+    font-weight: bold;
+    color: #505a64;
 }
