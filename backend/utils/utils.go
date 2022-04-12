@@ -1,8 +1,10 @@
 package utils
 
 import (
+	"encoding/json"
 	"log"
 	"math/rand"
+	"net/http"
 	"strconv"
 	"time"
 )
@@ -19,6 +21,21 @@ func GenerateID() int64 {
 
 func GenerateNumbers(length int) int64 {
 	return rand.Int63n(int64(length))
+}
+
+func SendResponse(w http.ResponseWriter, data interface{}) error {
+	w.Header().Set("Content-Type", "application/json")
+	bytes, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+
+	_, err = w.Write(bytes)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func RandomString(n int) string {

@@ -51,7 +51,7 @@ func main() {
 
 	http.HandleFunc("/feed", FeedRoute)
 
-	http.HandleFunc("/topic", TopicsRoute)
+	http.HandleFunc("/topic", TopicRoute)
 
 	http.HandleFunc("/like", LikeRoute)
 

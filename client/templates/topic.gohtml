@@ -8,7 +8,6 @@
                 <div>
                     <div>
                         {{if eq .ShownTopic.IsClosed false}}
-
                             <div class="topic-open">Open<i class="fa-solid fa-lock-open topic-open"></i></div>
                         {{else}}
                             <div class="topic-closed">Closed<i class="fa-solid fa-lock topic-closed"></i></div>
@@ -49,12 +48,12 @@
                             <div class="topic-views posts-views">{{.ShownTopic.Views}} views</div>                            <p class="posts-content">{{$firstMessage.Content}}</p>
                         </div>
                         <div class="topic-likes">
-                            <a href="#" class="like-function">
+                            <a href="#" class="like-btn">
                                 <i class="fa-solid fa-angle-up"></i>
                             </a>
-                            <p>{{$firstMessage.CalculatePoints}}</p>
-                            <a href="#">
-                                <i class="fa-solid fa-angle-down dislike-function"></i>
+                            <p class="points">{{$firstMessage.CalculatePoints}}</p>
+                            <a href="#" class="dislike-btn">
+                                <i class="fa-solid fa-angle-down"></i>
                             </a>
                         </div>
                     </div>
@@ -127,11 +126,11 @@
                     <p class="posts-content">{{.Content}}</p>
                 </div>
                 <div class="topic-likes">
-                    <a href="#" class="like-function">
+                    <a href="#" class="like-btn">
                         <i class="fa-solid fa-angle-up"></i>
                     </a>
-                    <p>{{.CalculatePoints}}</p>
-                    <a href="/#" class="dislike-function">
+                    <p class="points">{{.CalculatePoints}}</p>
+                    <a href="#" class="dislike-btn">
                         <i class="fa-solid fa-angle-down"></i>
                     </a>
                 </div>

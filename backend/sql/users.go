@@ -235,7 +235,7 @@ func MessageGetLikeFrom(messageId, userId int64) (*MessageLike, error) {
 
 	messageLike := &MessageLike{}
 	if result.Next() {
-		err = result.Scan(&messageLike.IdMessage, &messageLike.IdUser, &messageLike.Like)
+		err = result.Scan(&messageLike.IdMessage, &messageLike.IdUser, &messageLike.IsLike)
 		HandleSQLErrors(result)
 		return messageLike, nil
 	} else {
