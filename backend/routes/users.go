@@ -60,11 +60,7 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 			newUser.ProfilePic = profilePicture
 		}
 
-		cookie, err := r.Cookie("session")
-		if err != nil {
-			log.Fatal(err)
-		}
-		user, err := sql.GetUserBySession(cookie.Value)
+		user, err := LoginUser(r)
 		if err != nil {
 			log.Fatal(err)
 		}

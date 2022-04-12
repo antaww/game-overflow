@@ -76,13 +76,15 @@ func LoginRoute(w http.ResponseWriter, r *http.Request) {
 }
 
 func LogoutRoute(w http.ResponseWriter, r *http.Request) {
-	//get cookie from browser
 	cookie, err := r.Cookie("session")
 	if err != nil {
+		if err == http.ErrNoCookie {
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			return
+		}
 		log.Fatal(err)
 	}
 
-	//logout user
 	err = sql.CookieLogout(*cookie, w)
 
 	err = sql.SetUserOnline(TemplatesData.ConnectedUser.Id, false)
@@ -118,14 +120,7 @@ func ConfirmPasswordRoute(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 
-		cookie, err := r.Cookie("session")
-		if err != nil {
-			log.Fatal(err)
-		}
-		user, err := sql.GetUserBySession(cookie.Value)
-		if err != nil {
-			log.Fatal(err)
-		}
+		user, err := sql.GetUserByRequest(r)
 
 		valid := sql.ConfirmPassword(user.Id, data.Password)
 		var success = struct {
