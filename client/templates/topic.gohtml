@@ -138,6 +138,9 @@
         </div>
         <div class="topic-general-info">
             <div class="topic-date">{{formatDate .CreatedAt}}</div>
+            {{if eq .Id .GetUser.Id}}
+                <div class="delete-comment"><i class="fa-solid fa-trash-can"></i></div>
+            {{end}}
         </div>
     </div>
 {{end}}

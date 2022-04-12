@@ -99,6 +99,7 @@
 .submit-plane {
     color: #1a66a5;
     font-size: 3vh;
+    cursor: pointer;
 }
 
 .sub-post {
