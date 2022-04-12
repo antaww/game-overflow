@@ -166,6 +166,13 @@ func FeedRoute(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 
+		for i := 0; i < len(topics); i++ {
+			topics[i].Tags, err = sql.GetTags(topics[i].Id)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
+
 		TemplatesData.ShownTopics = topics
 
 		err = utils.CallTemplate("feed", TemplatesData, w)
@@ -316,6 +323,11 @@ func TopicRoute(w http.ResponseWriter, r *http.Request) {
 		}
 
 		err = topic.FetchMessages()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		topic.Tags, err = sql.GetTags(Id)
 		if err != nil {
 			log.Fatal(err)
 		}
