@@ -7,7 +7,6 @@ import (
 	"main/utils"
 	"net/http"
 	"net/url"
-	"runtime/debug"
 	"strconv"
 )
 
@@ -33,34 +32,14 @@ func CreateTopicRoute(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		//get cookie from browser
-		cookie, err := r.Cookie("session")
-		if err != nil {
-			debug.PrintStack()
-			log.Fatal(err)
-		}
-
 		category := r.Form["category"][0]
 		title := r.Form["title"][0]
 		content := r.Form["content"][0]
-		//select user from session
-		result, err := sql.DB.Query("SELECT id_user FROM sessions WHERE id_session = ?", cookie.Value)
+
+		user, err := sql.GetUserByRequest(r)
 		if err != nil {
 			log.Fatal(err)
 		}
-
-		//get result from query
-		var idUser int64
-		if result.Next() {
-			err = result.Scan(&idUser)
-		}
-
-		//Handle sql errors, close the query to avoid memory leaks
-		sql.HandleSQLErrors(result)
-
-		// Get User, save for TemplatesData (to show user logged in in templates)
-		userConnected := sql.GetUserById(idUser)
-		TemplatesData.ConnectedUser = userConnected
 
 		fmt.Println(category)
 		fmt.Println(title)
@@ -69,7 +48,7 @@ func CreateTopicRoute(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 
-		idMessage, err := sql.AddMessage(userConnected.Id, idTopic, content)
+		idMessage, err := sql.AddMessage(user.Id, idTopic, content)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -88,21 +67,7 @@ func CreateTopicRoute(w http.ResponseWriter, r *http.Request) {
 
 func DislikeRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "PUT" {
-		cookie, err := r.Cookie("session")
-		if err != nil {
-			if err == http.ErrNoCookie {
-				return
-			}
-
-			log.Fatal(err)
-		}
-
-		user, err := sql.GetUserBySession(cookie.Value)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		TemplatesData.ConnectedUser = user
+		user, err := sql.GetUserByRequest(r)
 
 		messageIdArg := r.URL.Query().Get("id")
 		messageId, _ := strconv.ParseInt(messageIdArg, 10, 64)
@@ -150,44 +115,33 @@ func DislikeRoute(w http.ResponseWriter, r *http.Request) {
 }
 
 func FeedRoute(w http.ResponseWriter, r *http.Request) {
-	queries := r.URL.Query()
+	if r.Method == "GET" {
+		queries := r.URL.Query()
 
-	if queries.Has("category") {
-		category := queries.Get("category")
+		if queries.Has("category") {
+			category := queries.Get("category")
 
-		topics, err := sql.GetTopicsByCategories(category)
-		if err != nil {
-			log.Fatal(err)
-		}
+			topics, err := sql.GetTopicsByCategories(category)
+			if err != nil {
+				log.Fatal(err)
+			}
 
-		TemplatesData.ShownTopics = topics
+			TemplatesData.ShownTopics = topics
 
-		err = utils.CallTemplate("feed", TemplatesData, w)
-		if err != nil {
-			log.Fatal(err)
+			err = utils.CallTemplate("feed", TemplatesData, w)
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 	}
-
-	return
 }
 
 func LikeRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "PUT" {
-		cookie, err := r.Cookie("session")
-		if err != nil {
-			if err == http.ErrNoCookie {
-				return
-			}
-
-			log.Fatal(err)
-		}
-
-		user, err := sql.GetUserBySession(cookie.Value)
+		user, err := sql.GetUserByRequest(r)
 		if err != nil {
 			log.Fatal(err)
 		}
-
-		TemplatesData.ConnectedUser = user
 
 		messageIdArg := r.URL.Query().Get("id")
 		messageId, err := strconv.ParseInt(messageIdArg, 10, 64)
@@ -243,30 +197,10 @@ func LikeRoute(w http.ResponseWriter, r *http.Request) {
 }
 
 func PostMessageRoute(w http.ResponseWriter, r *http.Request) {
-	//get cookie from browser
-	cookie, err := r.Cookie("session")
+	user, err := sql.GetUserByRequest(r)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	//select user from session
-	result, err := sql.DB.Query("SELECT id_user FROM sessions WHERE id_session = ?", cookie.Value)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	//get result from query
-	var idUser int64
-	if result.Next() {
-		err = result.Scan(&idUser)
-	}
-
-	//Handle sql errors, close the query to avoid memory leaks
-	sql.HandleSQLErrors(result)
-
-	// Get User, save for TemplatesData (to show user logged in templates)
-	userConnected := sql.GetUserById(idUser)
-	TemplatesData.ConnectedUser = userConnected
 
 	// Get topic id from url
 	queries := r.URL.Query()
@@ -274,12 +208,12 @@ func PostMessageRoute(w http.ResponseWriter, r *http.Request) {
 	if queries.Has("id") {
 		id := queries.Get("id")
 
-		Id, err := strconv.ParseInt(id, 10, 64)
+		messageId, err := strconv.ParseInt(id, 10, 64)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		_, err = sql.AddMessage(idUser, Id, r.FormValue("post-text"))
+		_, err = sql.AddMessage(user.Id, messageId, r.FormValue("post-text"))
 		if err != nil {
 			log.Fatal(err)
 		}
