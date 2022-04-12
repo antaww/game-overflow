@@ -1,6 +1,6 @@
 {{define "content"}}
     <script defer src="/scripts/messages.js"></script>
-    {{template "navbar"}}
+    {{template "navbar" .}}
     <div class="feed-content">
         <div class="feed topic-feed">
             {{$firstMessage := (index .ShownTopic.Messages 0)}}
