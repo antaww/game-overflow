@@ -3,6 +3,8 @@ package utils
 import (
 	"encoding/json"
 	"log"
+	"main/routes"
+	"main/sql"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -53,4 +55,27 @@ func CheckUserStatus() {
 	for {
 		time.Sleep(time.Minute)
 	}
+}
+
+func LoginUser(r *http.Request) (*sql.User, error) {
+	cookie, err := r.Cookie("session")
+
+	if err != nil {
+		routes.TemplatesData.ConnectedUser = nil
+	} else {
+		user, err := sql.GetUserBySession(cookie.Value)
+		if err != nil {
+			return nil, err
+		}
+		routes.TemplatesData.ConnectedUser = user
+
+		err = sql.SetUserOnline(routes.TemplatesData.ConnectedUser.Id, true)
+		if err != nil {
+			return nil, err
+		}
+
+		return user, nil
+	}
+
+	return nil, nil
 }
