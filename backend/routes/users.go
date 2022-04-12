@@ -3,6 +3,7 @@ package routes
 import (
 	"bytes"
 	"encoding/base64"
+	"fmt"
 	"io"
 	"log"
 	"main/sql"
@@ -28,6 +29,8 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err)
 		}
+
+		fmt.Println("Form:", r.Form)
 
 		newUser := sql.User{
 			Username:    r.FormValue("username"),
@@ -62,15 +65,18 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 			newUser.ProfilePic = profilePicture
 		}
 
+		fmt.Println("avant")
 		user, err := LoginUser(r)
 		if err != nil {
 			log.Fatal(err)
 		}
+		fmt.Println("apres")
 
 		_, err = sql.EditUser(user.Id, newUser)
 		if err != nil {
 			log.Fatal(err)
 		}
+		fmt.Println(newUser)
 
 		TemplatesData.ConnectedUser = sql.GetUserById(user.Id)
 
