@@ -24,23 +24,9 @@ var PageLoadedTime time.Time
 
 func IndexRoute(w http.ResponseWriter, r *http.Request) {
 	path := strings.TrimPrefix(r.URL.Path, "/")
-	cookie, err := r.Cookie("session")
-
+	_, err := LoginUser(r)
 	if err != nil {
-		TemplatesData.ConnectedUser = nil
-	} else {
-		user, err := sql.GetUserBySession(cookie.Value)
-		if err != nil {
-			log.Fatal(err)
-		}
-		TemplatesData.ConnectedUser = user
-	}
-
-	if TemplatesData.ConnectedUser != nil {
-		err = sql.SetUserOnline(TemplatesData.ConnectedUser.Id, true)
-		if err != nil {
-			log.Fatal(err)
-		}
+		log.Fatal(err)
 	}
 
 	if path == "" {
@@ -58,5 +44,12 @@ func LogHandler(w http.ResponseWriter, r *http.Request) {
 			PageLoadedTime = time.Now()
 		}()
 	}
+	if r.Method == "GET" {
+		_, err := LoginUser(r)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
 	http.DefaultServeMux.ServeHTTP(w, r)
 }

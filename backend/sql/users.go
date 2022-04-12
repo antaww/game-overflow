@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"main/utils"
+	"net/http"
 	"strconv"
 	"strings"
 	"time"
@@ -141,6 +142,15 @@ func GetUserBySession(sessionId string) (*User, error) {
 	HandleSQLErrors(result)
 
 	return GetUserById(idUser), nil
+}
+
+func GetUserByRequest(r *http.Request) (*User, error) {
+	cookie, err := r.Cookie("session")
+	if err != nil {
+		return nil, fmt.Errorf("GetUserByRequest error: %v", err)
+	}
+
+	return GetUserBySession(cookie.Value)
 }
 
 // GetUserByUsername finds a user by username, returns nil if not found
