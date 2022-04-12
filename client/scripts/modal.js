@@ -25,18 +25,3 @@ span.forEach(function (element) {
         console.log("modal closed");
     }
 })
-
-//If the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
-    if (event.target.className === "myModal") {
-        event.target.style.display = "none";
-    }
-}
-
-document.addEventListener('click', function (event) {
-    const modal = [...modals].find(modal => modal.style.display !== "none");
-    modal.style.display = "none";
-    if (!isClickInsideElement) {
-        //Do something click is outside specified element
-    }
-});
