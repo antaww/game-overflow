@@ -71,7 +71,11 @@
             <div class="messages">
                 {{range $index, $message := .ShownTopic.Messages}}
                     {{if ne $index 0}}
-                        {{template "message" .}}
+                        {{if eq .ConnectedUser.Id $message.GetUser.Id}}
+                            {{template "ConnectedUserMessage" .}}
+                        {{else}}
+                            {{template "OtherUserMessage" .}}
+                        {{end}}
                     {{end}}
                 {{end}}
             </div>
@@ -93,7 +97,7 @@
     </div>
 {{end}}
 
-{{define "message"}}
+{{define "OtherUserMessage"}}
     <div class="post sub-post" data-post-id="{{.Id}}">
         <div>
             <div>
@@ -143,9 +147,6 @@
         </div>
         <div class="topic-general-info">
             <div class="topic-date">{{formatDate .CreatedAt}}</div>
-            {{if eq .Id .GetUser.Id}}
-                <div class="delete-comment"><i class="fa-solid fa-trash-can"></i></div>
-            {{end}}
         </div>
     </div>
 {{end}}
