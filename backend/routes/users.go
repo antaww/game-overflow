@@ -38,12 +38,14 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 
 		var profilePicture string
 		file, header, err := r.FormFile("profile-picture")
-		defer func(file multipart.File) {
-			err := file.Close()
-			if err != nil {
-				log.Fatal(err)
-			}
-		}(file)
+		if header != nil {
+			defer func(file multipart.File) {
+				err := file.Close()
+				if err != nil {
+					log.Fatal(err)
+				}
+			}(file)
+		}
 		if err != nil {
 			if err != http.ErrMissingFile {
 				log.Fatal(err)
@@ -73,7 +75,7 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 		TemplatesData.ConnectedUser = sql.GetUserById(user.Id)
 
 		r.Method = "GET"
-		http.Redirect(w, r, "/Settings", http.StatusSeeOther)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 }
 
