@@ -8,6 +8,7 @@ type Topic struct {
 	Category       string `db:"category_name"`
 	IdFirstMessage int64  `db:"id_first_message"`
 	Messages       []Message
+	Tags           []string
 }
 
 // GetPost returns topic by id
