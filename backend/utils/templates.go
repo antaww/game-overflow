@@ -1,14 +1,12 @@
 package utils
 
 import (
-	"fmt"
 	"html/template"
-	"main/routes"
 	"net/http"
 	"time"
 )
 
-var templateMap = template.FuncMap{
+var TemplateMap = template.FuncMap{
 	"safeURL": func(u string) template.URL {
 		return template.URL(u)
 	},
@@ -18,17 +16,73 @@ var templateMap = template.FuncMap{
 	"MinusOne": func(i int) int {
 		return i - 1
 	},
-	"ConnectedUserMessage": func(i int64) bool {
-		fmt.Println(i)
-		if i == routes.TemplatesData.ConnectedUser.Id {
-			return true
+	/*"ConnectedUserMessage": func(r *http.Request, id int64) bool {
+		// recreate database connection
+		DatabaseConfig := mysql.Config{
+			User:                 os.Getenv("DB_USER"),
+			Passwd:               os.Getenv("DB_PASSWORD"),
+			Net:                  "tcp",
+			Addr:                 os.Getenv("DB_ADDRESS"),
+			DBName:               "forum",
+			AllowNativePasswords: true,
+			ParseTime:            true,
 		}
-		return false
-	},
+
+		// connect
+		db, err := sql.Open("mysql", DatabaseConfig.FormatDSN())
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// test ping
+		pingErr := db.Ping()
+		if pingErr != nil {
+			log.Fatal(pingErr)
+		}
+
+		// get cookie
+		cookie, err := r.Cookie("session")
+		if err != nil {
+			return false
+		}
+
+		// get user id by session id
+		result, err := db.Query("SELECT id_user FROM sessions WHERE id_session = ?", cookie.Value)
+		if err != nil {
+			return false
+		}
+
+		var idUser int64
+
+		if result.Next() {
+			err := result.Scan(&idUser)
+			if err != nil {
+				return false
+			}
+		} else {
+			return false
+		}
+
+		defer func(rows *sql.Rows) {
+			err := rows.Close()
+			if err != nil {
+				log.Fatal(err)
+			}
+		}(result)
+
+		defer func(rows *sql.Rows) {
+			err := rows.Err()
+			if err != nil {
+				log.Fatal(err)
+			}
+		}(result)
+
+		return idUser == id
+	},*/
 }
 
 func CallTemplate(templateName string, data interface{}, w http.ResponseWriter) error {
-	templates := template.New("").Funcs(templateMap)
+	templates := template.New("").Funcs(TemplateMap)
 	templates, err := templates.ParseFiles("../client/templates/main.gohtml", "../client/templates/"+templateName+".gohtml")
 	if err != nil {
 		return err

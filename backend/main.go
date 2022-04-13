@@ -60,7 +60,7 @@ func main() {
 	//http.HandleFunc("/IsActive", IsActiveRoute)
 
 	// Capture connection properties.
-	cfg := mysql.Config{
+	DatabaseConfig := mysql.Config{
 		User:                 os.Getenv("DB_USER"),
 		Passwd:               os.Getenv("DB_PASSWORD"),
 		Net:                  "tcp",
@@ -70,7 +70,7 @@ func main() {
 		ParseTime:            true,
 	}
 	// Get a database handle.
-	DB, err = sql.Open("mysql", cfg.FormatDSN())
+	DB, err = sql.Open("mysql", DatabaseConfig.FormatDSN())
 	if err != nil {
 		log.Fatal(err)
 	}

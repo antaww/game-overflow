@@ -13,6 +13,18 @@ type Message struct {
 	Likes     []MessageLike
 }
 
+type MessageWithConnectedUser struct {
+	*Message
+	ConnectedUser *User
+}
+
+func (message *Message) WithConnectedUser(user *User) MessageWithConnectedUser {
+	return MessageWithConnectedUser{
+		Message:       message,
+		ConnectedUser: user,
+	}
+}
+
 type MessageLike struct {
 	IdMessage int64 `db:"id_message"`
 	IdUser    int64 `db:"id_user"`

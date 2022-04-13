@@ -2,27 +2,22 @@
     <script defer src="/scripts/messages.js"></script>
     <script defer src="/scripts/modal.js"></script>
     {{template "navbar" .}}
+    {{$connectedUser := .ConnectedUser}}
     <div class="feed-content">
         <div class="feed topic-feed">
             {{$firstMessage := (index .ShownTopic.Messages 0)}}
             <div class="post" data-post-id="{{$firstMessage.Id}}">
                 <div>
                     <div>
-                        {{if eq .ShownTopic.IsClosed false}}
+                        {{if not .ShownTopic.IsClosed}}
                             <div class="topic-open">Open<i class="fa-solid fa-lock-open topic-open"></i></div>
                         {{else}}
                             <div class="topic-closed">Closed<i class="fa-solid fa-lock topic-closed"></i></div>
                         {{end}}
                         <a>
-                            {{if eq $firstMessage.GetUser.IsOnline true}}
-                                <div class="circle connected">
-                                    {{template "modal" $firstMessage}}
-                                </div>
-                            {{else}}
-                                <div class="circle disconnected">
-                                    {{template "modal" $firstMessage}}
-                                </div>
-                            {{end}}
+                            <div class="circle {{if $firstMessage.GetUser.IsOnline}} connected {{else}} disconnected {{end}}">
+                                {{template "modal" $firstMessage}}
+                            </div>
                         </a>
                         <a class="topic-user">
                             <p>{{$firstMessage.GetUser.Username}}</p>
@@ -58,7 +53,7 @@
             <div class="messages">
                 {{range $index, $message := .ShownTopic.Messages}}
                     {{if ne $index 0}}
-                        {{template "message" .}}
+                        {{template "message" $message.WithConnectedUser $connectedUser}}
                     {{end}}
                 {{end}}
             </div>
@@ -80,51 +75,45 @@
     </div>
 {{end}}
 
+
 {{define "message"}}
     <div class="post sub-post" data-post-id="{{.Id}}">
         <div>
             <div>
                 <a>
-                    {{if eq .GetUser.IsOnline true}}
-                        <div class="circle connected">
-                            {{template "modal" .}}
-                        </div>
-                    {{else}}
-                        <div class="circle disconnected">
-                            {{template "modal" .}}
-                        </div>
-                    {{end}}
+                    <div class="circle {{if .Message.GetUser.IsOnline}} connected {{else}} disconnected {{end}}">
+                        {{template "modal" .}}
+                    </div>
                 </a>
                 <a class="topic-user">
-                    <p>{{(.GetUser).Username}}</p>
+                    <p>{{.Message.GetUser.Username}}</p>
                 </a>
             </div>
             <div class="topic-content-likes">
                 <div>
-                    <p class="posts-content">{{.Content}}</p>
+                    <p class="posts-content">{{.Message.Content}}</p>
                 </div>
                 <div class="topic-likes">
                     <a href="#" class="like-btn">
                         <i class="fa-solid fa-angle-up"></i>
                     </a>
-                    <p class="points">{{.CalculatePoints}}</p>
+                    <p class="points">{{.Message.CalculatePoints}}</p>
                     <a href="#" class="dislike-btn">
                         <i class="fa-solid fa-angle-down"></i>
                     </a>
                 </div>
             </div>
         </div>
-        <div class="topic-general-info">
-            <div class="topic-date">{{formatDate .CreatedAt}}</div>
-            {{if ConnectedUserMessage (.GetUser.Id)}}
+
+        {{if eq .Message.GetUser.Id .ConnectedUser.Id }}
+            <div class="topic-general-info">
+                <div class="topic-date">{{formatDate .CreatedAt}}</div>
                 <div class="edit-delete-comment">
                     <div class="delete-comment"><i class="fa-solid fa-trash-can"></i></div>
                     <div class="edit-comment"><i class="fa-solid fa-pen-to-square"></i></div>
                 </div>
-            {{else}}
-                <div></div>
-            {{end}}
-        </div>
+            </div>
+        {{end}}
     </div>
 {{end}}
 

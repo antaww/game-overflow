@@ -32,6 +32,7 @@ type User struct {
 	Role         Role      `db:"role_type"`
 }
 
+// ConfirmPassword checks if the password is correct
 func ConfirmPassword(userId int64, password string) bool {
 	var user User
 	rows, err := DB.Query("SELECT password FROM users WHERE id_user = ?", userId)
@@ -48,7 +49,7 @@ func ConfirmPassword(userId int64, password string) bool {
 	return password == user.Password
 }
 
-// CreateUser creates a new user with generated Id, creation date to now and locale to english
+// CreateUser creates a new user with generated id, creation date to now and locale to english
 func CreateUser(username, password, email string) User {
 	return User{
 		Id:           utils.GenerateID(),
@@ -144,6 +145,7 @@ func GetUserBySession(sessionId string) (*User, error) {
 	return GetUserById(idUser), nil
 }
 
+// GetUserByRequest gets a user by request, returns nil if not found
 func GetUserByRequest(r *http.Request) (*User, error) {
 	cookie, err := r.Cookie("session")
 	if err != nil {
@@ -201,6 +203,16 @@ func SaveUser(user User) (bool, error) {
 	return true, nil
 }
 
+func AddMessage(idUser int64, idTopic int64, message string) (int64, error) {
+	id := utils.GenerateID()
+	_, err := DB.Exec("INSERT INTO messages VALUES (?, ?, ?, ?, ?)", id, message, time.Now(), idTopic, idUser)
+	if err != nil {
+		return 0, fmt.Errorf("CreateTopic error: %v", err)
+	}
+	fmt.Printf("message added to the topic %v\n", strconv.FormatInt(idTopic, 10))
+	return id, nil
+}
+
 func DeleteDislikeMessage(messageId, userId int64) (bool, error) {
 	_, err := DB.Exec("DELETE FROM message_like WHERE id_message = ? AND id_user = ?", messageId, userId)
 	if err != nil {
@@ -252,16 +264,6 @@ func MessageGetLikeFrom(messageId, userId int64) (*MessageLike, error) {
 		HandleSQLErrors(result)
 		return nil, nil
 	}
-}
-
-func AddMessage(idUser int64, idTopic int64, message string) (int64, error) {
-	id := utils.GenerateID()
-	_, err := DB.Exec("INSERT INTO messages VALUES (?, ?, ?, ?, ?)", id, message, time.Now(), idTopic, idUser)
-	if err != nil {
-		return 0, fmt.Errorf("CreateTopic error: %v", err)
-	}
-	fmt.Printf("message added to the topic %v\n", strconv.FormatInt(idTopic, 10))
-	return id, nil
 }
 
 func CreateTopic(title string, category string, tags []string) (int64, error) {

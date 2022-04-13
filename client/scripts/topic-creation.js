@@ -13,13 +13,8 @@ function checkFields() {
     const submit = document.querySelector('#btn-submit');
 
     let valid = true;
-    if (title.value.length < 1) {
-        valid = false;
-    }
-
-    if (content.value.length < 1) {
-        valid = false;
-    }
+    if (title.value.length < 1) valid = false;
+    if (content.value.length < 1) valid = false;
 
     let checked = false;
     for (let i = 0; i < category.length; i++) {
