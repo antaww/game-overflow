@@ -2,6 +2,14 @@ const avatarInput = document.querySelector('#avatar-input');
 const avatarPreview = document.querySelector('#avatar-preview');
 const confirmationInput = document.querySelector('#re-confirm-input');
 
+function resizeTextArea() {
+    const textArea = document.querySelector('textarea');
+    textArea.addEventListener('input', () => {
+        textArea.style.height = 'auto';
+        textArea.style.height = textArea.scrollHeight + 'px';
+    });
+}
+
 function checkPassword() {
     fetch('/confirm-password', {
         method: 'PUT',
@@ -40,6 +48,7 @@ function updateAvatarPreview() {
 }
 
 window.onload = () => {
+    resizeTextArea();
     setPasswordConfirmation();
     updateAvatarPreview();
 };

@@ -1,0 +1,7 @@
+{{define "avatar"}}
+    {{if .}}
+        {{safeURL .}}
+    {{else}}
+        resources/default_avatar.png
+    {{end}}
+{{end}}

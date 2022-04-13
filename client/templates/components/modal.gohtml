@@ -1,0 +1,13 @@
+{{define "modal"}}
+    <div class="modal myModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p class="modal-name">{{.Username}}</p>
+            <img class="avatar" src="{{template "avatar" .ProfilePic}}" alt="">
+            {{if ne .Description ""}}
+                <p class="modal-about">About me</p>
+                <p class="modal-description">{{.Description}}</p>
+            {{end}}
+        </div>
+    </div>
+{{end}}

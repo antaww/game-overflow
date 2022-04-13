@@ -19,6 +19,17 @@
     font-size: 1.1rem;
     margin-bottom: 0.5em;
     padding: 8px 12px;
+    border-radius: 5px;
+}
+
+.form-group input, .form-group textarea {
+    width: 20vw;
+}
+
+.form-group textarea {
+    min-height: 5em;
+    resize: vertical;
+    width: 40vw;
 }
 
 .form-group label {
