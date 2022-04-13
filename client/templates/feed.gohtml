@@ -7,6 +7,7 @@
             {{range .ShownTopics}}
                 <a href="/topic?id={{.Id}}" class="topics-in-feed">
                     <div class="circle {{if .GetFirstMessage.GetUser.IsOnline}} connected {{else}} disconnected {{end}}">
+                        <img alt="" class="avatar" src="{{template "avatar" .GetFirstMessage.GetUser.ProfilePic}}">
                         {{template "modal" .GetFirstMessage.GetUser}}
                     </div>
                     <div>
