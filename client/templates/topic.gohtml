@@ -49,7 +49,7 @@
                 <div class="topic-general-info">
                     <div class="topic-answers">{{MinusOne (len .ShownTopic.Messages) }} answers</div>
                     {{range .ShownTopic.Tags}}
-                        <div class="topic-tags">{{.}}</div>
+                        <a href="/feed?tag={{.}}" class="topic-tags">{{.}}</a>
                     {{end}}
                     <div class="topic-date">{{formatDate $firstMessage.CreatedAt}}</div>
                 </div>
