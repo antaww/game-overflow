@@ -155,7 +155,40 @@
     margin-right: 1vh;
 }
 
-.btn {
+.create-topic-input, .create-topic-category {
+    background-color: #1F1F23;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1.1rem;
+    margin-top: 1vh;
+    margin-bottom: 0.5em;
+    padding: 1vh;
+    position: relative;
+}
+
+textarea.create-topic-input {
+    resize: vertical;
+    min-height: 8em;
+    max-height: 100em;
+}
+
+#topic-form label {
+    user-select: none;
+}
+
+.required-input::after {
+    content: "*";
+    color: red;
+    opacity: 1;
+    display: inline;
+    font-size: 1.2rem;
+    margin-left: 0.5vh;
+    top: 0.5vh;
+    left: 0;
+    z-index: 10000;
+}
+
+#btn-submit {
     background-color: #17629E;
     border: none;
     border-radius: 15px;
@@ -167,18 +200,16 @@
     padding: 1vh 2vh 1vh 1vh;
     width: fit-content;
     white-space: nowrap;
+
+    transition: background-color 0.5s ease-in-out;
 }
 
-.btn i {
+#btn-submit i {
     margin-left: 1vh;
 }
 
-.create-topic-input {
-    margin-top: 1vh;
-    background-color: #1F1F23;
-    border: none;
-    font-size: 1.1rem;
-    margin-bottom: 0.5em;
-    padding: 1vh;
+#btn-submit:disabled {
+    background-color: #ff7373;
+    filter: brightness(0.8);
+    user-select: none;
 }
-

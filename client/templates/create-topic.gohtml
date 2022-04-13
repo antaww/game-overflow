@@ -1,65 +1,40 @@
 {{define "content"}}
     {{template "navbar" .}}
+    <script src="/scripts/topic-creation.js" defer></script>
     <div class="feed-content">
         <div class="new-topic">
-
-            <p>New topic</p>
+            <h1>New topic</h1>
 
             <form action="/create-topic" id="topic-form" method="POST">
-
                 <div class="create-topic-title create-topic-options">
-                    <label for="title">Title</label>
-                    <input type="text" name="title" id="title" class="create-topic-input" placeholder="Title" required>
+                    <label class="required-input" for="title">Title</label>
+                    <input class="create-topic-input" id="title" maxlength="50" minlength="1" name="title" placeholder="Title" required type="text">
                 </div>
                 <div class="create-topic-options">
-                    <p>Chose a category</p>
+                    <p class="required-input">Choose a category:</p>
                     <div class="create-topic-category">
-                        <input type="radio" id="pc" name="category" class="create-topic-input" value="pc" required>
-                        <label for="pc">PC</label><br>
-                        <input type="radio" id="xbox" name="category" class="create-topic-input" value="xbox">
-                        <label for="xbox">Xbox</label><br>
-                        <input type="radio" id="playstation" name="category" class="create-topic-input" value="playstation">
-                        <label for="playstation">Playstation</label>
-                        <input type="radio" id="nintendo" name="category" class="create-topic-input" value="nintendo">
-                        <label for="nintendo">Nintendo</label>
-                        <input type="radio" id="mobile" name="category" class="create-topic-input" value="mobile">
-                        <label for="mobile">Mobile</label>
-                        <input type="radio" id="others" name="category" class="create-topic-input" value="others">
-                        <label for="others">Others</label>
+                        {{range .GetCategories}}
+                            <input checked class="create-topic-input" id="{{.Name}}" name="category" {{if eq .Name "pc"}}required{{end}} type="radio" value="{{.Name}}">
+                            <span class="create-topic-input-radio"></span>
+                            <label for="{{.Name}}">{{.Name}}</label>
+                        {{end}}
                     </div>
-
                 </div>
 
                 <div class="create-topic-content create-topic-options">
-                    <label for="content">Content</label>
-                    <textarea name="content" id="content" cols="30" rows="10" class="create-topic-input"
-                              placeholder="Content" required></textarea>
+                    <label class="required-input" for="content">Content</label>
+                    <textarea class="create-topic-input" cols="30" id="content" maxlength="4000" minlength="1"
+                              name="content" placeholder="Content" required rows="5"></textarea>
                 </div>
 
                 <div class="create-topic-tags create-topic-options">
                     <label for="tags">Tags</label>
-                    <input type="text" name="tags" id="tags" class="create-topic-input" placeholder="Tags">
+                    <input class="create-topic-input" id="tags" name="tags" placeholder="Tags" type="text">
                 </div>
 
-                <button class="btn confirm" id="btn-submit" name="submit" type="submit" value="Post">Create<i
-                            class="fa-solid fa-check"></i></button>
-
+                <button class="btn confirm" id="btn-submit" name="submit" type="submit" value="Post">Create<i class="fa-solid fa-check"></i></button>
             </form>
 
         </div>
     </div>
-
-    {{/*    <div>*/}}
-
-    {{/*        <form action="/settings" enctype="multipart/form-data" id="settings-form" method="POST">*/}}
-
-    {{/*        <div class="create-topic-title>*/}}
-    {{/*                <label for="title">Title</label>*/}}
-    {{/*                <input class="form-control" id="create-topic-title" name="title" type="text">*/}}
-    {{/*            </div>*/}}
-
-    {{/*        </form>*/}}
-
-    {{/*    </div>*/}}
-
 {{end}}

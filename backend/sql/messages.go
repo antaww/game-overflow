@@ -78,7 +78,7 @@ func GetLikes(messageId int64) ([]MessageLike, error) {
 	return likes, nil
 }
 
-// FetchMessages get messages into topic from db using post id
+// FetchLikes FetchMessages get messages into topic from db using post id
 func (message *Message) FetchLikes() error {
 	messageLike, err := GetLikes(message.Id)
 	if err != nil {
@@ -89,7 +89,7 @@ func (message *Message) FetchLikes() error {
 	return nil
 }
 
-// CalculateLikes returns the number of likes for a message
+// CalculatePoints CalculateLikes returns the number of likes for a message
 func (message *Message) CalculatePoints() int {
 	err := message.FetchLikes()
 	if err != nil {

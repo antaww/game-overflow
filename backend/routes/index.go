@@ -17,6 +17,14 @@ type TemplatesDataType struct {
 	ShownTopic    sql.Topic
 }
 
+func (t TemplatesDataType) GetCategories() []sql.Category {
+	categories, err := sql.GetCategories()
+	if err != nil {
+		log.Println(err)
+	}
+	return categories
+}
+
 var TemplatesData = TemplatesDataType{
 	Locales: map[string]string{"en": "English", "fr": "Français"},
 }

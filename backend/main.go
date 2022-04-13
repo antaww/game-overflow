@@ -96,9 +96,9 @@ func IsUserActive() {
 			continue
 		}
 		if PageLoadedTime.Add(inactiveTime).After(time.Now()) {
-			fmt.Println("User is active")
 			if !TemplatesData.ConnectedUser.IsOnline {
 				err := SetUserOnline(TemplatesData.ConnectedUser.Id, true)
+				fmt.Printf("\n>>>>> %s is active (inactive in %s seconds)", TemplatesData.ConnectedUser.Username, inactiveTime.String())
 				if err != nil {
 					log.Fatal(err)
 				}
@@ -106,9 +106,9 @@ func IsUserActive() {
 			}
 
 		} else {
-			fmt.Println("User is inactive")
 			if TemplatesData.ConnectedUser.IsOnline {
 				err := SetUserOnline(TemplatesData.ConnectedUser.Id, false)
+				fmt.Printf("\n>>>>> %s is inactive", TemplatesData.ConnectedUser.Username)
 				if err != nil {
 					log.Fatal(err)
 				}
