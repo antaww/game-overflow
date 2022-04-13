@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="topic-general-info">
-                    <div class="topic-answers">{{MinusOne (len .ShownTopic.Messages) }} answers</div>
+                    <div class="topic-answers">{{.ShownTopic.GetAnswersNumber}} answers</div>
                     {{range .ShownTopic.Tags}}
                         <a href="/feed?tag={{.}}" class="topic-tags">{{.}}</a>
                     {{end}}
