@@ -3,7 +3,6 @@ package utils
 import (
 	"fmt"
 	"html/template"
-	"main/routes"
 	"net/http"
 	"time"
 )
@@ -20,9 +19,9 @@ var templateMap = template.FuncMap{
 	},
 	"ConnectedUserMessage": func(i int64) bool {
 		fmt.Println(i)
-		if i == routes.TemplatesData.ConnectedUser.Id {
-			return true
-		}
+		//if i == routes.TemplatesData.ConnectedUser.Id {
+		//	return true
+		//}
 		return false
 	},
 }

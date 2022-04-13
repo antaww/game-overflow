@@ -12,6 +12,12 @@
             {{block "content" .}}
                 {{template "navbar" .}}
             {{end}}
+
+            {{if not .ConnectedUser}}
+                <div></div>
+            {{else}}
+                <a href="create-topic" class="create-topic">Post a question <i class="fa-solid fa-arrow-right"></i></a>
+            {{end}}
         </body>
     </html>
 {{end}}
