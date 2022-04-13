@@ -114,7 +114,15 @@
                         <div class="edit-comment"><i class="fa-solid fa-pen-to-square"></i></div>
                     </div>
                 </div>
+            {{else}}
+                <div class="topic-general-info">
+                    <div class="topic-date">{{formatDate .CreatedAt}}</div>
+                </div>
             {{end}}
+        {{else}}
+            <div class="topic-general-info">
+                <div class="topic-date">{{formatDate .CreatedAt}}</div>
+            </div>
         {{end}}
     </div>
 {{end}}
