@@ -343,6 +343,10 @@ body {
     height: 100% !important;
 }
 
-/*.modal-hide {*/
-/*    display: none !important;*/
-/*}*/
+.topics-in-feed {
+    transition: all .3s;
+}
+
+.topics-in-feed:hover {
+    background: #232b2f;
+}

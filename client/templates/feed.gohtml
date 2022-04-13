@@ -5,7 +5,7 @@
     <div class="feed-content">
         <div class="feed">
             {{range .ShownTopics}}
-                <a href="/topic?id={{.Id}}">
+                <a href="/topic?id={{.Id}}" class="topics-in-feed">
                     <div class="circle {{if .GetFirstMessage.GetUser.IsOnline}} connected {{else}} disconnected {{end}}">
                         {{template "modal" .}}
                     </div>

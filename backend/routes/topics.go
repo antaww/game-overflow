@@ -179,6 +179,8 @@ func FeedRoute(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err)
 		}
+	} else if queries.Has("tag") {
+		FeedRouteTags(w, r)
 	}
 
 	return
@@ -341,4 +343,25 @@ func TopicRoute(w http.ResponseWriter, r *http.Request) {
 	}
 
 	return
+}
+
+//If the url is /feed?tag=tagName, display every topics with the tag tagName
+func FeedRouteTags(w http.ResponseWriter, r *http.Request) {
+	queries := r.URL.Query()
+
+	if queries.Has("tag") {
+		tag := queries.Get("tag")
+
+		topics, err := sql.GetTopicsByTag(tag)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		TemplatesData.ShownTopics = topics
+
+		err = utils.CallTemplate("feed", TemplatesData, w)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
 }
