@@ -7,11 +7,11 @@
 
             <form action="/create-topic" id="topic-form" method="POST">
                 <div class="create-topic-title create-topic-options">
-                    <label for="title">Title</label>
+                    <label class="required-input" for="title">Title</label>
                     <input class="create-topic-input" id="title" maxlength="50" minlength="1" name="title" placeholder="Title" required type="text">
                 </div>
                 <div class="create-topic-options">
-                    <p>Choose a category:</p>
+                    <p class="required-input">Choose a category:</p>
                     <div class="create-topic-category">
                         {{range .GetCategories}}
                             <input checked class="create-topic-input" id="{{.Name}}" name="category" {{if eq .Name "pc"}}required{{end}} type="radio" value="{{.Name}}">
@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="create-topic-content create-topic-options">
-                    <label for="content">Content</label>
+                    <label class="required-input" for="content">Content</label>
                     <textarea class="create-topic-input" cols="30" id="content" maxlength="4000" minlength="1"
                               name="content" placeholder="Content" required rows="5"></textarea>
                 </div>
