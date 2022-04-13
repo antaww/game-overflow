@@ -106,13 +106,23 @@
             </div>
         </div>
 
-        {{if eq .Message.GetUser.Id .ConnectedUser.Id }}
+        {{if .ConnectedUser}}
+            {{if eq .Message.GetUser.Id .ConnectedUser.Id}}
+                <div class="topic-general-info">
+                    <div class="topic-date">{{formatDate .CreatedAt}}</div>
+                    <div class="edit-delete-comment">
+                        <div class="delete-comment"><i class="fa-solid fa-trash-can"></i></div>
+                        <div class="edit-comment"><i class="fa-solid fa-pen-to-square"></i></div>
+                    </div>
+                </div>
+            {{else}}
+                <div class="topic-general-info">
+                    <div class="topic-date">{{formatDate .CreatedAt}}</div>
+                </div>
+            {{end}}
+        {{else}}
             <div class="topic-general-info">
                 <div class="topic-date">{{formatDate .CreatedAt}}</div>
-                <div class="edit-delete-comment">
-                    <div class="delete-comment"><i class="fa-solid fa-trash-can"></i></div>
-                    <div class="edit-comment"><i class="fa-solid fa-pen-to-square"></i></div>
-                </div>
             </div>
         {{end}}
     </div>

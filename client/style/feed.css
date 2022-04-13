@@ -99,6 +99,7 @@
     padding: 0 2%;
     margin-left: 1vh;
     width: fit-content;
+    text-decoration: none;
 }
 
 .topic-date {
