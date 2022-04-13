@@ -116,6 +116,14 @@
         </div>
         <div class="topic-general-info">
             <div class="topic-date">{{formatDate .CreatedAt}}</div>
+            {{if ConnectedUserMessage (.GetUser.Id)}}
+                <div class="edit-delete-comment">
+                    <div class="delete-comment"><i class="fa-solid fa-trash-can"></i></div>
+                    <div class="edit-comment"><i class="fa-solid fa-pen-to-square"></i></div>
+                </div>
+            {{else}}
+                <div></div>
+            {{end}}
         </div>
     </div>
 {{end}}
