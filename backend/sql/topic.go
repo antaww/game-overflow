@@ -11,24 +11,16 @@ type Topic struct {
 	Tags           []string
 }
 
-// GetPost returns topic by id
-func GetPost(id int64) (*Topic, error) {
-	rows, err := DB.Query("SELECT * FROM topics WHERE id_topic = ?", id)
+// GetAnswersNumber returns the number of answers for a topic
+func (topic Topic) GetAnswersNumber() int {
+	err := topic.FetchMessages()
 	if err != nil {
-		return nil, err
+		return 0
 	}
-
-	post := &Topic{}
-	err = Results(rows, &post.Id, &post.Title, &post.IsClosed, &post.Views, &post.Category, &post.IdFirstMessage)
-	if err != nil {
-		return nil, err
-	}
-
-	HandleSQLErrors(rows)
-
-	return post, nil
+	return len(topic.Messages) - 1
 }
 
+// GetFirstMessage returns the first message of the topic
 func (topic *Topic) GetFirstMessage() (*Message, error) {
 	rows, err := DB.Query("SELECT * FROM messages WHERE id_message = ?", topic.IdFirstMessage)
 	if err != nil {
@@ -55,6 +47,24 @@ func (topic *Topic) FetchMessages() error {
 
 	topic.Messages = message
 	return nil
+}
+
+// GetPost returns topic by id
+func GetPost(id int64) (*Topic, error) {
+	rows, err := DB.Query("SELECT * FROM topics WHERE id_topic = ?", id)
+	if err != nil {
+		return nil, err
+	}
+
+	post := &Topic{}
+	err = Results(rows, &post.Id, &post.Title, &post.IsClosed, &post.Views, &post.Category, &post.IdFirstMessage)
+	if err != nil {
+		return nil, err
+	}
+
+	HandleSQLErrors(rows)
+
+	return post, nil
 }
 
 func GetTopicsByCategories(category string) ([]Topic, error) {

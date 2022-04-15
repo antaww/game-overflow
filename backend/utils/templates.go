@@ -13,9 +13,6 @@ var TemplateMap = template.FuncMap{
 	"formatDate": func(t time.Time) string {
 		return t.Format("2006-01-02 15:04:05")
 	},
-	"MinusOne": func(i int) int {
-		return i - 1
-	},
 }
 
 func CallTemplate(templateName string, data interface{}, w http.ResponseWriter) error {

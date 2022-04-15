@@ -308,6 +308,32 @@ func PostMessageRoute(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+func DeleteMessageRoute(w http.ResponseWriter, r *http.Request) {
+	queries := r.URL.Query()
+
+	if queries.Has("idMessage") {
+		idMessage := queries.Get("idMessage")
+
+		Id, err := strconv.ParseInt(idMessage, 10, 64)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		err = sql.DeleteMessage(Id)
+		fmt.Println("Delete message")
+		if err != nil {
+			log.Fatal(err)
+		}
+		//
+		//queriesId := url.Values{}
+		//queriesId.Add("id", id)
+
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	}
+
+	return
+}
+
 func TopicRoute(w http.ResponseWriter, r *http.Request) {
 	queries := r.URL.Query()
 

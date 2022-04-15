@@ -11,9 +11,9 @@
                         {{template "modal" .GetFirstMessage.GetUser}}
                     </div>
                     <div>
-                        <div>
-                            <div>
-                                <div>
+                        <div class="a-div-div">
+                            <div class="a-div-div-div">
+                                <div class="a-div-div-div-div">
                                     <div class="topic-category">{{.Category}}</div>
                                     {{if eq .IsClosed false}}
                                         <div class="topic-open">Open<i class="fa-solid fa-lock-open topic-open"></i>
@@ -22,27 +22,27 @@
                                         <div class="topic-closed">Closed<i class="fa-solid fa-lock topic-closed"></i>
                                         </div>
                                     {{end}}
-                                    <div class="topic-answers">answers</div>
+                                    <div class="topic-answers a-div-div-div-div-div">{{.GetAnswersNumber}} answers</div>
                                 </div>
-                                <div>
+                                <div class="a-div-div-div-div">
                                     <p class="topic-title">{{.Title}}</p>
                                 </div>
                             </div>
-                            <div class="topic-likes">
+                            <div class="topic-likes a-div-div-div">
                                 <i class="fa-solid fa-angle-up like-btn"></i>
                                 <p class="points">{{.GetFirstMessage.CalculatePoints}}</p>
                                 <i class="fa-solid fa-angle-down dislike-btn"></i>
                             </div>
                         </div>
 
-                        <div>
-                            <div class="views-tags">
-                                <div class="topic-views">{{.Views}} views</div>
+                        <div class="a-div-div">
+                            <div class="views-tags a-div-div-div">
+                                <div class="topic-views a-div-div-div-div">{{.Views}} views</div>
                                 {{range .Tags}}
-                                    <div class="topic-tags">{{.}}</div>
+                                    <div class="topic-tags a-div-div-div-div-div">{{.}}</div>
                                 {{end}}
                             </div>
-                            <div class="topic-date">{{formatDate .GetFirstMessage.CreatedAt}}</div>
+                            <div class="topic-date a-div-div-div">{{formatDate .GetFirstMessage.CreatedAt}}</div>
                         </div>
                     </div>
                 </a>

@@ -8,7 +8,7 @@
             {{$firstMessage := (index .ShownTopic.Messages 0)}}
             <div class="post" data-post-id="{{$firstMessage.Id}}">
                 <div>
-                    <div>
+                    <div class="post-div-div">
                         {{if not .ShownTopic.IsClosed}}
                             <div class="topic-open">Open<i class="fa-solid fa-lock-open topic-open"></i></div>
                         {{else}}
@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="topic-general-info">
-                    <div class="topic-answers">{{MinusOne (len .ShownTopic.Messages) }} answers</div>
+                    <div class="topic-answers">{{.ShownTopic.GetAnswersNumber}} answers</div>
                     {{range .ShownTopic.Tags}}
                         <a href="/feed?tag={{.}}" class="topic-tags">{{.}}</a>
                     {{end}}
@@ -111,8 +111,18 @@
                 <div class="topic-general-info">
                     <div class="topic-date">{{formatDate .CreatedAt}}</div>
                     <div class="edit-delete-comment">
-                        <div class="delete-comment"><i class="fa-solid fa-trash-can"></i></div>
-                        <div class="edit-comment"><i class="fa-solid fa-pen-to-square"></i></div>
+                        <form action="delete-message?idMessage={{.Message.Id}}" method="post">
+                            <button type="submit" class="delete-comment">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </form>
+                        <form>
+                            <button type="submit" class="edit-comment">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                        </form>
+{{/*                        <div class="delete-comment"><i class="fa-solid fa-trash-can"></i></div>*/}}
+{{/*                        <div class="edit-comment"><i class="fa-solid fa-pen-to-square"></i></div>*/}}
                     </div>
                 </div>
             {{else}}
