@@ -33,6 +33,33 @@ function handleLikes() {
     });
 }
 
+function editMessage() {
+    const btn = document.querySelectorAll('.edit-comment');
+
+    console.log("before toggle");
+
+    btn.forEach(element => {
+        element.addEventListener('click', e => {
+            let clicked = e.target;
+            console.log(clicked);
+            console.log(clicked.closest('.topic-date').innerText);
+
+            let content = clicked.closest('.posts-content');
+            let textarea = content.querySelector('.edit-text');
+
+            clicked.parentElement.parentElement.previousSibling.previousSibling.classList.toggle('no-display');
+
+
+            // console.log(closestPost);
+            // console.log(closestText);
+            // closestPost.classList.toggle('no-display');
+            // closestText.classList.toggle('no-display');
+            console.log("after toggle");
+        });
+    });
+
+}
+
 
 window.onload = () => {
     handleLikes();

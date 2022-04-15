@@ -45,6 +45,8 @@ func main() {
 
 	http.HandleFunc("/delete-message", DeleteMessageRoute)
 
+	http.HandleFunc("/edit-message", EditMessageRoute)
+
 	http.HandleFunc("/create-topic", CreateTopicRoute)
 
 	http.HandleFunc("/logout", LogoutRoute)

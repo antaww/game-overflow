@@ -214,3 +214,9 @@ textarea.create-topic-input {
     filter: brightness(0.8);
     user-select: none;
 }
+
+/* EDIT MESSAGE */
+
+.no-display {
+    display: none;
+}
