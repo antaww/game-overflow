@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-const inactiveTime = 60 * time.Second
+const inactiveTime = 5 * time.Second
 const updateDelay = 1 * time.Second
 
 func main() {
@@ -57,7 +57,7 @@ func main() {
 
 	http.HandleFunc("/dislike", DislikeRoute)
 
-	//http.HandleFunc("/IsActive", IsActiveRoute)
+	http.HandleFunc("/IsActive", IsActiveRoute)
 
 	// Capture connection properties.
 	DatabaseConfig := mysql.Config{
@@ -81,7 +81,7 @@ func main() {
 	}
 	fmt.Println("Connected!")
 
-	go IsUserActive()
+	//go IsUserActive()
 
 	fmt.Println("Server started at localhost:8091")
 	err = http.ListenAndServe(":8091", http.HandlerFunc(LogHandler))
@@ -90,32 +90,32 @@ func main() {
 	}
 }
 
-func IsUserActive() {
-	for {
-		if TemplatesData.ConnectedUser == nil {
-			continue
-		}
-		if PageLoadedTime.Add(inactiveTime).After(time.Now()) {
-			if !TemplatesData.ConnectedUser.IsOnline {
-				err := SetUserOnline(TemplatesData.ConnectedUser.Id, true)
-				fmt.Printf("\n>>>>> %s is active (inactive in %s seconds)", TemplatesData.ConnectedUser.Username, inactiveTime.String())
-				if err != nil {
-					log.Fatal(err)
-				}
-				TemplatesData.ConnectedUser = GetUserById(TemplatesData.ConnectedUser.Id)
-			}
-
-		} else {
-			if TemplatesData.ConnectedUser.IsOnline {
-				err := SetUserOnline(TemplatesData.ConnectedUser.Id, false)
-				fmt.Printf("\n>>>>> %s is inactive", TemplatesData.ConnectedUser.Username)
-				if err != nil {
-					log.Fatal(err)
-				}
-				TemplatesData.ConnectedUser = GetUserById(TemplatesData.ConnectedUser.Id)
-			}
-
-		}
-		time.Sleep(updateDelay)
-	}
-}
+//func IsUserActive() {
+//	for {
+//		if TemplatesData.ConnectedUser == nil {
+//			continue
+//		}
+//		if PageLoadedTime.Add(inactiveTime).After(time.Now()) {
+//			if !TemplatesData.ConnectedUser.IsOnline {
+//				err := SetUserOnline(TemplatesData.ConnectedUser.Id, true)
+//				fmt.Printf("\n>>>>> %s is active (inactive in %s seconds)", TemplatesData.ConnectedUser.Username, inactiveTime.String())
+//				if err != nil {
+//					log.Fatal(err)
+//				}
+//				TemplatesData.ConnectedUser = GetUserById(TemplatesData.ConnectedUser.Id)
+//			}
+//
+//		} else {
+//			if TemplatesData.ConnectedUser.IsOnline {
+//				err := SetUserOnline(TemplatesData.ConnectedUser.Id, false)
+//				fmt.Printf("\n>>>>> %s is inactive", TemplatesData.ConnectedUser.Username)
+//				if err != nil {
+//					log.Fatal(err)
+//				}
+//				TemplatesData.ConnectedUser = GetUserById(TemplatesData.ConnectedUser.Id)
+//			}
+//
+//		}
+//		time.Sleep(updateDelay)
+//	}
+//}
