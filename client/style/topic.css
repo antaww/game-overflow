@@ -217,6 +217,6 @@ textarea.create-topic-input {
 
 /* EDIT MESSAGE */
 
-.edit-message {
+.no-display {
     display: none;
 }
