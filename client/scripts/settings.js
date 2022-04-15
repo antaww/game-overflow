@@ -35,11 +35,10 @@ function setPasswordConfirmation() {
 
 function updateAvatarPreview() {
 	avatarInput.addEventListener('change', () => {
-		const file = avatarInput.files[0];
 		const reader = new FileReader();
+		const file = avatarInput.files[0];
 
 		reader.addEventListener('load', () => {
-			console.log(reader);
 			avatarPreview.src = reader.result;
 		});
 

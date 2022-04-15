@@ -21,14 +21,22 @@ username?.addEventListener('click', event => {
 categories.addEventListener('click', event => {
     console.log('categories clicked');
     // note: maybe not working, test in next commit
-    dropdown.classList.replace('rotate', 'rotate-reverse');
-
-    if (dropdownCategories.classList.contains('block')) {
-        setTimeout(() => dropdownCategories.classList.toggle('none'), timeout);
+    if (dropdownArrow.classList.contains("rotate")) {
+        dropdownArrow.classList.remove("rotate")
+        dropdownArrow.classList.add("rotate-reverse")
     } else {
-        dropdownCategories.classList.toggle('none');
+        dropdownArrow.classList.remove("rotate-reverse")
+        dropdownArrow.classList.add("rotate")
     }
 
-    dropdownCategories.classList.replace('block', 'block-reverse');
+    if (dropdownCategories.classList.contains('block')) {
+        dropdownCategories.classList.remove('block');
+        dropdownCategories.classList.add('block-reverse');
+        setTimeout(() => dropdownCategories.classList.toggle('none'), timeout);
+    } else {
+        dropdownCategories.classList.remove('block-reverse');
+        dropdownCategories.classList.add('block');
+        dropdownCategories.classList.toggle('none');
+    }
 });
 
