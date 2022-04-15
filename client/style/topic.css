@@ -17,7 +17,7 @@
     display: flex;
 }
 
-.post > div > div:first-child {
+.post-div-div {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -36,7 +36,7 @@
     font-size: 90%;
 }
 
-.post > div > div > a > img {
+.post-div-div > a > img {
     width: 9vh;
     border-radius: 12px;
     margin: 0.5vh;

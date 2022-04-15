@@ -8,7 +8,7 @@
             {{$firstMessage := (index .ShownTopic.Messages 0)}}
             <div class="post" data-post-id="{{$firstMessage.Id}}">
                 <div>
-                    <div>
+                    <div class="post-div-div">
                         {{if not .ShownTopic.IsClosed}}
                             <div class="topic-open">Open<i class="fa-solid fa-lock-open topic-open"></i></div>
                         {{else}}
