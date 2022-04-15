@@ -107,7 +107,7 @@
                 <div class="actions username">
                     <a>
                         <button value="Login" class="log-in username_dropdown">{{.ConnectedUser.Username}}</button>
-                        <div class="circle {{if .ConnectedUser.IsOnline}}dis{{end}}connected">
+                        <div class="circle {{if not .ConnectedUser.IsOnline}}dis{{end}}connected">
                             <img class="avatar" src="{{template "avatar" .ConnectedUser.ProfilePic}}" alt="test">
                         </div>
                     </a>

@@ -3,7 +3,7 @@ const dropdown = document.querySelector('.dropdown');
 const categories = document.querySelector('.categories');
 const dropdownCategories = document.querySelector('.dropdown-categories');
 const dropdownArrow = document.querySelector('.dropdown-arrow');
-const timeout = 300; //temps en ms (doit être identique à la valeur de l'animation css)
+let timeout = 300; //temps en ms (doit être identique à la valeur de l'animation css)
 
 username?.addEventListener('click', event => {
     console.log('username clicked');

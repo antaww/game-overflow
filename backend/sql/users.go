@@ -20,16 +20,16 @@ const (
 )
 
 type User struct {
-	Id           int64     `db:"id_user"`
-	Username     string    `db:"username"`
-	IsOnline     bool      `db:"is_online"`
-	Password     string    `db:"password"`
-	Email        string    `db:"email"`
-	Locale       string    `db:"locale"`
-	ProfilePic   string    `db:"profile_pic"`
-	Description  string    `db:"description"`
-	CreationDate time.Time `db:"created_at"`
-	Role         Role      `db:"role_type"`
+	Id           int64     `db:"id_user" json:"id,omitempty"`
+	Username     string    `db:"username" json:"username"`
+	IsOnline     bool      `db:"is_online" json:"isOnline"`
+	Password     string    `db:"password" json:"password,omitempty"`
+	Email        string    `db:"email" json:"email,omitempty"`
+	Locale       string    `db:"locale" json:"locale,omitempty"`
+	ProfilePic   string    `db:"profile_pic" json:"profilePic,omitempty"`
+	Description  string    `db:"description" json:"description,omitempty"`
+	CreationDate time.Time `db:"created_at" json:"creationDate"`
+	Role         Role      `db:"role_type" json:"role,omitempty"`
 }
 
 // ConfirmPassword checks if the password is correct
@@ -297,4 +297,23 @@ func SetUserOnline(idUser int64, isOnline bool) error {
 		return fmt.Errorf("SaveUser error: %v", err)
 	}
 	return nil
+}
+
+func GetUsersOnline(users []string) ([]*User, error) {
+	var usersOnline []*User
+	for _, user := range users {
+		result, err := DB.Query("SELECT is_online, username FROM users WHERE username = ?", user)
+		if err != nil {
+			return nil, fmt.Errorf("GetUsersOnline error: %v", err)
+		}
+		if result.Next() {
+			user := &User{}
+			err = result.Scan(&user.IsOnline, &user.Username)
+			HandleSQLErrors(result)
+			usersOnline = append(usersOnline, user)
+		} else {
+			HandleSQLErrors(result)
+		}
+	}
+	return usersOnline, nil
 }

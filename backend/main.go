@@ -59,7 +59,9 @@ func main() {
 
 	http.HandleFunc("/dislike", DislikeRoute)
 
-	http.HandleFunc("/IsActive", IsActiveRoute)
+	http.HandleFunc("/is-active", IsActiveRoute)
+
+	http.HandleFunc("/users-active", UsersActive)
 
 	// Capture connection properties.
 	DatabaseConfig := mysql.Config{
