@@ -213,6 +213,14 @@ func AddMessage(idUser int64, idTopic int64, message string) (int64, error) {
 	return id, nil
 }
 
+func DeleteMessage(idMessage int64) error {
+	_, err := DB.Exec("DELETE FROM messages WHERE id_message = ?", idMessage)
+	if err != nil {
+		return fmt.Errorf("DeleteMessage error: %v", err)
+	}
+	return nil
+}
+
 func DeleteDislikeMessage(messageId, userId int64) (bool, error) {
 	_, err := DB.Exec("DELETE FROM message_like WHERE id_message = ? AND id_user = ?", messageId, userId)
 	if err != nil {

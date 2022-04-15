@@ -110,18 +110,19 @@
     cursor: pointer;
 }
 
-.edit-delete-comment {
-    display: flex;
-    justify-content: space-between;
-}
-
-.edit-delete-comment > div {
-    margin-left: 3vh;
+.delete-comment, .edit-comment {
     cursor: pointer;
+    background: none;
+    border: none;
+    margin-left: 3vh;
 }
 
 .delete-comment > i {
     color: #FF7373;
+}
+
+.edit-delete-comment {
+    display: flex;
 }
 
 /* NEW TOPIC */
