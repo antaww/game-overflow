@@ -33,6 +33,14 @@ function handleLikes() {
     });
 }
 
+function editMessage() {
+    const editElements = document.querySelectorAll('.edit-message');
+    const contentElements = document.querySelectorAll('.posts-content');
+
+    editElements.display = 'flex';
+    contentElements.display = 'none';
+}
+
 
 window.onload = () => {
     handleLikes();

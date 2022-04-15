@@ -309,10 +309,36 @@ func PostMessageRoute(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteMessageRoute(w http.ResponseWriter, r *http.Request) {
+	//get cookie from browser
+	cookie, err := r.Cookie("session")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//select user from session
+	result, err := sql.DB.Query("SELECT id_user FROM sessions WHERE id_session = ?", cookie.Value)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//get result from query
+	var idUser int64
+	if result.Next() {
+		err = result.Scan(&idUser)
+	}
+
+	//Handle sql errors, close the query to avoid memory leaks
+	sql.HandleSQLErrors(result)
+
+	// Get User, save for TemplatesData (to show user logged in templates)
+	userConnected := sql.GetUserById(idUser)
+	TemplatesData.ConnectedUser = userConnected
+
 	queries := r.URL.Query()
 
 	if queries.Has("idMessage") {
 		idMessage := queries.Get("idMessage")
+		idTopic := queries.Get("id")
 
 		Id, err := strconv.ParseInt(idMessage, 10, 64)
 		if err != nil {
@@ -324,11 +350,38 @@ func DeleteMessageRoute(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		//
-		//queriesId := url.Values{}
-		//queriesId.Add("id", id)
 
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		queriesId := url.Values{}
+		queriesId.Add("id", idTopic)
+
+		http.Redirect(w, r, "/topic?"+queriesId.Encode(), http.StatusSeeOther)
+	}
+
+	return
+}
+
+func EditMessageRoute(w http.ResponseWriter, r *http.Request) {
+	queries := r.URL.Query()
+
+	if queries.Has("idMessage") {
+		idMessage := queries.Get("idMessage")
+		idTopic := queries.Get("id")
+
+		Id, err := strconv.ParseInt(idMessage, 10, 64)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		err = sql.DeleteMessage(Id)
+		fmt.Println("Delete message")
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		queriesId := url.Values{}
+		queriesId.Add("id", idTopic)
+
+		http.Redirect(w, r, "/topic?"+queriesId.Encode(), http.StatusSeeOther)
 	}
 
 	return

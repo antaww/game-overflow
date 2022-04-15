@@ -93,6 +93,9 @@
             <div class="topic-content-likes">
                 <div>
                     <p class="posts-content">{{.Message.Content}}</p>
+                    <label class="edit-message" for="edit-text"></label>
+                    <textarea name="edit-text" class="edit-message" id="edit-text" rows="8"
+                                  placeholder="Type something..." required>{{.Message.Content}}</textarea>
                 </div>
                 <div class="topic-likes">
                     <a href="#" class="like-btn">
@@ -111,18 +114,19 @@
                 <div class="topic-general-info">
                     <div class="topic-date">{{formatDate .CreatedAt}}</div>
                     <div class="edit-delete-comment">
-                        <form action="delete-message?idMessage={{.Message.Id}}" method="post">
+                        <form action="delete-message?idMessage={{.Message.Id}}&id={{.Message.IdTopic}}" method="post">
                             <button type="submit" class="delete-comment">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </form>
-                        <form>
-                            <button type="submit" class="edit-comment">
+{{/*                        action="edit-message?idMessage={{.Message.Id}}"*/}}
+                        <form method="post">
+                            <button type="submit" class="edit-comment" onclick="editMessage()">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
                         </form>
 {{/*                        <div class="delete-comment"><i class="fa-solid fa-trash-can"></i></div>*/}}
-{{/*                        <div class="edit-comment"><i class="fa-solid fa-pen-to-square"></i></div>*/}}
+{{/*                        <div class="edit-commxhmyjaeent"><i class="fa-solid fa-pen-to-square"></i></div>*/}}
                     </div>
                 </div>
             {{else}}
