@@ -3,6 +3,8 @@ package routes
 import (
 	"bytes"
 	"encoding/base64"
+	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"main/sql"
@@ -80,8 +82,39 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//func IsActiveRoute(w http.ResponseWriter, r *http.Request) {
-//	fmt.Println(TemplatesData.ConnectedUser.IsOnline)
-//	w.Header().Set("Content-Type", "application/json")
-//	json.NewEncoder(w).Encode(TemplatesData.ConnectedUser.IsOnline)
-//}
+func IsActiveRoute(w http.ResponseWriter, r *http.Request) {
+	//fmt.Println(TemplatesData.ConnectedUser.IsOnline)
+	//w.Header().Set("Content-Type", "application/json")
+	//json.NewEncoder(w).Encode(TemplatesData.ConnectedUser.IsOnline)
+
+	if r.Method == "POST" {
+		// if header is content-type application/json
+		if r.Header.Get("Content-Type") != "application/json" {
+			return
+		}
+
+		var result struct {
+			IsOnline bool `json:"isOnline"`
+		}
+		err := json.NewDecoder(r.Body).Decode(&result)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Println(result)
+
+		user, err := LoginUser(r)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if user == nil {
+			return
+		}
+
+		err = sql.SetUserOnline(TemplatesData.ConnectedUser.Id, result.IsOnline)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+}
