@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// AdminEditUsernameRoute is a route for editing a user's username
 func AdminEditUsernameRoute(w http.ResponseWriter, r *http.Request) {
 	err := utils.CallTemplate("admin-edit-username", TemplatesData, w)
 	if err != nil {
@@ -27,6 +28,5 @@ func AdminEditUsernameRoute(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		return
 	}
 }

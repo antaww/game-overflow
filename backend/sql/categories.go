@@ -5,6 +5,7 @@ type Category struct {
 	Icon string `db:"icon"`
 }
 
+// GetCategories returns all categories
 func GetCategories() ([]Category, error) {
 	var categories []Category
 	row, err := DB.Query("SELECT * FROM categories ORDER BY category_name")

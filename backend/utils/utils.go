@@ -48,9 +48,3 @@ func RandomString(n int) string {
 	}
 	return string(s)
 }
-
-func CheckUserStatus() {
-	for {
-		time.Sleep(time.Minute)
-	}
-}
