@@ -1,6 +1,9 @@
 {{define "content"}}
     {{template "navbar" .}}
+    <link rel="stylesheet" href="/static/create-topic.css">
     <script src="/scripts/topic-creation.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
     <div class="feed-content">
         <div class="new-topic">
             <h1>New topic</h1>
@@ -23,6 +26,7 @@
 
                 <div class="create-topic-content create-topic-options">
                     <label class="required-input" for="content">Content</label>
+                    {{template "message-toolbar" .}}
                     <textarea class="create-topic-input" cols="30" id="content" maxlength="4000" minlength="1"
                               name="content" placeholder="Content" required rows="5"></textarea>
                 </div>
