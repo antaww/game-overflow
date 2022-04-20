@@ -335,6 +335,11 @@ func TopicRoute(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 
+		err = sql.AddViews(Id)
+		if err != nil {
+			log.Fatal(err)
+		}
+
 		err = topic.FetchMessages()
 		if err != nil {
 			log.Fatal(err)
