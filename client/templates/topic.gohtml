@@ -58,17 +58,14 @@
                     {{end}}
                 {{end}}
             </div>
-            {{if or (not .ConnectedUser) (eq .ShownTopic.IsClosed true)}}
-                <div></div>
-            {{else}}
+
+            {{if and (.ConnectedUser) (not .ShownTopic.IsClosed)}}
                 <div class="write-message">
                     <form action="/post-message?id={{.ShownTopic.Id}}" method="POST">
                         <label>
-                            <textarea name="post-text" placeholder="Type something..." class="text-area" rows="8"
-                                      required></textarea>
+                            <textarea name="post-text" placeholder="Type something..." class="text-area" rows="8" required></textarea>
                         </label>
-                        <button type="submit" class="post-message-button"><i
-                                    class="fa-solid fa-location-arrow submit-plane"></i></button>
+                        <button type="submit" class="post-message-button"><i class="fa-solid fa-location-arrow submit-plane"></i></button>
                     </form>
                 </div>
             {{end}}
@@ -94,8 +91,6 @@
                 <div>
                     <p class="posts-content">{{.Message.Content}}</p>
                     <label class="edit-message" for="edit-text"></label>
-                    <textarea name="edit-text" class="edit-message no-display" id="edit-text" rows="8"
-                                  placeholder="Type something..." required>{{.Message.Content}}</textarea>
                 </div>
                 <div class="topic-likes">
                     <a href="#" class="like-btn">

@@ -34,26 +34,22 @@ function handleLikes() {
 }
 
 function editMessage() {
-    const btn = document.querySelectorAll('.edit-comment');
+    const buttons = document.querySelectorAll('.edit-comment');
 
     console.log("before toggle");
 
-    btn.forEach(element => {
-        element.addEventListener('click', e => {
+    buttons.forEach(btn => {
+        btn.addEventListener('click', e => {
             let clicked = e.target;
             console.log(clicked);
-            console.log(clicked.closest('.topic-date').innerText);
 
-            let content = clicked.closest('.posts-content');
-            let textarea = content.querySelector('.edit-text');
+            // get sub-message element
+            const id = clicked.closest('.sub-post');
+            // get text element
+            const text = id.querySelector("p.posts-content");
+            // set it to modifiable
+            text.setAttribute("contenteditable", "true");
 
-            clicked.parentElement.parentElement.previousSibling.previousSibling.classList.toggle('no-display');
-
-
-            // console.log(closestPost);
-            // console.log(closestText);
-            // closestPost.classList.toggle('no-display');
-            // closestText.classList.toggle('no-display');
             console.log("after toggle");
         });
     });
@@ -63,4 +59,5 @@ function editMessage() {
 
 window.onload = () => {
     handleLikes();
-}
+    editMessage();
+};
