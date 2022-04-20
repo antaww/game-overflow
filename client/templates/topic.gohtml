@@ -16,7 +16,8 @@
                         {{end}}
                         <a>
                             <div class="circle {{if $firstMessage.GetUser.IsOnline}} connected {{else}} disconnected {{end}}">
-                                <img alt="" class="avatar modalProfileBtn" src="{{template "avatar" $firstMessage.GetUser.ProfilePic}}">
+                                <img alt="" class="avatar modalProfileBtn"
+                                     src="{{template "avatar" $firstMessage.GetUser.ProfilePic}}">
                                 {{template "modal" $firstMessage.GetUser}}
                             </div>
                         </a>
@@ -26,7 +27,9 @@
                     </div>
                     <div class="topic-content-likes">
                         <div>
-                            <div class="topic-category">{{.ShownTopic.Category}}</div>
+                            <a href="/feed?category={{.ShownTopic.Category}}" style="text-decoration: none">
+                                <div class="topic-category">{{.ShownTopic.Category}}</div>
+                            </a>
                             <p class="topic-title">{{.ShownTopic.Title}}</p>
                             <div class="topic-views posts-views">{{.ShownTopic.Views}} views</div>
                             <p class="posts-content">{{$firstMessage.Content}}</p>
@@ -82,7 +85,8 @@
             <div>
                 <a>
                     <div class="circle {{if .Message.GetUser.IsOnline}} connected {{else}} disconnected {{end}}">
-                        <img alt="" class="avatar modalProfileBtn" src="{{template "avatar" .Message.GetUser.ProfilePic}}">
+                        <img alt="" class="avatar modalProfileBtn"
+                             src="{{template "avatar" .Message.GetUser.ProfilePic}}">
                         {{template "modal" .Message.GetUser}}
                     </div>
                 </a>
@@ -95,7 +99,7 @@
                     <p class="posts-content">{{.Message.Content}}</p>
                     <label class="edit-message" for="edit-text"></label>
                     <textarea name="edit-text" class="edit-message no-display" id="edit-text" rows="8"
-                                  placeholder="Type something..." required>{{.Message.Content}}</textarea>
+                              placeholder="Type something..." required>{{.Message.Content}}</textarea>
                 </div>
                 <div class="topic-likes">
                     <a href="#" class="like-btn">
@@ -119,17 +123,17 @@
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </form>
-{{/*                        action="edit-message?idMessage={{.Message.Id}}"*/}}
+                        {{/*                        action="edit-message?idMessage={{.Message.Id}}"*/}}
                         <div class="edit-comment">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </div>
-{{/*                        <form method="post">*/}}
-{{/*                            <button type="submit" class="edit-comment" onclick="editMessage()">*/}}
-{{/*                                <i class="fa-solid fa-pen-to-square"></i>*/}}
-{{/*                            </button>*/}}
-{{/*                        </form>*/}}
-{{/*                        <div class="delete-comment"><i class="fa-solid fa-trash-can"></i></div>*/}}
-{{/*                        <div class="edit-commxhmyjaeent"><i class="fa-solid fa-pen-to-square"></i></div>*/}}
+                        {{/*                        <form method="post">*/}}
+                        {{/*                            <button type="submit" class="edit-comment" onclick="editMessage()">*/}}
+                        {{/*                                <i class="fa-solid fa-pen-to-square"></i>*/}}
+                        {{/*                            </button>*/}}
+                        {{/*                        </form>*/}}
+                        {{/*                        <div class="delete-comment"><i class="fa-solid fa-trash-can"></i></div>*/}}
+                        {{/*                        <div class="edit-commxhmyjaeent"><i class="fa-solid fa-pen-to-square"></i></div>*/}}
                     </div>
                 </div>
             {{else}}

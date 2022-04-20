@@ -181,6 +181,7 @@ body {
     font-weight: 600;
     color: #FFF;
     padding: 10px;
+    transition: all .3s;
 }
 
 .log-out {

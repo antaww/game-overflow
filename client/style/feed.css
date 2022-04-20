@@ -152,8 +152,22 @@
     white-space: nowrap;
     text-decoration: none;
     border: none;
+    transition: all .3s;
 }
 
 .create-topic i {
     margin-left: 1vh;
+}
+
+.create-topic:hover {
+    background: #5E4BBE;
+}
+
+.post-question {
+    transition: all .3s;
+}
+
+.create-topic:hover .post-question {
+    transform: translateY(-10%);
+    text-shadow: 0 3px #7331a8;
 }
