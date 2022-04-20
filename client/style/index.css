@@ -351,3 +351,7 @@ body {
 .topics-in-feed:hover {
     background: #232b2f;
 }
+
+.points-letters {
+    font-size: 80%;
+}

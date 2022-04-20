@@ -61,7 +61,7 @@
     width: fit-content;
 }
 
-.topic-title, .topic-likes {
+.topic-title, .topic-likes, .feed-likes {
     font-weight: 700;
     color: #FFFFFF;
     font-size: 2.5vh;
@@ -112,6 +112,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.feed-likes {
+    display: flex;
+    align-items: center;
+    gap: .3em;
 }
 
 .topic-likes p {
