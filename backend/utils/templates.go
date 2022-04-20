@@ -3,6 +3,7 @@ package utils
 import (
 	"html/template"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -12,6 +13,10 @@ var TemplateMap = template.FuncMap{
 	},
 	"formatDate": func(t time.Time) string {
 		return t.Format("2006-01-02 15:04:05")
+	},
+	"decimalToHex": func(i int) string {
+		s := "#" + strconv.FormatInt(int64(i), 16)
+		return s
 	},
 }
 
