@@ -318,6 +318,7 @@ body {
     color: #fff;
     text-decoration: none;
     cursor: pointer;
+    animation: pulse 2s infinite;
 }
 
 .modal-content {
@@ -325,10 +326,11 @@ body {
     margin: auto;
     padding: 20px;
     width: fit-content;
-    min-width: 25vw;
-    min-height: 25vw;
+    min-width: 18vw;
+    min-height: 30vw;
     border-radius: 2vw;
     background-color: #2E3944;
+    animation: modalSlide .2s ease-out forwards;
 }
 
 .modal-about {
@@ -355,3 +357,16 @@ body {
 .points-letters {
     font-size: 80%;
 }
+
+@keyframes modalSlide {
+    from {
+        transform: translateX(10%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
