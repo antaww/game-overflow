@@ -12,6 +12,44 @@ import (
 	"net/http"
 )
 
+// IsActiveRoute is a middleware function that checks if the user is active
+func IsActiveRoute(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		var response struct {
+			IsOnline  bool   `json:"isOnline"`
+			SessionId string `json:"sessionId"`
+		}
+		err := json.NewDecoder(r.Body).Decode(&response)
+		if err != nil {
+			return
+		}
+
+		var user *sql.User
+
+		if response.SessionId != "" {
+			user, err = sql.GetUserBySession(response.SessionId)
+			if err != nil {
+				log.Fatal(err)
+			}
+		} else {
+			user, err = LoginUser(r)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
+
+		if user == nil {
+			return
+		}
+
+		err = sql.SetUserOnline(user.Id, response.IsOnline)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+}
+
+// SettingsRoute is a route that handles the settings of the user
 func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		if TemplatesData.ConnectedUser == nil {
@@ -81,42 +119,7 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func IsActiveRoute(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "POST" {
-		var response struct {
-			IsOnline  bool   `json:"isOnline"`
-			SessionId string `json:"sessionId"`
-		}
-		err := json.NewDecoder(r.Body).Decode(&response)
-		if err != nil {
-			return
-		}
-
-		var user *sql.User
-
-		if response.SessionId != "" {
-			user, err = sql.GetUserBySession(response.SessionId)
-			if err != nil {
-				log.Fatal(err)
-			}
-		} else {
-			user, err = LoginUser(r)
-			if err != nil {
-				log.Fatal(err)
-			}
-		}
-
-		if user == nil {
-			return
-		}
-
-		err = sql.SetUserOnline(user.Id, response.IsOnline)
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-}
-
+// UsersActive is a middleware function that checks if the users sent are active
 func UsersActive(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "PUT" {
 		if r.Header.Get("Content-Type") != "application/json" {
@@ -131,7 +134,7 @@ func UsersActive(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 
-		usersOnline, err := sql.GetUsersOnline(response.Users)
+		usersOnline, err := sql.GetUsersStatus(response.Users)
 		if err != nil {
 			log.Fatal(err)
 		}

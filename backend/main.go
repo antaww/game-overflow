@@ -10,11 +10,7 @@ import (
 	. "main/sql"
 	"net/http"
 	"os"
-	"time"
 )
-
-const inactiveTime = 5 * time.Second
-const updateDelay = 1 * time.Second
 
 func main() {
 	err := godotenv.Load("../.env")
@@ -33,35 +29,35 @@ func main() {
 
 	http.HandleFunc("/", IndexRoute)
 
-	http.HandleFunc("/login", LoginRoute)
-
-	http.HandleFunc("/sign-up", SignUpRoute)
+	http.HandleFunc("/admin/edit-username", AdminEditUsernameRoute)
 
 	http.HandleFunc("/confirm-password", ConfirmPasswordRoute)
 
-	http.HandleFunc("/admin/edit-username", AdminEditUsernameRoute)
-
-	http.HandleFunc("/post-message", PostMessageRoute)
+	http.HandleFunc("/create-topic", CreateTopicRoute)
 
 	http.HandleFunc("/delete-message", DeleteMessageRoute)
 
+	http.HandleFunc("/dislike", DislikeRoute)
+
 	http.HandleFunc("/edit-message", EditMessageRoute)
-
-	http.HandleFunc("/create-topic", CreateTopicRoute)
-
-	http.HandleFunc("/logout", LogoutRoute)
-
-	http.HandleFunc("/settings", SettingsRoute)
 
 	http.HandleFunc("/feed", FeedRoute)
 
-	http.HandleFunc("/topic", TopicRoute)
+	http.HandleFunc("/is-active", IsActiveRoute)
 
 	http.HandleFunc("/like", LikeRoute)
 
-	http.HandleFunc("/dislike", DislikeRoute)
+	http.HandleFunc("/login", LoginRoute)
 
-	http.HandleFunc("/is-active", IsActiveRoute)
+	http.HandleFunc("/logout", LogoutRoute)
+
+	http.HandleFunc("/post-message", PostMessageRoute)
+
+	http.HandleFunc("/settings", SettingsRoute)
+
+	http.HandleFunc("/sign-up", SignUpRoute)
+
+	http.HandleFunc("/topic", TopicRoute)
 
 	http.HandleFunc("/users-active", UsersActive)
 
@@ -87,41 +83,11 @@ func main() {
 	}
 	fmt.Println("Connected!")
 
-	//go IsUserActive()
+	const port = ":8091"
 
-	fmt.Println("Server started at localhost:8091")
-	err = http.ListenAndServe(":8091", http.HandlerFunc(LogHandler))
+	fmt.Println("Server started at localhost:", port)
+	err = http.ListenAndServe(port, http.HandlerFunc(LogHandler))
 	if err != nil {
 		log.Fatal(err)
 	}
 }
-
-//func IsUserActive() {
-//	for {
-//		if TemplatesData.ConnectedUser == nil {
-//			continue
-//		}
-//		if PageLoadedTime.Add(inactiveTime).After(time.Now()) {
-//			if !TemplatesData.ConnectedUser.IsOnline {
-//				err := SetUserOnline(TemplatesData.ConnectedUser.Id, true)
-//				fmt.Printf("\n>>>>> %s is active (inactive in %s seconds)", TemplatesData.ConnectedUser.Username, inactiveTime.String())
-//				if err != nil {
-//					log.Fatal(err)
-//				}
-//				TemplatesData.ConnectedUser = GetUserById(TemplatesData.ConnectedUser.Id)
-//			}
-//
-//		} else {
-//			if TemplatesData.ConnectedUser.IsOnline {
-//				err := SetUserOnline(TemplatesData.ConnectedUser.Id, false)
-//				fmt.Printf("\n>>>>> %s is inactive", TemplatesData.ConnectedUser.Username)
-//				if err != nil {
-//					log.Fatal(err)
-//				}
-//				TemplatesData.ConnectedUser = GetUserById(TemplatesData.ConnectedUser.Id)
-//			}
-//
-//		}
-//		time.Sleep(updateDelay)
-//	}
-//}

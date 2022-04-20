@@ -1,6 +1,9 @@
 package sql
 
 import (
+	"fmt"
+	"main/utils"
+	"strconv"
 	"time"
 )
 
@@ -18,6 +21,48 @@ type MessageWithConnectedUser struct {
 	ConnectedUser *User
 }
 
+type MessageLike struct {
+	IdMessage int64 `db:"id_message"`
+	IdUser    int64 `db:"id_user"`
+	IsLike    bool  `db:"like"`
+}
+
+// CalculatePoints CalculateLikes returns the number of likes for a message
+func (message *Message) CalculatePoints() int {
+	err := message.FetchLikes()
+	if err != nil {
+		return 0
+	}
+
+	var count int
+	for _, like := range message.Likes {
+		if like.IsLike {
+			count++
+		} else {
+			count--
+		}
+	}
+
+	return count
+}
+
+// GetUser returns the user who wrote the message
+func (message *Message) GetUser() *User {
+	return GetUserById(message.AuthorId)
+}
+
+// FetchLikes FetchMessages get messages into topic from db using post id
+func (message *Message) FetchLikes() error {
+	messageLike, err := GetLikes(message.Id)
+	if err != nil {
+		return err
+	}
+
+	message.Likes = messageLike
+	return nil
+}
+
+// WithConnectedUser returns a message with the connected user
 func (message *Message) WithConnectedUser(user *User) MessageWithConnectedUser {
 	return MessageWithConnectedUser{
 		Message:       message,
@@ -25,10 +70,54 @@ func (message *Message) WithConnectedUser(user *User) MessageWithConnectedUser {
 	}
 }
 
-type MessageLike struct {
-	IdMessage int64 `db:"id_message"`
-	IdUser    int64 `db:"id_user"`
-	IsLike    bool  `db:"like"`
+// AddMessage add a message into a topic
+func AddMessage(idUser int64, idTopic int64, message string) (int64, error) {
+	id := utils.GenerateID()
+	_, err := DB.Exec("INSERT INTO messages VALUES (?, ?, ?, ?, ?)", id, message, time.Now(), idTopic, idUser)
+	if err != nil {
+		return 0, fmt.Errorf("CreateTopic error: %v", err)
+	}
+	fmt.Printf("message added to the topic %v\n", strconv.FormatInt(idTopic, 10))
+	return id, nil
+}
+
+// DeleteMessage delete a message from a topic
+func DeleteMessage(idMessage int64) error {
+	_, err := DB.Exec("DELETE FROM messages WHERE id_message = ?", idMessage)
+	if err != nil {
+		return fmt.Errorf("DeleteMessage error: %v", err)
+	}
+	return nil
+}
+
+// DeleteDislikeMessage delete a dislike from a message
+func DeleteDislikeMessage(messageId, userId int64) (bool, error) {
+	_, err := DB.Exec("DELETE FROM message_like WHERE id_message = ? AND id_user = ?", messageId, userId)
+	if err != nil {
+		return false, fmt.Errorf("DeleteDislikeMessage error: %v", err)
+	}
+
+	return true, nil
+}
+
+// DeleteLikeMessage delete a like from a message
+func DeleteLikeMessage(messageId, userId int64) (bool, error) {
+	_, err := DB.Exec("DELETE FROM message_like WHERE id_message = ? AND id_user = ?", messageId, userId)
+	if err != nil {
+		return false, fmt.Errorf("DeleteLikeMessage error: %v", err)
+	}
+
+	return true, nil
+}
+
+// DislikeMessage dislike a message
+func DislikeMessage(messageId, userId int64) (bool, error) {
+	_, err := DB.Exec("INSERT INTO message_like VALUES (?, ?, ?)", messageId, userId, false)
+	if err != nil {
+		return false, fmt.Errorf("DislikeMessage error: %v", err)
+	}
+
+	return true, nil
 }
 
 // GetMessages returns all messages from a topic id
@@ -54,6 +143,7 @@ func GetMessages(postId int64) ([]Message, error) {
 	return messages, nil
 }
 
+// GetMessage returns a message from a message id
 func GetMessage(messageId int64) (*Message, error) {
 	var message Message
 	row := DB.QueryRow("SELECT * FROM messages WHERE id_message = ?", messageId)
@@ -64,10 +154,7 @@ func GetMessage(messageId int64) (*Message, error) {
 	return &message, nil
 }
 
-func (message *Message) GetUser() *User {
-	return GetUserById(message.AuthorId)
-}
-
+// GetLikes returns all likes from a message id
 func GetLikes(messageId int64) ([]MessageLike, error) {
 	rows, err := DB.Query("SELECT * FROM message_like WHERE id_message = ?", messageId)
 	if err != nil {
@@ -88,36 +175,6 @@ func GetLikes(messageId int64) ([]MessageLike, error) {
 	HandleSQLErrors(rows)
 
 	return likes, nil
-}
-
-// FetchLikes FetchMessages get messages into topic from db using post id
-func (message *Message) FetchLikes() error {
-	messageLike, err := GetLikes(message.Id)
-	if err != nil {
-		return err
-	}
-
-	message.Likes = messageLike
-	return nil
-}
-
-// CalculatePoints CalculateLikes returns the number of likes for a message
-func (message *Message) CalculatePoints() int {
-	err := message.FetchLikes()
-	if err != nil {
-		return 0
-	}
-
-	var count int
-	for _, like := range message.Likes {
-		if like.IsLike {
-			count++
-		} else {
-			count--
-		}
-	}
-
-	return count
 }
 
 // GetTags returns all tags from a topic id
@@ -143,12 +200,30 @@ func GetTags(topicId int64) ([]string, error) {
 	return tags, nil
 }
 
-func (topic *Topic) FetchTags() error {
-	tags, err := GetTags(topic.Id)
+// LikeMessage like a message
+func LikeMessage(messageId, userId int64) (bool, error) {
+	_, err := DB.Exec("INSERT INTO message_like VALUES (?, ?, ?)", messageId, userId, true)
 	if err != nil {
-		return err
+		return false, fmt.Errorf("LikeMessage error: %v", err)
 	}
 
-	topic.Tags = tags
-	return nil
+	return true, nil
+}
+
+// MessageGetLikeFrom returns a like from a message id and user id
+func MessageGetLikeFrom(messageId, userId int64) (*MessageLike, error) {
+	result, err := DB.Query("SELECT * FROM message_like WHERE id_message = ? AND id_user = ?", messageId, userId)
+	if err != nil {
+		return nil, fmt.Errorf("MessageGetLikeFrom error: %v", err)
+	}
+
+	messageLike := &MessageLike{}
+	if result.Next() {
+		err = result.Scan(&messageLike.IdMessage, &messageLike.IdUser, &messageLike.IsLike)
+		HandleSQLErrors(result)
+		return messageLike, nil
+	} else {
+		HandleSQLErrors(result)
+		return nil, nil
+	}
 }

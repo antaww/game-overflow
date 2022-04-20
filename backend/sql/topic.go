@@ -1,5 +1,11 @@
 package sql
 
+import (
+	"database/sql"
+	"fmt"
+	"main/utils"
+)
+
 type Topic struct {
 	Id             int64  `db:"id_topic"`
 	Title          string `db:"title"`
@@ -49,8 +55,36 @@ func (topic *Topic) FetchMessages() error {
 	return nil
 }
 
-// GetPost returns topic by id
-func GetPost(id int64) (*Topic, error) {
+// FetchTags get tags into topic from db using post id
+func (topic *Topic) FetchTags() error {
+	tags, err := GetTags(topic.Id)
+	if err != nil {
+		return err
+	}
+
+	topic.Tags = tags
+	return nil
+}
+
+// CreateTopic create a new topic in db
+func CreateTopic(title string, category string, tags []string) (int64, error) {
+	id := utils.GenerateID()
+	_, err := DB.Exec("INSERT INTO topics VALUES (?, ?, ?, ?, ?, ?)", id, title, 0, 0, category, sql.NullInt64{})
+	if err != nil {
+		return 0, fmt.Errorf("CreateTopic error: %v", err)
+	}
+	for _, tag := range tags {
+		_, err := DB.Exec("INSERT INTO have VALUES (?, ?)", id, tag)
+		if err != nil {
+			return 0, fmt.Errorf("Tags error: %v", err)
+		}
+	}
+	fmt.Printf("topic '%v' added to the category '%v'", title, category)
+	return id, nil
+}
+
+// GetTopic returns topic by id
+func GetTopic(id int64) (*Topic, error) {
 	rows, err := DB.Query("SELECT * FROM topics WHERE id_topic = ?", id)
 	if err != nil {
 		return nil, err
@@ -67,7 +101,8 @@ func GetPost(id int64) (*Topic, error) {
 	return post, nil
 }
 
-func GetTopicsByCategories(category string) ([]Topic, error) {
+// GetTopicsByCategory returns topics by category
+func GetTopicsByCategory(category string) ([]Topic, error) {
 	rows, err := DB.Query("SELECT * FROM topics WHERE category_name = ?", category)
 	if err != nil {
 		return nil, err
@@ -88,6 +123,7 @@ func GetTopicsByCategories(category string) ([]Topic, error) {
 	return topics, nil
 }
 
+// GetTopicsByTag returns topics by tag
 func GetTopicsByTag(tag string) ([]Topic, error) {
 	rows, err := DB.Query("SELECT * FROM topics WHERE id_topic IN (SELECT id_topic FROM have WHERE tag_name = ?)", tag)
 	if err != nil {

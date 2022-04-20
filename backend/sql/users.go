@@ -1,12 +1,10 @@
 package sql
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 	"main/utils"
 	"net/http"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -127,6 +125,19 @@ func GetUserById(id int64) *User {
 	return user
 }
 
+// GetUserByRequest gets a user by request, returns nil if not found
+func GetUserByRequest(r *http.Request) (*User, error) {
+	cookie, err := r.Cookie("session")
+	if err != nil {
+		if err == http.ErrNoCookie {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("GetUserByRequest error: %v", err)
+	}
+
+	return GetUserBySession(cookie.Value)
+}
+
 // GetUserBySession logs in a user by sessionId (cookie), returns user found if success, else nil
 func GetUserBySession(sessionId string) (*User, error) {
 	result, err := DB.Query("SELECT id_user FROM sessions WHERE id_session = ?", sessionId)
@@ -143,16 +154,6 @@ func GetUserBySession(sessionId string) (*User, error) {
 	HandleSQLErrors(result)
 
 	return GetUserById(idUser), nil
-}
-
-// GetUserByRequest gets a user by request, returns nil if not found
-func GetUserByRequest(r *http.Request) (*User, error) {
-	cookie, err := r.Cookie("session")
-	if err != nil {
-		return nil, fmt.Errorf("GetUserByRequest error: %v", err)
-	}
-
-	return GetUserBySession(cookie.Value)
 }
 
 // GetUserByUsername finds a user by username, returns nil if not found
@@ -173,6 +174,26 @@ func GetUserByUsername(username string) *User {
 
 	HandleSQLErrors(result)
 	return user
+}
+
+// GetUsersStatus returns an array of users with their status
+func GetUsersStatus(users []string) ([]*User, error) {
+	var usersOnline []*User
+	for _, user := range users {
+		result, err := DB.Query("SELECT is_online, username FROM users WHERE username = ?", user)
+		if err != nil {
+			return nil, fmt.Errorf("GetUsersStatus error: %v", err)
+		}
+		if result.Next() {
+			user := &User{}
+			err = result.Scan(&user.IsOnline, &user.Username)
+			HandleSQLErrors(result)
+			usersOnline = append(usersOnline, user)
+		} else {
+			HandleSQLErrors(result)
+		}
+	}
+	return usersOnline, nil
 }
 
 // LoginByIdentifiants logs in a user by username and password, return true if success
@@ -203,117 +224,11 @@ func SaveUser(user User) (bool, error) {
 	return true, nil
 }
 
-func AddMessage(idUser int64, idTopic int64, message string) (int64, error) {
-	id := utils.GenerateID()
-	_, err := DB.Exec("INSERT INTO messages VALUES (?, ?, ?, ?, ?)", id, message, time.Now(), idTopic, idUser)
-	if err != nil {
-		return 0, fmt.Errorf("CreateTopic error: %v", err)
-	}
-	fmt.Printf("message added to the topic %v\n", strconv.FormatInt(idTopic, 10))
-	return id, nil
-}
-
-func DeleteMessage(idMessage int64) error {
-	_, err := DB.Exec("DELETE FROM messages WHERE id_message = ?", idMessage)
-	if err != nil {
-		return fmt.Errorf("DeleteMessage error: %v", err)
-	}
-	return nil
-}
-
-func DeleteDislikeMessage(messageId, userId int64) (bool, error) {
-	_, err := DB.Exec("DELETE FROM message_like WHERE id_message = ? AND id_user = ?", messageId, userId)
-	if err != nil {
-		return false, fmt.Errorf("DeleteDislikeMessage error: %v", err)
-	}
-
-	return true, nil
-}
-
-func DeleteLikeMessage(messageId, userId int64) (bool, error) {
-	_, err := DB.Exec("DELETE FROM message_like WHERE id_message = ? AND id_user = ?", messageId, userId)
-	if err != nil {
-		return false, fmt.Errorf("DeleteLikeMessage error: %v", err)
-	}
-
-	return true, nil
-}
-
-func DislikeMessage(messageId, userId int64) (bool, error) {
-	_, err := DB.Exec("INSERT INTO message_like VALUES (?, ?, ?)", messageId, userId, false)
-	if err != nil {
-		return false, fmt.Errorf("DislikeMessage error: %v", err)
-	}
-
-	return true, nil
-}
-
-func LikeMessage(messageId, userId int64) (bool, error) {
-	_, err := DB.Exec("INSERT INTO message_like VALUES (?, ?, ?)", messageId, userId, true)
-	if err != nil {
-		return false, fmt.Errorf("LikeMessage error: %v", err)
-	}
-
-	return true, nil
-}
-
-func MessageGetLikeFrom(messageId, userId int64) (*MessageLike, error) {
-	result, err := DB.Query("SELECT * FROM message_like WHERE id_message = ? AND id_user = ?", messageId, userId)
-	if err != nil {
-		return nil, fmt.Errorf("MessageGetLikeFrom error: %v", err)
-	}
-
-	messageLike := &MessageLike{}
-	if result.Next() {
-		err = result.Scan(&messageLike.IdMessage, &messageLike.IdUser, &messageLike.IsLike)
-		HandleSQLErrors(result)
-		return messageLike, nil
-	} else {
-		HandleSQLErrors(result)
-		return nil, nil
-	}
-}
-
-func CreateTopic(title string, category string, tags []string) (int64, error) {
-	id := utils.GenerateID()
-	_, err := DB.Exec("INSERT INTO topics VALUES (?, ?, ?, ?, ?, ?)", id, title, 0, 0, category, sql.NullInt64{})
-	if err != nil {
-		return 0, fmt.Errorf("CreateTopic error: %v", err)
-	}
-	for _, tag := range tags {
-		_, err := DB.Exec("INSERT INTO have VALUES (?, ?)", id, tag)
-		if err != nil {
-			return 0, fmt.Errorf("Tags error: %v", err)
-		}
-	}
-	fmt.Printf("topic '%v' added to the category '%v'", title, category)
-	return id, nil
-}
-
-//create a function that will set the user online (is_online = 1)
+// SetUserOnline sets a user online
 func SetUserOnline(idUser int64, isOnline bool) error {
 	_, err := DB.Exec("UPDATE users SET is_online = ? WHERE id_user = ?", isOnline, idUser)
 	if err != nil {
 		return fmt.Errorf("SaveUser error: %v", err)
 	}
 	return nil
-}
-
-func GetUsersOnline(users []string) ([]*User, error) {
-	var usersOnline []*User
-	for _, user := range users {
-		result, err := DB.Query("SELECT is_online, username FROM users WHERE username = ?", user)
-		if err != nil {
-			return nil, fmt.Errorf("GetUsersOnline error: %v", err)
-		}
-		if result.Next() {
-			user := &User{}
-			err = result.Scan(&user.IsOnline, &user.Username)
-			HandleSQLErrors(result)
-			usersOnline = append(usersOnline, user)
-		} else {
-			HandleSQLErrors(result)
-		}
-	}
-	return usersOnline, nil
 }

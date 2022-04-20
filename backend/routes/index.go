@@ -17,6 +17,7 @@ type TemplatesDataType struct {
 	ShownTopic    sql.Topic
 }
 
+// GetCategories returns all categories
 func (t TemplatesDataType) GetCategories() []sql.Category {
 	categories, err := sql.GetCategories()
 	if err != nil {
@@ -31,6 +32,7 @@ var TemplatesData = TemplatesDataType{
 
 var PageLoadedTime time.Time
 
+// IndexRoute is the route for the home page
 func IndexRoute(w http.ResponseWriter, r *http.Request) {
 	path := strings.TrimPrefix(r.URL.Path, "/")
 	_, err := LoginUser(r)
@@ -46,6 +48,7 @@ func IndexRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// LogHandler is a middleware that logs the request and connects the user using the session cookie
 func LogHandler(w http.ResponseWriter, r *http.Request) {
 	matches, err := regexp.MatchString("\\.(css|png)$", r.URL.String())
 	if err != nil {
