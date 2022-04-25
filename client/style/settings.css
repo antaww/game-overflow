@@ -22,7 +22,7 @@
     border-radius: 5px;
 }
 
-.form-group input, .form-group textarea {
+.form-group input:not(.color), .form-group textarea {
     width: 20vw;
 }
 
@@ -53,13 +53,27 @@
     margin: 5px;
 }
 
-#color {
-    height: 80px;
-    width: 120px;
+.color {
+    height: 85px;
+    width: 140px;
+    position: relative;
 }
 
-#color::-webkit-color-swatch {
+.color:hover {
+    cursor: pointer;
+}
+
+.color::-webkit-color-swatch {
     border-radius: 5px;
+}
+
+.color.selected::after {
+    content: "✅";
+    font-size: 1.5rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #FFF;
 }
 
 .colors-wrapper {
