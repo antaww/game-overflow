@@ -120,6 +120,14 @@ func DislikeMessage(messageId, userId int64) (bool, error) {
 	return true, nil
 }
 
+func EditMessage(messageId int64, message string) error {
+	_, err := DB.Exec("UPDATE messages SET content = ? WHERE id_message = ?", message, messageId)
+	if err != nil {
+		return fmt.Errorf("EditMessage error: %v", err)
+	}
+	return nil
+}
+
 // GetMessages returns all messages from a topic id
 func GetMessages(postId int64) ([]Message, error) {
 	rows, err := DB.Query("SELECT * FROM messages WHERE id_topic = ? ORDER BY created_at", postId)

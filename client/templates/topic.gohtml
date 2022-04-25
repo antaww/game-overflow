@@ -114,17 +114,14 @@
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </form>
-{{/*                        action="edit-message?idMessage={{.Message.Id}}"*/}}
                         <div class="edit-comment">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </div>
-{{/*                        <form method="post">*/}}
-{{/*                            <button type="submit" class="edit-comment" onclick="editMessage()">*/}}
-{{/*                                <i class="fa-solid fa-pen-to-square"></i>*/}}
-{{/*                            </button>*/}}
-{{/*                        </form>*/}}
-{{/*                        <div class="delete-comment"><i class="fa-solid fa-trash-can"></i></div>*/}}
-{{/*                        <div class="edit-commxhmyjaeent"><i class="fa-solid fa-pen-to-square"></i></div>*/}}
+                        <form action="edit-message?idMessage={{.Message.Id}}&id={{.Message.IdTopic}}" method="post" class="send-edited-form">
+                            <button type="submit" class="send-edited-comment no-display">
+                                Confirm
+                            </button>
+                        </form>
                     </div>
                 </div>
             {{else}}

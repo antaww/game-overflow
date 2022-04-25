@@ -164,8 +164,9 @@ func EditMessageRoute(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 
-		err = sql.DeleteMessage(Id)
-		fmt.Println("Delete message")
+		// make a variable message taking the content from the posts-content class in the html
+		message, err := sql.GetMessage(Id)
+		err = sql.EditMessage(Id, message.Content)
 		if err != nil {
 			log.Fatal(err)
 		}
