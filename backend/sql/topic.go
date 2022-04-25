@@ -157,3 +157,14 @@ func AddViews(id int64) error {
 	}
 	return nil
 }
+
+func CloseTopic(topic_id int64, user_id int64) (bool, error) {
+	edited_lines, err := DB.Exec("UPDATE topics SET is_closed = 1 WHERE id_topic = ? AND id_first_message in (SELECT id_message FROM messages WHERE id_user = ?)", topic_id, user_id)
+
+	affected, err := edited_lines.RowsAffected()
+	if err != nil {
+		return false, fmt.Errorf("CloseTopic error: %v", err)
+	}
+
+	return affected > 0, nil
+}

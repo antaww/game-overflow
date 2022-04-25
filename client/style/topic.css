@@ -128,5 +128,9 @@
 /* EDIT MESSAGE */
 
 .no-display {
-    display: none;
+    display: none !important;
+}
+
+.topic-status:hover {
+    cursor: pointer;
 }

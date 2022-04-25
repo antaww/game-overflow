@@ -1,6 +1,7 @@
 {{define "content"}}
     <script defer src="/scripts/messages.js"></script>
     <script defer src="/scripts/modal.js"></script>
+    <script defer src="/scripts/topic-status.js"></script>
     {{template "navbar" .}}
     {{$connectedUser := .ConnectedUser}}
     <div class="feed-content">
@@ -10,7 +11,14 @@
                 <div>
                     <div class="post-div-div">
                         {{if not .ShownTopic.IsClosed}}
-                            <div class="topic-open">Open<i class="fa-solid fa-lock-open topic-open"></i></div>
+                            {{if eq $firstMessage.GetUser.Id .ConnectedUser.Id}}
+                                <a class="topic-status">
+                                    <div class="topic-open">Opened<i class="fa-solid fa-lock-open topic-open"></i>
+                                    </div>
+                                </a>
+                            {{else}}
+                                <div class="topic-open">Opened<i class="fa-solid fa-lock-open topic-open"></i></div>
+                            {{end}}
                         {{else}}
                             <div class="topic-closed">Closed<i class="fa-solid fa-lock topic-closed"></i></div>
                         {{end}}
@@ -31,7 +39,13 @@
                                 <div class="topic-category">{{.ShownTopic.Category}}</div>
                             </a>
                             <p class="topic-title">{{.ShownTopic.Title}}</p>
-                            <div class="topic-views posts-views">{{.ShownTopic.Views}} views</div>
+                            {{if le .ShownTopic.Views 1}}
+                                <div class="topic-views posts-views">{{.ShownTopic.Views}} view
+                                </div>
+                            {{else}}
+                                <div class="topic-views posts-views">{{.ShownTopic.Views}} views
+                                </div>
+                            {{end}}
                             <p class="posts-content">{{$firstMessage.Content}}</p>
                         </div>
                         <div class="topic-likes">
@@ -124,17 +138,14 @@
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </form>
-                        {{/*                        action="edit-message?idMessage={{.Message.Id}}"*/}}
                         <div class="edit-comment">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </div>
-                        {{/*                        <form method="post">*/}}
-                        {{/*                            <button type="submit" class="edit-comment" onclick="editMessage()">*/}}
-                        {{/*                                <i class="fa-solid fa-pen-to-square"></i>*/}}
-                        {{/*                            </button>*/}}
-                        {{/*                        </form>*/}}
-                        {{/*                        <div class="delete-comment"><i class="fa-solid fa-trash-can"></i></div>*/}}
-                        {{/*                        <div class="edit-commxhmyjaeent"><i class="fa-solid fa-pen-to-square"></i></div>*/}}
+                        <div IdMessage="{{.Message.Id}}" IdTopic="{{.Message.IdTopic}}" class="send-edited-form">
+                            <div type="submit" class="send-edited-comment no-display">
+                                Confirm
+                            </div>
+                        </div>
                     </div>
                 </div>
             {{else}}

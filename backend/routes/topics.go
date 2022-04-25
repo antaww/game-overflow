@@ -2,6 +2,7 @@ package routes
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"main/sql"
 	"main/utils"
@@ -13,6 +14,10 @@ import (
 
 type LikeResponse struct {
 	Points int `json:"points"`
+}
+
+type EditMessageResponse struct {
+	Message string `json:"message"`
 }
 
 // CreateTopicRoute is the route for creating a new topic
@@ -158,14 +163,15 @@ func EditMessageRoute(w http.ResponseWriter, r *http.Request) {
 	if queries.Has("idMessage") {
 		idMessage := queries.Get("idMessage")
 		idTopic := queries.Get("id")
+		contentMessage, _ := io.ReadAll(r.Body)
 
 		Id, err := strconv.ParseInt(idMessage, 10, 64)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		err = sql.DeleteMessage(Id)
-		fmt.Println("Delete message")
+		// make a variable message taking the content from the posts-content class in the html
+		err = sql.EditMessage(Id, string(contentMessage))
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -356,5 +362,34 @@ func TopicRoute(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err)
 		}
+	}
+}
+
+func CloseTopicRoute(w http.ResponseWriter, r *http.Request) {
+	queries := r.URL.Query()
+
+	if queries.Has("id") {
+		id := queries.Get("id")
+
+		Id, err := strconv.ParseInt(id, 10, 64)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		user, err := sql.GetUserByRequest(r)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		IsClosed, err := sql.CloseTopic(Id, user.Id)
+
+		if !IsClosed {
+			http.Redirect(w, r, "/topic?id="+id, http.StatusSeeOther)
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		http.Redirect(w, r, "/topic?id="+id, http.StatusSeeOther)
 	}
 }
