@@ -9,7 +9,6 @@
                 <a href="/topic?id={{.Id}}" class="topics-in-feed">
                     <div class="circle {{if .GetFirstMessage.GetUser.IsOnline}} connected {{else}} disconnected {{end}}">
                         <img alt="" class="avatar" src="{{template "avatar" .GetFirstMessage.GetUser.ProfilePic}}">
-                        {{template "modal" .GetFirstMessage.GetUser}}
                     </div>
                     <div>
                         <div class="a-div-div">
@@ -36,8 +35,8 @@
                                 </div>
                             </div>
                             <div class="feed-likes a-div-div-div">
-                                <p class="points">{{.GetFirstMessage.CalculatePoints}}
-                                <p class="points-letters">pts</p></p>
+                                <p class="points">{{.GetFirstMessage.CalculatePoints}}</p>
+                                <p class="points-letters">pts</p>
                             </div>
                         </div>
 

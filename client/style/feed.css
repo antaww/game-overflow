@@ -147,7 +147,7 @@
 /* CREATE TOPIC */
 
 .create-topic {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     right: 0;
     background: #7B61FF;
