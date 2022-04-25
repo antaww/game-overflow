@@ -2,6 +2,7 @@ package routes
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"main/sql"
 	"main/utils"
@@ -13,6 +14,10 @@ import (
 
 type LikeResponse struct {
 	Points int `json:"points"`
+}
+
+type EditMessageResponse struct {
+	Message string `json:"message"`
 }
 
 // CreateTopicRoute is the route for creating a new topic
@@ -158,6 +163,7 @@ func EditMessageRoute(w http.ResponseWriter, r *http.Request) {
 	if queries.Has("idMessage") {
 		idMessage := queries.Get("idMessage")
 		idTopic := queries.Get("id")
+		contentMessage, _ := io.ReadAll(r.Body)
 
 		Id, err := strconv.ParseInt(idMessage, 10, 64)
 		if err != nil {
@@ -165,8 +171,7 @@ func EditMessageRoute(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// make a variable message taking the content from the posts-content class in the html
-		message, err := sql.GetMessage(Id)
-		err = sql.EditMessage(Id, message.Content)
+		err = sql.EditMessage(Id, string(contentMessage))
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -332,6 +337,11 @@ func TopicRoute(w http.ResponseWriter, r *http.Request) {
 		}
 
 		topic, err := sql.GetTopic(Id)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		err = sql.AddViews(Id)
 		if err != nil {
 			log.Fatal(err)
 		}

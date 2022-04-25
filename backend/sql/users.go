@@ -23,11 +23,12 @@ type User struct {
 	IsOnline     bool      `db:"is_online" json:"isOnline"`
 	Password     string    `db:"password" json:"password,omitempty"`
 	Email        string    `db:"email" json:"email,omitempty"`
-	Locale       string    `db:"locale" json:"locale,omitempty"`
+	Locale       string    `db:"locale" json:"locale,omitempty"` //todo
 	ProfilePic   string    `db:"profile_pic" json:"profilePic,omitempty"`
 	Description  string    `db:"description" json:"description,omitempty"`
-	CreationDate time.Time `db:"created_at" json:"creationDate"`
-	Role         Role      `db:"role_type" json:"role,omitempty"`
+	CreationDate time.Time `db:"created_at" json:"creationDate"`  //todo
+	Role         Role      `db:"role_type" json:"role,omitempty"` //todo
+	Color        int       `db:"color" json:"color,omitempty"`
 }
 
 // ConfirmPassword checks if the password is correct
@@ -115,7 +116,7 @@ func GetUserById(id int64) *User {
 	var profilePicture []byte
 
 	user := &User{}
-	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description, &user.CreationDate, &user.Role)
+	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description, &user.CreationDate, &user.Role, &user.Color)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -166,7 +167,7 @@ func GetUserByUsername(username string) *User {
 	var profilePicture []byte
 
 	user := &User{}
-	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description, &user.CreationDate, &user.Role)
+	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description, &user.CreationDate, &user.Role, &user.Color)
 	if err != nil {
 		log.Fatal(err)
 	}

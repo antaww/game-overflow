@@ -16,7 +16,8 @@
                         {{end}}
                         <a>
                             <div class="circle {{if $firstMessage.GetUser.IsOnline}} connected {{else}} disconnected {{end}}">
-                                <img alt="" class="avatar modalProfileBtn" src="{{template "avatar" $firstMessage.GetUser.ProfilePic}}">
+                                <img alt="" class="avatar modalProfileBtn"
+                                     src="{{template "avatar" $firstMessage.GetUser.ProfilePic}}">
                                 {{template "modal" $firstMessage.GetUser}}
                             </div>
                         </a>
@@ -26,7 +27,9 @@
                     </div>
                     <div class="topic-content-likes">
                         <div>
-                            <div class="topic-category">{{.ShownTopic.Category}}</div>
+                            <a href="/feed?category={{.ShownTopic.Category}}" style="text-decoration: none">
+                                <div class="topic-category">{{.ShownTopic.Category}}</div>
+                            </a>
                             <p class="topic-title">{{.ShownTopic.Title}}</p>
                             <div class="topic-views posts-views">{{.ShownTopic.Views}} views</div>
                             <p class="posts-content">{{$firstMessage.Content}}</p>
@@ -63,9 +66,11 @@
                 <div class="write-message">
                     <form action="/post-message?id={{.ShownTopic.Id}}" method="POST">
                         <label>
-                            <textarea name="post-text" placeholder="Type something..." class="text-area" rows="8" required></textarea>
+                            <textarea name="post-text" placeholder="Type something..." class="text-area" rows="8"
+                                      required></textarea>
                         </label>
-                        <button type="submit" class="post-message-button"><i class="fa-solid fa-location-arrow submit-plane"></i></button>
+                        <button type="submit" class="post-message-button"><i
+                                    class="fa-solid fa-location-arrow submit-plane"></i></button>
                     </form>
                 </div>
             {{end}}
@@ -79,7 +84,8 @@
             <div>
                 <a>
                     <div class="circle {{if .Message.GetUser.IsOnline}} connected {{else}} disconnected {{end}}">
-                        <img alt="" class="avatar modalProfileBtn" src="{{template "avatar" .Message.GetUser.ProfilePic}}">
+                        <img alt="" class="avatar modalProfileBtn"
+                             src="{{template "avatar" .Message.GetUser.ProfilePic}}">
                         {{template "modal" .Message.GetUser}}
                     </div>
                 </a>
@@ -117,11 +123,11 @@
                         <div class="edit-comment">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </div>
-                        <form action="edit-message?idMessage={{.Message.Id}}&id={{.Message.IdTopic}}" method="post" class="send-edited-form">
-                            <button type="submit" class="send-edited-comment no-display">
+                        <div IdMessage="{{.Message.Id}}" IdTopic="{{.Message.IdTopic}}" class="send-edited-form">
+                            <div type="submit" class="send-edited-comment no-display">
                                 Confirm
-                            </button>
-                        </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             {{else}}

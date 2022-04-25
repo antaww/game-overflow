@@ -148,3 +148,12 @@ func GetTopicsByTag(tag string) ([]Topic, error) {
 
 	return topics, nil
 }
+
+//AddViews add views to topic
+func AddViews(id int64) error {
+	_, err := DB.Exec("UPDATE topics SET views = views + 1 WHERE id_topic = ?", id)
+	if err != nil {
+		return fmt.Errorf("AddViews error: %v", err)
+	}
+	return nil
+}

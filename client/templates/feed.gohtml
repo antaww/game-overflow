@@ -1,6 +1,7 @@
 {{define "content"}}
     <script defer src="/scripts/review.js"></script>
     <script defer src="/scripts/modal.js"></script>
+    <script defer src="/scripts/connection_dot.js"></script>
     {{template "navbar" .}}
     <div class="feed-content">
         <div class="feed">
@@ -28,10 +29,9 @@
                                     <p class="topic-title">{{.Title}}</p>
                                 </div>
                             </div>
-                            <div class="topic-likes a-div-div-div">
-                                <i class="fa-solid fa-angle-up like-btn"></i>
-                                <p class="points">{{.GetFirstMessage.CalculatePoints}}</p>
-                                <i class="fa-solid fa-angle-down dislike-btn"></i>
+                            <div class="feed-likes a-div-div-div">
+                                <p class="points">{{.GetFirstMessage.CalculatePoints}}
+                                <p class="points-letters">pts</p></p>
                             </div>
                         </div>
 
@@ -51,7 +51,10 @@
         <div class="trends"></div>
 
         {{if .ConnectedUser}}
-            <a href="create-topic" class="create-topic">Post a question <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="create-topic" class="create-topic">
+                <div class="post-question">Post a question
+                    <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
         {{end}}
     </div>
 {{end}}

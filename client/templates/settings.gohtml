@@ -7,12 +7,15 @@
         <form action="/settings" enctype="multipart/form-data" id="settings-form" method="POST">
             <div class="form-group">
                 <label for="avatar">Profile Picture</label>
-                <img alt="" id="avatar-preview" src="{{template "avatar" .ConnectedUser.ProfilePic}}" height="120" width="120">
-                <input accept="image/jpeg, image/png, image/gif" id="avatar-input" name="profile-picture" type="file" value="Edit"/>
+                <img alt="" id="avatar-preview" src="{{template "avatar" .ConnectedUser.ProfilePic}}" height="120"
+                     width="120" style="object-fit: scale-down;">
+                <input accept="image/jpeg, image/png, image/gif" id="avatar-input" name="profile-picture" type="file"
+                       value="Edit"/>
             </div>
             <div class="form-group must-confirm">
                 <label for="username">Name</label>
-                <input class="form-control" id="username" name="username" type="text" value="{{.ConnectedUser.Username}}">
+                <input class="form-control" id="username" name="username" type="text"
+                       value="{{.ConnectedUser.Username}}">
             </div>
             <div class="form-group must-confirm">
                 <label for="email">Email</label>
@@ -21,7 +24,8 @@
 
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea class="form-control" id="description" name="description">{{.ConnectedUser.Description}}</textarea>
+                <textarea class="form-control" id="description"
+                          name="description">{{.ConnectedUser.Description}}</textarea>
             </div>
             <div class="form-group">
                 <label for="locale">Locale</label>

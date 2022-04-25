@@ -70,6 +70,16 @@ function editMessage() {
             clickedParent.querySelector('.send-edited-form').querySelector('.send-edited-comment').classList.toggle('no-display');
             clicked.classList.toggle('no-display');
 
+            const messageId = e.target.closest('.send-edited-form').getAttribute('IdMessage');
+            const topicId = e.target.closest('.send-edited-form').getAttribute('IdTopic');
+            const url = `/edit-message?idMessage=${messageId}&id=${topicId}`;
+
+            fetch(url, {
+                method: 'POST',
+                mode: 'cors',
+                body: text.innerText,
+            });
+
             console.log("after toggle");
         });
     });
