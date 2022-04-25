@@ -237,3 +237,13 @@ func SetUserOnline(idUser int64, isOnline bool) error {
 	}
 	return nil
 }
+
+//SetUsersOffline sets all users offline
+func SetUsersOffline() error {
+	_, err := DB.Exec("UPDATE users SET is_online = ?", false)
+	if err != nil {
+		return fmt.Errorf("SaveUser error: %v", err)
+	}
+	fmt.Println("All users have been set offline")
+	return nil
+}

@@ -156,3 +156,7 @@ func UsersActive(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
+func UsersOfflineRoute() {
+	sql.SetUsersOffline()
+}
