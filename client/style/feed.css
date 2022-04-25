@@ -74,10 +74,12 @@
 
 .topic-open {
     color: #4EEE40;
+    white-space: nowrap;
 }
 
 .topic-closed {
     color: #FF7373;
+    white-space: nowrap;
 }
 
 .topic-answers {

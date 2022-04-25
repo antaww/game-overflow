@@ -252,6 +252,7 @@ body {
 
 .circle {
     position: relative;
+    width: fit-content;
 }
 
 .message-area {

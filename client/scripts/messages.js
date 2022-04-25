@@ -67,7 +67,7 @@ function editMessage() {
             const text = id.querySelector("p.posts-content");
             // set it to modifiable
             text.setAttribute("contenteditable", "false");
-            clicked.querySelector('.send-edited-form').querySelector('.send-edited-comment').classList.toggle('no-display');
+            clickedParent.querySelector('.edit-comment').querySelector('.fa-solid').classList.toggle('no-display');
             clicked.classList.toggle('no-display');
 
             const messageId = e.target.closest('.send-edited-form').getAttribute('IdMessage');
