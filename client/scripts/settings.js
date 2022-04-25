@@ -2,14 +2,6 @@ const avatarInput = document.querySelector('#avatar-input');
 const avatarPreview = document.querySelector('#avatar-preview');
 const confirmationInput = document.querySelector('#re-confirm-input');
 
-function resizeTextArea() {
-	const textArea = document.querySelector('textarea');
-	textArea.addEventListener('input', () => {
-		textArea.style.height = 'auto';
-		textArea.style.height = textArea.scrollHeight + 'px';
-	});
-}
-
 function checkPassword() {
 	fetch('/confirm-password', {
 		method: 'PUT',
@@ -26,6 +18,29 @@ function checkPassword() {
 			confirmationInput.value = '';
 			confirmationInput.setCustomValidity('Incorrect password');
 		}
+	});
+}
+
+function selectDefaultColor() {
+	const color = document.querySelector('.color:not(.default)');
+	color.addEventListener('click', () => {
+		defaultColor.classList.remove('selected');
+		color.classList.add('selected');
+	});
+	const defaultColor = document.querySelector('.color.default');
+	defaultColor.addEventListener('pointerdown', e => {
+		e.preventDefault();
+		color.classList.remove('selected');
+		defaultColor.classList.add('selected');
+		color.value = defaultColor.value;
+	});
+}
+
+function resizeTextArea() {
+	const textArea = document.querySelector('textarea');
+	textArea.addEventListener('input', () => {
+		textArea.style.height = 'auto';
+		textArea.style.height = textArea.scrollHeight + 'px';
 	});
 }
 
@@ -49,5 +64,6 @@ function updateAvatarPreview() {
 window.onload = () => {
 	resizeTextArea();
 	setPasswordConfirmation();
+	selectDefaultColor();
 	updateAvatarPreview();
 };

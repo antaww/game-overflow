@@ -115,6 +115,13 @@ body {
 
 .log-in {
     background-color: #17629E;
+    transition: all .3s;
+}
+
+.log-in:hover {
+    background-color: #2b7cb9;
+    border: 2px solid #2b7cb9;
+    transform: translateY(-6%);
 }
 
 .sign-up {
@@ -153,10 +160,6 @@ body {
     align-items: center;
     justify-content: center;
     text-decoration: none;
-}
-
-.avatar:hover {
-    cursor: pointer;
 }
 
 .dropdown {
@@ -229,6 +232,25 @@ body {
     display: block;
     filter: drop-shadow(0 0 0.35rem #222);
     object-fit: scale-down;
+    transition: all .3s;
+}
+
+.avatar:hover {
+    cursor: pointer;
+    animation: aura 3s infinite linear;
+}
+
+@keyframes aura {
+    25%,
+    75% {
+        border-radius: 60% 40% 40% 60% / 60% 40% 60% 40%;
+    }
+    50% {
+        border-radius: 40% 60% 60% 40% / 40% 60% 40% 60%;
+    }
+    100% {
+        border-radius: 60% 40% 40% 60% / 60% 40% 60% 40%;
+    }
 }
 
 .circle::after {

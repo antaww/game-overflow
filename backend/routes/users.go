@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"bytes"
 	"encoding/base64"
 	"encoding/json"
 	"io"
@@ -58,6 +57,9 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		}
+
+		TemplatesData.ConnectedUser.CalculateDefaultColor()
+
 		err := utils.CallTemplate("settings", TemplatesData, w)
 		if err != nil {
 			log.Fatal(err)
@@ -65,7 +67,6 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method == "POST" {
-		// max size = 100 Mb
 		err := r.ParseMultipartForm(100 << 20)
 		if err != nil {
 			log.Fatal(err)
@@ -103,16 +104,16 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 		} else {
 			profilePicture = "data:" + header.Header.Get("Content-Type") + ";base64,"
 
-			buf := bytes.NewBuffer(nil)
-			if _, err := io.Copy(buf, file); err != nil {
+			bytes, err := io.ReadAll(file)
+			if err != nil {
 				log.Fatal(err)
 			}
 
-			profilePicture += base64.StdEncoding.EncodeToString(buf.Bytes())
+			profilePicture += base64.StdEncoding.EncodeToString(bytes)
 			newUser.ProfilePic = profilePicture
 		}
 
-		user, err := LoginUser(r)
+		user, err := sql.GetUserByRequest(r)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -122,7 +123,12 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 
-		TemplatesData.ConnectedUser = sql.GetUserById(user.Id)
+		updatedUser, err := sql.GetUserByRequest(r)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		TemplatesData.ConnectedUser = updatedUser
 
 		r.Method = "GET"
 		http.Redirect(w, r, "/", http.StatusSeeOther)
@@ -175,7 +181,10 @@ func UserPostsRoute(w http.ResponseWriter, r *http.Request) {
 				log.Fatal(err)
 			}
 
-			user := sql.GetUserById(id)
+			user, err := sql.GetUserById(id)
+			if err != nil {
+				log.Fatal(err)
+			}
 
 			topics, err := sql.GetUserTopics(user.Id)
 
