@@ -36,7 +36,11 @@
                             </div>
                             <div class="feed-likes a-div-div-div">
                                 <p class="points">{{.GetFirstMessage.CalculatePoints}}</p>
-                                <p class="points-letters">pts</p>
+                                {{if and (ge .GetFirstMessage.CalculatePoints -1) (le .GetFirstMessage.CalculatePoints 1) }}
+                                    <p class="points-letters">pt</p>
+                                {{else}}
+                                    <p class="points-letters">pts</p>
+                                {{end}}
                             </div>
                         </div>
 
