@@ -364,3 +364,32 @@ func TopicRoute(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
+func CloseTopicRoute(w http.ResponseWriter, r *http.Request) {
+	queries := r.URL.Query()
+
+	if queries.Has("id") {
+		id := queries.Get("id")
+
+		Id, err := strconv.ParseInt(id, 10, 64)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		user, err := sql.GetUserByRequest(r)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		IsClosed, err := sql.CloseTopic(Id, user.Id)
+
+		if !IsClosed {
+			http.Redirect(w, r, "/topic?id="+id, http.StatusSeeOther)
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		http.Redirect(w, r, "/topic?id="+id, http.StatusSeeOther)
+	}
+}
