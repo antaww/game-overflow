@@ -47,7 +47,7 @@ func (message *Message) CalculatePoints() int {
 }
 
 // GetUser returns the user who wrote the message
-func (message *Message) GetUser() *User {
+func (message *Message) GetUser() (*User, error) {
 	return GetUserById(message.AuthorId)
 }
 

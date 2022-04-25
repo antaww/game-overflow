@@ -112,7 +112,7 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 			newUser.ProfilePic = profilePicture
 		}
 
-		user, err := LoginUser(r)
+		user, err := sql.GetUserByRequest(r)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -122,7 +122,12 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 
-		TemplatesData.ConnectedUser = sql.GetUserById(user.Id)
+		updatedUser, err := sql.GetUserByRequest(r)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		TemplatesData.ConnectedUser = updatedUser
 
 		r.Method = "GET"
 		http.Redirect(w, r, "/", http.StatusSeeOther)
@@ -175,7 +180,10 @@ func UserPostsRoute(w http.ResponseWriter, r *http.Request) {
 				log.Fatal(err)
 			}
 
-			user := sql.GetUserById(id)
+			user, err := sql.GetUserById(id)
+			if err != nil {
+				log.Fatal(err)
+			}
 
 			topics, err := sql.GetUserTopics(user.Id)
 

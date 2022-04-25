@@ -63,6 +63,7 @@ func CreateUser(username, password, email string) User {
 
 // EditUser edits the user with the given id
 // can edit Description, Locale, ProfilePic, Username, Email
+// returns true if the user was edited successfully
 func EditUser(idUser int64, newUser User) (bool, error) {
 	request := "UPDATE users SET "
 	var requestEdits []string
@@ -112,22 +113,22 @@ func EditUser(idUser int64, newUser User) (bool, error) {
 }
 
 // GetUserById finds a user by id, returns nil if not found
-func GetUserById(id int64) *User {
+func GetUserById(id int64) (*User, error) {
 	result, err := DB.Query("SELECT * FROM users WHERE id_user = ?", id)
 	if err != nil {
-		return nil
+		return nil, fmt.Errorf("GetUserById error: %v", err)
 	}
 	var profilePicture []byte
 
 	user := &User{}
 	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description, &user.CreationDate, &user.Role, &user.Color)
 	if err != nil {
-		log.Fatal(err)
+		return nil, fmt.Errorf("GetUserById error: %v", err)
 	}
 	user.ProfilePic = string(profilePicture)
 
 	HandleSQLErrors(result)
-	return user
+	return user, nil
 }
 
 // GetUserByRequest gets a user by request, returns nil if not found
@@ -158,7 +159,7 @@ func GetUserBySession(sessionId string) (*User, error) {
 
 	HandleSQLErrors(result)
 
-	return GetUserById(idUser), nil
+	return GetUserById(idUser)
 }
 
 // GetUserByUsername finds a user by username, returns nil if not found
