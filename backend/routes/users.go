@@ -10,6 +10,8 @@ import (
 	"main/utils"
 	"mime/multipart"
 	"net/http"
+	"strconv"
+	"strings"
 )
 
 // IsActiveRoute is a middleware function that checks if the user is active
@@ -69,11 +71,19 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 
+		colorValue := r.FormValue("color")
+		colorValue = strings.TrimPrefix(colorValue, "#")
+		color, err := strconv.ParseInt(colorValue, 16, 32)
+		if err != nil {
+			log.Fatal(err)
+		}
+
 		newUser := sql.User{
 			Username:    r.FormValue("username"),
 			Email:       r.FormValue("email"),
 			Description: r.FormValue("description"),
 			Locale:      r.FormValue("locale"),
+			Color:       int(color),
 		}
 
 		var profilePicture string
@@ -144,5 +154,44 @@ func UsersActive(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err)
 		}
+	}
+}
+
+func UsersOfflineRoute() {
+	sql.SetUsersOffline()
+}
+
+func UserPostsRoute(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		if TemplatesData.ConnectedUser == nil {
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+			return
+		}
+		query := r.URL.Query()
+		if query.Has("id") {
+			queryId := query.Get("id")
+			id, err := strconv.ParseInt(queryId, 10, 64)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			user := sql.GetUserById(id)
+
+			topics, err := sql.GetUserTopics(user.Id)
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			TemplatesData.ShownTopics = topics
+
+			err = utils.CallTemplate("feed", TemplatesData, w)
+			if err != nil {
+				log.Fatal(err)
+			}
+		} else {
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+		}
+
 	}
 }

@@ -61,6 +61,8 @@ func main() {
 
 	http.HandleFunc("/users-active", UsersActive)
 
+	http.HandleFunc("/posts", UserPostsRoute)
+
 	// Capture connection properties.
 	DatabaseConfig := mysql.Config{
 		User:                 os.Getenv("DB_USER"),
@@ -82,6 +84,7 @@ func main() {
 		log.Fatal(pingErr)
 	}
 	fmt.Println("Connected!")
+	UsersOfflineRoute()
 
 	const port = ":8091"
 

@@ -16,6 +16,9 @@
                     <p class="modal-about">About me</p>
                     <p class="modal-description">{{.Description}}</p>
                 {{end}}
+                {{if ne .CalculateTopics 0}}
+                    <a href="/posts?id={{.Id}}" class="modal-posts">Posts</a>
+                {{end}}
             </div>
         </div>
     </div>

@@ -87,6 +87,10 @@ func EditUser(idUser int64, newUser User) (bool, error) {
 		requestEdits = append(requestEdits, "username = ?")
 		arguments = append(arguments, newUser.Username)
 	}
+	if newUser.Color != 0 {
+		requestEdits = append(requestEdits, "color = ?")
+		arguments = append(arguments, newUser.Color)
+	}
 
 	if requestEdits == nil {
 		return false, nil
@@ -233,3 +237,41 @@ func SetUserOnline(idUser int64, isOnline bool) error {
 	}
 	return nil
 }
+
+//SetUsersOffline sets all users offline
+func SetUsersOffline() error {
+	_, err := DB.Exec("UPDATE users SET is_online = ?", false)
+	if err != nil {
+		return fmt.Errorf("SaveUser error: %v", err)
+	}
+	fmt.Println("All users have been set offline")
+	return nil
+}
+
+func GetUserTopics(id int64) ([]Topic, error) {
+	var topics []Topic
+	result, err := DB.Query("SELECT * FROM topics WHERE id_first_message in (SELECT id_message FROM messages WHERE id_user = ?)", id)
+	if err != nil {
+		return nil, fmt.Errorf("GetUserTopics error: %v", err)
+	}
+
+	for result.Next() {
+		topic := Topic{}
+		err = result.Scan(&topic.Id, &topic.Title, &topic.IsClosed, &topic.Views, &topic.Category, &topic.IdFirstMessage)
+		topics = append(topics, topic)
+	}
+	HandleSQLErrors(result)
+
+	return topics, nil
+}
+
+func (user *User) CalculateTopics() int {
+	topic, err := GetUserTopics(user.Id)
+	if err != nil {
+		return 0
+	}
+
+	return len(topic)
+
+}
+
