@@ -29,6 +29,25 @@ type User struct {
 	CreationDate time.Time `db:"created_at" json:"creationDate"`  //todo
 	Role         Role      `db:"role_type" json:"role,omitempty"` //todo
 	Color        int       `db:"color" json:"color,omitempty"`
+	DefaultColor int
+}
+
+func (user *User) CalculateDefaultColor() {
+	if user.ProfilePic != "" {
+
+		img, err := utils.GetImageFromBase64(user.ProfilePic)
+		if err != nil {
+			log.Println(err)
+		}
+
+		if img != nil {
+			user.DefaultColor = utils.GetDominantColor(img)
+		}
+	} else {
+		user.DefaultColor = 0xcccccc
+	}
+
+	fmt.Println(user.DefaultColor)
 }
 
 // ConfirmPassword checks if the password is correct

@@ -16,13 +16,12 @@
             <div class="colors-wrapper">
                 <div class="form-group must-confirm">
                     <label for="color">Color</label>
-                    <input class="form-control" id="color" name="color" type="color"
+                    <input class="form-control color {{if ne .ConnectedUser.Color .ConnectedUser.DefaultColor}}selected{{end}}" id="color" name="color" type="color"
                            value="{{decimalToHex .ConnectedUser.Color}}">
                 </div>
                 <div class="form-group must-confirm">
-                    <label for="color">Dominant color from avatar</label>
-                    <input class="form-control" id="color" name="color" type="color"
-                           value="#ffffff" style="pointer-events: none;">
+                    <label for="default-color">Dominant color from avatar</label>
+                    <input class="form-control color default {{if eq .ConnectedUser.Color .ConnectedUser.DefaultColor}}selected{{end}}" disabled id="default-color" name="color" type="color" value="{{decimalToHex .ConnectedUser.DefaultColor}}">
                 </div>
             </div>
 
