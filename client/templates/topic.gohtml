@@ -46,7 +46,11 @@
                     </div>
                 </div>
                 <div class="topic-general-info">
-                    <div class="topic-answers">{{.ShownTopic.GetAnswersNumber}} answers</div>
+                    {{if le .ShownTopic.GetAnswersNumber 1}}
+                        <div class="topic-answers">{{.ShownTopic.GetAnswersNumber}} answer</div>
+                    {{else}}
+                        <div class="topic-answers">{{.ShownTopic.GetAnswersNumber}} answers</div>
+                    {{end}}
                     {{range .ShownTopic.Tags}}
                         <a href="/feed?tag={{.}}" class="topic-tags">{{.}}</a>
                     {{end}}

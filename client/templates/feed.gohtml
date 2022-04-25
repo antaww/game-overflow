@@ -23,7 +23,13 @@
                                         <div class="topic-closed">Closed<i class="fa-solid fa-lock topic-closed"></i>
                                         </div>
                                     {{end}}
-                                    <div class="topic-answers a-div-div-div-div-div">{{.GetAnswersNumber}} answers</div>
+                                    {{if le .GetAnswersNumber 1}}
+                                        <div class="topic-answers a-div-div-div-div-div">{{.GetAnswersNumber}} answer
+                                        </div>
+                                    {{else}}
+                                        <div class="topic-answers a-div-div-div-div-div">{{.GetAnswersNumber}} answers
+                                        </div>
+                                    {{end}}
                                 </div>
                                 <div class="a-div-div-div-div">
                                     <p class="topic-title">{{.Title}}</p>

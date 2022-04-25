@@ -247,3 +247,20 @@ func SetUsersOffline() error {
 	fmt.Println("All users have been set offline")
 	return nil
 }
+
+func GetUserTopics(id int64) ([]Topic, error) {
+	var topics []Topic
+	result, err := DB.Query("SELECT * FROM topics WHERE id_first_message in (SELECT id_message FROM messages WHERE id_user = ?)", id)
+	if err != nil {
+		return nil, fmt.Errorf("GetUserTopics error: %v", err)
+	}
+
+	for result.Next() {
+		topic := Topic{}
+		err = result.Scan(&topic.Id, &topic.Title, &topic.IsClosed, &topic.Views, &topic.Category, &topic.IdFirstMessage)
+		topics = append(topics, topic)
+	}
+	HandleSQLErrors(result)
+
+	return topics, nil
+}

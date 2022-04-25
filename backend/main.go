@@ -61,6 +61,8 @@ func main() {
 
 	http.HandleFunc("/users-active", UsersActive)
 
+	http.HandleFunc("/posts", UserPostsRoute)
+
 	// Capture connection properties.
 	DatabaseConfig := mysql.Config{
 		User:                 os.Getenv("DB_USER"),
