@@ -64,7 +64,7 @@ function handleMarkdownButtons() {
 			} else {
 				const newText = `*${selection}*`;
 				textArea.value = textArea.value.replace(selection, newText);
-				textArea.selectionStart = index + 1;
+				textArea.selectionStart = index + 2;
 				textArea.selectionEnd = index + newText.length + 1;
 			}
 		} else {

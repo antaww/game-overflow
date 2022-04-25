@@ -87,6 +87,10 @@ func EditUser(idUser int64, newUser User) (bool, error) {
 		requestEdits = append(requestEdits, "username = ?")
 		arguments = append(arguments, newUser.Username)
 	}
+	if newUser.Color != 0 {
+		requestEdits = append(requestEdits, "color = ?")
+		arguments = append(arguments, newUser.Color)
+	}
 
 	if requestEdits == nil {
 		return false, nil

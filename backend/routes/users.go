@@ -10,6 +10,8 @@ import (
 	"main/utils"
 	"mime/multipart"
 	"net/http"
+	"strconv"
+	"strings"
 )
 
 // IsActiveRoute is a middleware function that checks if the user is active
@@ -69,11 +71,19 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 
+		colorValue := r.FormValue("color")
+		colorValue = strings.TrimPrefix(colorValue, "#")
+		color, err := strconv.ParseInt(colorValue, 16, 32)
+		if err != nil {
+			log.Fatal(err)
+		}
+
 		newUser := sql.User{
 			Username:    r.FormValue("username"),
 			Email:       r.FormValue("email"),
 			Description: r.FormValue("description"),
 			Locale:      r.FormValue("locale"),
+			Color:       int(color),
 		}
 
 		var profilePicture string
