@@ -31,7 +31,13 @@
                                 <div class="topic-category">{{.ShownTopic.Category}}</div>
                             </a>
                             <p class="topic-title">{{.ShownTopic.Title}}</p>
-                            <div class="topic-views posts-views">{{.ShownTopic.Views}} views</div>
+                            {{if le .ShownTopic.Views 1}}
+                                <div class="topic-views posts-views">{{.ShownTopic.Views}} view
+                                </div>
+                            {{else}}
+                                <div class="topic-views posts-views">{{.ShownTopic.Views}} views
+                                </div>
+                            {{end}}
                             <p class="posts-content">{{$firstMessage.Content}}</p>
                         </div>
                         <div class="topic-likes">

@@ -264,3 +264,14 @@ func GetUserTopics(id int64) ([]Topic, error) {
 
 	return topics, nil
 }
+
+func (user *User) CalculateTopics() int {
+	topic, err := GetUserTopics(user.Id)
+	if err != nil {
+		return 0
+	}
+
+	return len(topic)
+
+}
+

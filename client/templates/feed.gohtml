@@ -43,7 +43,13 @@
 
                         <div class="a-div-div">
                             <div class="views-tags a-div-div-div">
-                                <div class="topic-views a-div-div-div-div">{{.Views}} views</div>
+                                {{if le .Views 1}}
+                                    <div class="topic-views a-div-div-div-div">{{.Views}} view
+                                    </div>
+                                {{else}}
+                                    <div class="topic-views a-div-div-div-div">{{.Views}} views
+                                    </div>
+                                {{end}}
                                 {{range .Tags}}
                                     <div class="topic-tags a-div-div-div-div-div">{{.}}</div>
                                 {{end}}
