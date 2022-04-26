@@ -134,3 +134,7 @@
 .topic-status:hover, .topic-status-closed:hover {
     cursor: pointer;
 }
+
+.message-deleted {
+    color: #8080807a;
+}

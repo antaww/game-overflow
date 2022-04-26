@@ -83,7 +83,7 @@ func AddMessage(idUser int64, idTopic int64, message string) (int64, error) {
 
 // DeleteMessage delete a message from a topic
 func DeleteMessage(idMessage int64) error {
-	_, err := DB.Exec("DELETE FROM messages WHERE id_message = ?", idMessage)
+	_, err := DB.Exec("UPDATE messages SET content = 'Message deleted' WHERE id_message = ?", idMessage)
 	if err != nil {
 		return fmt.Errorf("DeleteMessage error: %v", err)
 	}
