@@ -5,19 +5,24 @@
                 <span class="close">&times;</span>
             </div>
             <div class="modal-padding">
-                <div class="modal-name-id">
-                    <p class="modal-name">{{.Username}}</p>
-                    <span class="modal-id">{{.Id}}</span>
+                <div class="modal-top-box">
+                    <img class="avatar modal-avatar" src="{{template "avatar" .ProfilePic}}" alt="">
+                    <div class="modal-name-id">
+                        <p class="modal-name">{{.Username}}</p>
+                        <span class="modal-id">{{.Id}}</span>
+                    </div>
                 </div>
-
-                <img class="avatar" src="{{template "avatar" .ProfilePic}}" alt="">
-                {{if ne .Description ""}}
+                <div class="modal-gotop">
+                    <hr>
                     <p class="modal-about">About me</p>
-                    <p class="modal-description">{{.Description}}</p>
-                {{end}}
-                {{if ne .CountTopics 0}}
-                    <a href="/posts?id={{.Id}}" class="modal-topics">{{.Username}}'s topics</a>
-                {{end}}
+                    <p class="modal-role modal-bubble">{{.Role}}</p>
+                    {{if ne .Description ""}}
+                        <p class="modal-description">{{.Description}}</p>
+                    {{end}}
+                    {{if ne .CountTopics 0}}
+                        <a href="/posts?id={{.Id}}" class="modal-topics">{{.Username}}'s topics</a>
+                    {{end}}
+                </div>
             </div>
         </div>
     </div>
