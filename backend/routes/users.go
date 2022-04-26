@@ -131,7 +131,7 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 		TemplatesData.ConnectedUser = updatedUser
 
 		r.Method = "GET"
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		http.Redirect(w, r, "/settings", http.StatusSeeOther)
 	}
 }
 
@@ -161,10 +161,6 @@ func UsersActive(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 	}
-}
-
-func UsersOfflineRoute() {
-	sql.SetUsersOffline()
 }
 
 func UserPostsRoute(w http.ResponseWriter, r *http.Request) {

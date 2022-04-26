@@ -86,7 +86,11 @@ func main() {
 		log.Fatal(pingErr)
 	}
 	fmt.Println("Connected!")
-	UsersOfflineRoute()
+
+	err = SetAllUsersOffline()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	const port = ":8091"
 
