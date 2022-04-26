@@ -15,7 +15,7 @@
             </div>
             <div class="topic-content-likes">
                 <div>
-                    <p class="posts-content">{{.Message.Content}}</p>
+                    <p {{if eq .Message.Content "Message deleted"}}class="posts-content message-deleted" {{else}} class="posts-content" {{end}}>{{.Message.Content}}</p>
                     <label class="edit-message" for="edit-text"></label>
                 </div>
                 {{if ne .Message.Content "Message deleted"}}
@@ -33,7 +33,7 @@
         </div>
 
         {{if eq .Message.Content "Message deleted"}}
-            <div class="topic-general-info message-deleted">
+            <div class="topic-general-info">
                 <div class="topic-date">{{formatDate .CreatedAt}}</div>
             </div>
         {{else}}
