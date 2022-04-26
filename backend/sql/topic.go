@@ -66,6 +66,30 @@ func (topic *Topic) FetchTags() error {
 	return nil
 }
 
+// AddViews add a view to a topic
+func AddViews(id int64) error {
+	_, err := DB.Exec("UPDATE topics SET views = views + 1 WHERE id_topic = ?", id)
+	if err != nil {
+		return fmt.Errorf("AddViews error: %v", err)
+	}
+	return nil
+}
+
+// CloseTopic closes topic from user
+func CloseTopic(topicId int64, userId int64) (bool, error) {
+	editedLines, err := DB.Exec("UPDATE topics SET is_closed = 1 WHERE id_topic = ? AND id_first_message in (SELECT id_message FROM messages WHERE id_user = ?)", topicId, userId)
+	if err != nil {
+		return false, fmt.Errorf("CloseTopic error: %v", err)
+	}
+
+	affected, err := editedLines.RowsAffected()
+	if err != nil {
+		return false, fmt.Errorf("CloseTopic error: %v", err)
+	}
+
+	return affected > 0, nil
+}
+
 // CreateTopic create a new topic in db
 func CreateTopic(title string, category string, tags []string) (int64, error) {
 	id := utils.GenerateID()
@@ -147,24 +171,4 @@ func GetTopicsByTag(tag string) ([]Topic, error) {
 	HandleSQLErrors(rows)
 
 	return topics, nil
-}
-
-//AddViews add views to topic
-func AddViews(id int64) error {
-	_, err := DB.Exec("UPDATE topics SET views = views + 1 WHERE id_topic = ?", id)
-	if err != nil {
-		return fmt.Errorf("AddViews error: %v", err)
-	}
-	return nil
-}
-
-func CloseTopic(topic_id int64, user_id int64) (bool, error) {
-	edited_lines, err := DB.Exec("UPDATE topics SET is_closed = 1 WHERE id_topic = ? AND id_first_message in (SELECT id_message FROM messages WHERE id_user = ?)", topic_id, user_id)
-
-	affected, err := edited_lines.RowsAffected()
-	if err != nil {
-		return false, fmt.Errorf("CloseTopic error: %v", err)
-	}
-
-	return affected > 0, nil
 }

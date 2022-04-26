@@ -50,6 +50,16 @@ func (user *User) CalculateDefaultColor() {
 	fmt.Println(user.DefaultColor)
 }
 
+func (user *User) CountTopics() int {
+	topic, err := GetUserTopics(user.Id)
+	if err != nil {
+		return 0
+	}
+
+	return len(topic)
+
+}
+
 // ConfirmPassword checks if the password is correct
 func ConfirmPassword(userId int64, password string) bool {
 	var user User
@@ -221,6 +231,24 @@ func GetUsersStatus(users []string) ([]*User, error) {
 	return usersOnline, nil
 }
 
+// GetUserTopics returns an array of topics of a user
+func GetUserTopics(id int64) ([]Topic, error) {
+	var topics []Topic
+	result, err := DB.Query("SELECT * FROM topics WHERE id_first_message in (SELECT id_message FROM messages WHERE id_user = ?)", id)
+	if err != nil {
+		return nil, fmt.Errorf("GetUserTopics error: %v", err)
+	}
+
+	for result.Next() {
+		topic := Topic{}
+		err = result.Scan(&topic.Id, &topic.Title, &topic.IsClosed, &topic.Views, &topic.Category, &topic.IdFirstMessage)
+		topics = append(topics, topic)
+	}
+	HandleSQLErrors(result)
+
+	return topics, nil
+}
+
 // LoginByIdentifiants logs in a user by username and password, return true if success
 func LoginByIdentifiants(username, password string) (bool, error) {
 	result, err := DB.Query("SELECT username, password FROM users WHERE username = ? AND password = ?", username, password)
@@ -258,8 +286,8 @@ func SetUserOnline(idUser int64, isOnline bool) error {
 	return nil
 }
 
-//SetUsersOffline sets all users offline
-func SetUsersOffline() error {
+//SetAllUsersOffline sets all users offline
+func SetAllUsersOffline() error {
 	_, err := DB.Exec("UPDATE users SET is_online = ?", false)
 	if err != nil {
 		return fmt.Errorf("SaveUser error: %v", err)
@@ -267,31 +295,3 @@ func SetUsersOffline() error {
 	fmt.Println("All users have been set offline")
 	return nil
 }
-
-func GetUserTopics(id int64) ([]Topic, error) {
-	var topics []Topic
-	result, err := DB.Query("SELECT * FROM topics WHERE id_first_message in (SELECT id_message FROM messages WHERE id_user = ?)", id)
-	if err != nil {
-		return nil, fmt.Errorf("GetUserTopics error: %v", err)
-	}
-
-	for result.Next() {
-		topic := Topic{}
-		err = result.Scan(&topic.Id, &topic.Title, &topic.IsClosed, &topic.Views, &topic.Category, &topic.IdFirstMessage)
-		topics = append(topics, topic)
-	}
-	HandleSQLErrors(result)
-
-	return topics, nil
-}
-
-func (user *User) CalculateTopics() int {
-	topic, err := GetUserTopics(user.Id)
-	if err != nil {
-		return 0
-	}
-
-	return len(topic)
-
-}
-

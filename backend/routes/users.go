@@ -163,10 +163,6 @@ func UsersActive(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func UsersOfflineRoute() {
-	sql.SetUsersOffline()
-}
-
 func UserPostsRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		if TemplatesData.ConnectedUser == nil {
