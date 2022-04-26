@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"io"
-	"log"
 	"main/sql"
 	"main/utils"
 	"mime/multipart"
@@ -30,12 +29,12 @@ func IsActiveRoute(w http.ResponseWriter, r *http.Request) {
 		if response.SessionId != "" {
 			user, err = sql.GetUserBySession(response.SessionId)
 			if err != nil {
-				log.Fatal(err)
+				utils.RouteError(err)
 			}
 		} else {
 			user, err = LoginUser(r)
 			if err != nil {
-				log.Fatal(err)
+				utils.RouteError(err)
 			}
 		}
 
@@ -45,7 +44,7 @@ func IsActiveRoute(w http.ResponseWriter, r *http.Request) {
 
 		err = sql.SetUserOnline(user.Id, response.IsOnline)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 	}
 }
@@ -62,21 +61,21 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 
 		err := utils.CallTemplate("settings", TemplatesData, w)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 	}
 
 	if r.Method == "POST" {
 		err := r.ParseMultipartForm(100 << 20)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		colorValue := r.FormValue("color")
 		colorValue = strings.TrimPrefix(colorValue, "#")
 		color, err := strconv.ParseInt(colorValue, 16, 32)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		newUser := sql.User{
@@ -93,20 +92,20 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 			defer func(file multipart.File) {
 				err := file.Close()
 				if err != nil {
-					log.Fatal(err)
+					utils.RouteError(err)
 				}
 			}(file)
 		}
 		if err != nil {
 			if err != http.ErrMissingFile {
-				log.Fatal(err)
+				utils.RouteError(err)
 			}
 		} else {
 			profilePicture = "data:" + header.Header.Get("Content-Type") + ";base64,"
 
 			bytes, err := io.ReadAll(file)
 			if err != nil {
-				log.Fatal(err)
+				utils.RouteError(err)
 			}
 
 			profilePicture += base64.StdEncoding.EncodeToString(bytes)
@@ -115,17 +114,17 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 
 		user, err := sql.GetUserByRequest(r)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		_, err = sql.EditUser(user.Id, newUser)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		updatedUser, err := sql.GetUserByRequest(r)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		TemplatesData.ConnectedUser = updatedUser
@@ -147,18 +146,18 @@ func UsersActive(w http.ResponseWriter, r *http.Request) {
 		}
 		err := json.NewDecoder(r.Body).Decode(&response)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		usersOnline, err := sql.GetUsersStatus(response.Users)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		w.Header().Set("Content-Type", "application/json")
 		err = json.NewEncoder(w).Encode(usersOnline)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 	}
 }
@@ -174,25 +173,25 @@ func UserPostsRoute(w http.ResponseWriter, r *http.Request) {
 			queryId := query.Get("id")
 			id, err := strconv.ParseInt(queryId, 10, 64)
 			if err != nil {
-				log.Fatal(err)
+				utils.RouteError(err)
 			}
 
 			user, err := sql.GetUserById(id)
 			if err != nil {
-				log.Fatal(err)
+				utils.RouteError(err)
 			}
 
 			topics, err := sql.GetUserTopics(user.Id)
 
 			if err != nil {
-				log.Fatal(err)
+				utils.RouteError(err)
 			}
 
 			TemplatesData.ShownTopics = topics
 
 			err = utils.CallTemplate("feed", TemplatesData, w)
 			if err != nil {
-				log.Fatal(err)
+				utils.RouteError(err)
 			}
 		} else {
 			http.Redirect(w, r, "/", http.StatusSeeOther)

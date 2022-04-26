@@ -2,7 +2,7 @@ package sql
 
 import (
 	"database/sql"
-	"log"
+	"main/utils"
 )
 
 // HandleSQLErrors closes the connection to the database and logs the error if any
@@ -10,14 +10,14 @@ func HandleSQLErrors(rows *sql.Rows) {
 	defer func(rows *sql.Rows) {
 		err := rows.Close()
 		if err != nil {
-			log.Fatal(err)
+			utils.SQLError(err)
 		}
 	}(rows)
 
 	defer func(rows *sql.Rows) {
 		err := rows.Err()
 		if err != nil {
-			log.Fatal(err)
+			utils.SQLError(err)
 		}
 	}(rows)
 }

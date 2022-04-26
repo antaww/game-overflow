@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
-	"log"
 	. "main/routes"
 	. "main/sql"
+	"main/utils"
 	"net/http"
 	"os"
 )
@@ -15,7 +15,7 @@ import (
 func main() {
 	err := godotenv.Load("../.env")
 	if err != nil {
-		log.Fatal(err)
+		utils.MainError(err)
 	}
 
 	css := http.FileServer(http.Dir("../client/style/"))
@@ -78,18 +78,18 @@ func main() {
 	// Get a database handle.
 	DB, err = sql.Open("mysql", DatabaseConfig.FormatDSN())
 	if err != nil {
-		log.Fatal(err)
+		utils.MainError(err)
 	}
 
 	pingErr := DB.Ping()
 	if pingErr != nil {
-		log.Fatal(pingErr)
+		utils.MainError(pingErr)
 	}
 	fmt.Println("Connected!")
 
 	err = SetAllUsersOffline()
 	if err != nil {
-		log.Fatal(err)
+		utils.MainError(err)
 	}
 
 	const port = ":8091"
@@ -97,6 +97,6 @@ func main() {
 	fmt.Println("Server started at localhost:", port)
 	err = http.ListenAndServe(port, http.HandlerFunc(LogHandler))
 	if err != nil {
-		log.Fatal(err)
+		utils.MainError(err)
 	}
 }
