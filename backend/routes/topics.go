@@ -380,13 +380,80 @@ func CloseTopicRoute(w http.ResponseWriter, r *http.Request) {
 			utils.RouteError(err)
 		}
 
-		IsClosed, err := sql.CloseTopic(Id, user.Id)
+		if user.Role == "admin" || user.Role == "moderator" {
+			Id, err := strconv.ParseInt(id, 10, 64)
+			if err != nil {
+				utils.RouteError(err)
+			}
 
-		if !IsClosed {
-			http.Redirect(w, r, "/topic?id="+id, http.StatusSeeOther)
+			Topic, err := sql.GetTopic(Id)
+			if err != nil {
+				utils.RouteError(err)
+			}
+
+			TopicFirstMessage, err := Topic.GetFirstMessage()
+			if err != nil {
+				utils.RouteError(err)
+			}
+			fmt.Println(TopicFirstMessage.AuthorId)
+			IsClosed, err := sql.CloseTopic(Id, TopicFirstMessage.AuthorId)
+
+			if !IsClosed {
+				http.Redirect(w, r, "/topic?id="+id, http.StatusSeeOther)
+			}
+			if err != nil {
+				utils.RouteError(err)
+			}
+		} else {
+			IsClosed, err := sql.CloseTopic(Id, user.Id)
+
+			if !IsClosed {
+				http.Redirect(w, r, "/topic?id="+id, http.StatusSeeOther)
+			}
+			if err != nil {
+				utils.RouteError(err)
+			}
 		}
+
+		http.Redirect(w, r, "/topic?id="+id, http.StatusSeeOther)
+	}
+}
+
+func OpenTopicRoute(w http.ResponseWriter, r *http.Request) {
+	queries := r.URL.Query()
+
+	if queries.Has("id") {
+		id := queries.Get("id")
+
+		user, err := sql.GetUserByRequest(r)
 		if err != nil {
 			utils.RouteError(err)
+		}
+
+		if user.Role == "admin" || user.Role == "moderator" {
+			Id, err := strconv.ParseInt(id, 10, 64)
+			if err != nil {
+				utils.RouteError(err)
+			}
+
+			Topic, err := sql.GetTopic(Id)
+			if err != nil {
+				utils.RouteError(err)
+			}
+
+			TopicFirstMessage, err := Topic.GetFirstMessage()
+			if err != nil {
+				utils.RouteError(err)
+			}
+			fmt.Println(TopicFirstMessage.AuthorId)
+			IsOpen, err := sql.OpenTopic(Id, TopicFirstMessage.AuthorId)
+
+			if !IsOpen {
+				http.Redirect(w, r, "/topic?id="+id, http.StatusSeeOther)
+			}
+			if err != nil {
+				utils.RouteError(err)
+			}
 		}
 
 		http.Redirect(w, r, "/topic?id="+id, http.StatusSeeOther)

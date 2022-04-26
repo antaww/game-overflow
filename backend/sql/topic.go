@@ -90,6 +90,21 @@ func CloseTopic(topicId int64, userId int64) (bool, error) {
 	return affected > 0, nil
 }
 
+// OpenTopic opens topic from user
+func OpenTopic(topicId int64, userId int64) (bool, error) {
+	editedLines, err := DB.Exec("UPDATE topics SET is_closed = 0 WHERE id_topic = ? AND id_first_message in (SELECT id_message FROM messages WHERE id_user = ?)", topicId, userId)
+	if err != nil {
+		return false, fmt.Errorf("CloseTopic error: %v", err)
+	}
+
+	affected, err := editedLines.RowsAffected()
+	if err != nil {
+		return false, fmt.Errorf("CloseTopic error: %v", err)
+	}
+
+	return affected > 0, nil
+}
+
 // CreateTopic create a new topic in db
 func CreateTopic(title string, category string, tags []string) (int64, error) {
 	id := utils.GenerateID()
