@@ -2,6 +2,13 @@
 @import url("./login.css");
 @import url("./feed.css");
 @import url("./topic.css");
+@import url("./profile.css");
+
+:root {
+    --tooltip-color: #111111;
+    --tooltip-offset: -3em;
+    --tooltip-padding: 0.5em;
+}
 
 * {
     font-family: "Poppins", sans-serif;
@@ -372,11 +379,11 @@ body {
     height: 100% !important;
 }
 
-.topics-in-feed {
+.topic {
     transition: all .3s;
 }
 
-.topics-in-feed:hover {
+.topic:hover {
     background: #232b2f;
 }
 
@@ -438,4 +445,26 @@ body {
     opacity: 0;
     transition: all 0.20s, opacity 0.10s ease-in;
     width: 0;
+}
+
+.tooltip:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: var(--tooltip-offset);
+    left: calc(-50% + 2 * var(--tooltip-padding));
+    background-color: var(--tooltip-color);
+    border-radius: 5px;
+    padding: var(--tooltip-padding);
+    white-space: nowrap;
+}
+
+.tooltip:hover::before {
+    content: " ";
+    position: absolute;
+    top: calc(var(--tooltip-offset) * 0.15);
+    left: calc(50% + var(--tooltip-padding));
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--tooltip-color) transparent transparent transparent;
 }

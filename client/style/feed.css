@@ -12,7 +12,7 @@
     width: 40%;
 }
 
-.feed > a {
+.topic {
     display: flex;
     margin-bottom: 3vh;
     align-items: center;
@@ -24,30 +24,31 @@
     border-radius: 12px;
 }
 
-.feed > a > div:not(.circle) {
+.feed .topic-info {
     width: 100%;
 }
 
-.feed > a > div {
-    margin-left: 6%;
+.avatar-wrapper, .topic-info {
+    margin-left: 4%;
     display: flex;
     flex-direction: column;
+    width: 90%;
 }
 
-.a-div-div {
+.topic-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     font-size: 85%;
 }
 
-.a-div-div-div-div {
+.sub-title {
     display: flex;
     flex-direction: row;
     white-space: nowrap;
 }
 
-.a-div-div-div-div-div {
+.feed-topic-tag {
     margin-right: 1vh;
 }
 

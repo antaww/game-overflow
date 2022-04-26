@@ -53,6 +53,8 @@ func main() {
 
 	http.HandleFunc("/post-message", PostMessageRoute)
 
+	http.HandleFunc("/profile", ProfileRoute)
+
 	http.HandleFunc("/settings", SettingsRoute)
 
 	http.HandleFunc("/sign-up", SignUpRoute)

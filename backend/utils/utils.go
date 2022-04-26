@@ -2,21 +2,17 @@ package utils
 
 import (
 	"encoding/json"
-	"log"
 	"math/rand"
 	"net/http"
 	"strconv"
 	"time"
 )
 
-func GenerateID() int64 {
+func GenerateID() (int64, error) {
 	CurrentTime := time.Now().Unix()
 	RandomNumbers := GenerateNumbers(4)
 	result, err := strconv.Atoi(strconv.Itoa(int(CurrentTime)) + strconv.Itoa(int(RandomNumbers)))
-	if err != nil {
-		log.Fatal(err)
-	}
-	return int64(result)
+	return int64(result), err
 }
 
 func GenerateNumbers(length int) int64 {

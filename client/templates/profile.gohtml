@@ -1,0 +1,84 @@
+{{define "content"}}
+    {{template "navbar" .}}
+    {{$user := .ShownUser}}
+    <div class="color" style="background-color: {{decimalToHex $user.Color}};">
+        <div class="avatar-circle">
+            <img src="{{template "avatar" $user.ProfilePic}}" alt="{{$user.Username}}"/>
+        </div>
+    </div>
+    <div class="page">
+        {{$topics := $user.GetTopics}}
+        {{$following := $user.GetFollowing}}
+        {{$followers := $user.GetFollowers}}
+
+        <section class="profile">
+            <p class="creation-date">
+                Created <span class="tooltip" data-tooltip="{{formatDateLong $user.CreationDate}}">
+                    {{formatRelativeDate $user.CreationDate}}
+                </span>
+            </p>
+            <a class="posts-count" href="#posts">
+                {{len $topics}} posts
+            </a>
+            <a class="followers-count" href="#followers">
+                {{len $followers}} followers
+            </a>
+            <a class="following-count" href="#following">
+                {{len $following}} following
+            </a>
+        </section>
+        <section class="content">
+            <h1 class="username">
+                {{$user.Username}}
+            </h1>
+            <p class="description">
+                {{$user.Description}}
+            </p>
+
+            <h2 id="posts">
+                {{if eq (len $topics) 0}}
+                    {{$user.Username}} hasn't posted anything yet.
+                {{else}}
+                    Posts ({{(len $topics)}})
+                {{end}}
+            </h2>
+            {{if gt (len $topics) 0}}
+                {{range $topic := $user.GetTopics}}
+                    {{template "feed-topic" $topic}}
+                {{end}}
+            {{end}}
+            <h2 id="following">
+                {{if eq (len $following) 0}}
+                    {{$user.Username}} hasn't followed anyone yet.
+                {{else}}
+                    Followers ({{len $following}})
+                {{end}}
+            </h2>
+            {{if gt (len $following) 0}}
+                <ul class="following">
+                    {{range $following}}
+                        <li class="following">
+                            {{template "user" . }}
+                        </li>
+                    {{end}}
+                </ul>
+            {{end}}
+            <h2 id="followers">
+                {{if eq (len $followers) 0}}
+                    {{$user.Username}} doesn't have any follower.
+                {{else}}
+                    Following ({{len $followers}})
+                {{end}}
+            </h2>
+            {{if gt (len $followers) 0}}
+                <ul class="followers">
+                    {{range $followers}}
+                        <li class="followers">
+                            {{template "user" . }}
+                        </li>
+                    {{end}}
+                </ul>
+            {{end}}
+        </section>
+    </div>
+{{end}}

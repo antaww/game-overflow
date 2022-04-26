@@ -14,6 +14,31 @@ var TemplateMap = template.FuncMap{
 	"formatDate": func(t time.Time) string {
 		return t.Format("2006-01-02 15:04:05")
 	},
+	"formatDateLong": func(t time.Time) string {
+		return t.Format("Monday, January 2, 2006 at 3:04pm")
+	},
+	"formatRelativeDate": func(t time.Time) string {
+		now := time.Now()
+		diff := now.Sub(t)
+
+		if diff < time.Minute {
+			return "just now"
+		}
+
+		if diff < time.Hour {
+			return strconv.Itoa(int(diff.Minutes())) + " minutes ago"
+		}
+
+		if diff < time.Hour*24 {
+			return strconv.Itoa(int(diff.Hours())) + " hours ago"
+		}
+
+		if diff < time.Hour*24*365 {
+			return strconv.Itoa(int(diff.Hours()/24)) + " days ago"
+		}
+
+		return strconv.Itoa(int(diff.Hours()/24/365)) + " years ago"
+	},
 	"decimalToHex": func(i int) string {
 		s := "#" + strconv.FormatInt(int64(i), 16)
 		return s

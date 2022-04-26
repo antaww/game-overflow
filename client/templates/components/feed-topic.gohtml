@@ -1,0 +1,54 @@
+{{define "feed-topic"}}
+    <a href="/topic?id={{.Id}}" class="topic">
+        <div class="circle {{if .GetFirstMessage.GetUser.IsOnline}}dis{{end}}connected avatar-wrapper">
+            <img alt="" class="avatar" src="{{template "avatar" .GetFirstMessage.GetUser.ProfilePic}}">
+        </div>
+        <div class="topic-info">
+            <div class="topic-header">
+                <div class="topic-header-left">
+                    <div class="sub-title">
+                        <div class="topic-category">{{.Category}}</div>
+                        {{if eq .IsClosed false}}
+                            <div class="topic-open">Opened<i class="fa-solid fa-lock-open topic-open"></i></div>
+                        {{else}}
+                            <div class="topic-closed">Closed<i class="fa-solid fa-lock topic-closed"></i></div>
+                        {{end}}
+                        {{if le .GetAnswersNumber 1}}
+                            <div class="topic-answers feed-topic-tag">{{.GetAnswersNumber}} answer</div>
+                        {{else}}
+                            <div class="topic-answers feed-topic-tag">{{.GetAnswersNumber}} answers
+                            </div>
+                        {{end}}
+                    </div>
+                    <div class="sub-title">
+                        <p class="topic-title">{{.Title}}</p>
+                    </div>
+                </div>
+                <div class="feed-likes">
+                    <p class="points">{{.GetFirstMessage.CalculatePoints}}</p>
+                    {{if and (ge .GetFirstMessage.CalculatePoints -1) (le .GetFirstMessage.CalculatePoints 1) }}
+                        <p class="points-letters">pt</p>
+                    {{else}}
+                        <p class="points-letters">pts</p>
+                    {{end}}
+                </div>
+            </div>
+
+            <div class="topic-header">
+                <div class="views-tags">
+                    {{if le .Views 1}}
+                        <div class="topic-views sub-title">{{.Views}} view
+                        </div>
+                    {{else}}
+                        <div class="topic-views sub-title">{{.Views}} views
+                        </div>
+                    {{end}}
+                    {{range .Tags}}
+                        <div class="topic-tags feed-topic-tag">{{.}}</div>
+                    {{end}}
+                </div>
+                <div class="topic-date">{{formatDate .GetFirstMessage.CreatedAt}}</div>
+            </div>
+        </div>
+    </a>
+{{end}}

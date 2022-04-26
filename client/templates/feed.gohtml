@@ -7,65 +7,11 @@
     <div class="feed-content">
         <div class="feed">
             {{range .ShownTopics}}
-                <a href="/topic?id={{.Id}}" class="topics-in-feed">
-                    <div class="circle {{if .GetFirstMessage.GetUser.IsOnline}} connected {{else}} disconnected {{end}}">
-                        <img alt="" class="avatar" src="{{template "avatar" .GetFirstMessage.GetUser.ProfilePic}}">
-                    </div>
-                    <div>
-                        <div class="a-div-div">
-                            <div class="a-div-div-div">
-                                <div class="a-div-div-div-div">
-                                    <div class="topic-category">{{.Category}}</div>
-                                    {{if eq .IsClosed false}}
-                                        <div class="topic-open">Opened<i class="fa-solid fa-lock-open topic-open"></i>
-                                        </div>
-                                    {{else}}
-                                        <div class="topic-closed">Closed<i class="fa-solid fa-lock topic-closed"></i>
-                                        </div>
-                                    {{end}}
-                                    {{if le .GetAnswersNumber 1}}
-                                        <div class="topic-answers a-div-div-div-div-div">{{.GetAnswersNumber}} answer
-                                        </div>
-                                    {{else}}
-                                        <div class="topic-answers a-div-div-div-div-div">{{.GetAnswersNumber}} answers
-                                        </div>
-                                    {{end}}
-                                </div>
-                                <div class="a-div-div-div-div">
-                                    <p class="topic-title">{{.Title}}</p>
-                                </div>
-                            </div>
-                            <div class="feed-likes a-div-div-div">
-                                <p class="points">{{.GetFirstMessage.CalculatePoints}}</p>
-                                {{if and (ge .GetFirstMessage.CalculatePoints -1) (le .GetFirstMessage.CalculatePoints 1) }}
-                                    <p class="points-letters">pt</p>
-                                {{else}}
-                                    <p class="points-letters">pts</p>
-                                {{end}}
-                            </div>
-                        </div>
-
-                        <div class="a-div-div">
-                            <div class="views-tags a-div-div-div">
-                                {{if le .Views 1}}
-                                    <div class="topic-views a-div-div-div-div">{{.Views}} view
-                                    </div>
-                                {{else}}
-                                    <div class="topic-views a-div-div-div-div">{{.Views}} views
-                                    </div>
-                                {{end}}
-                                {{range .Tags}}
-                                    <div class="topic-tags a-div-div-div-div-div">{{.}}</div>
-                                {{end}}
-                            </div>
-                            <div class="topic-date a-div-div-div">{{formatDate .GetFirstMessage.CreatedAt}}</div>
-                        </div>
-                    </div>
-                </a>
+                {{template "feed-topic" .}}
             {{end}}
-            {{$connectedUser := .ConnectedUser}}
-            {{range .ShownMessages}}
-                {{template "message" .WithConnectedUser $connectedUser}}
+
+            {{range $message := .ShownMessages}}
+                {{template "message" $message.WithConnectedUser .ConnectedUser}}
             {{end}}
         </div>
         <div class="trends"></div>

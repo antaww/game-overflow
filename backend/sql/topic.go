@@ -107,8 +107,11 @@ func OpenTopic(topicId int64, userId int64) (bool, error) {
 
 // CreateTopic create a new topic in db
 func CreateTopic(title string, category string, tags []string) (int64, error) {
-	id := utils.GenerateID()
-	_, err := DB.Exec("INSERT INTO topics VALUES (?, ?, ?, ?, ?, ?)", id, title, 0, 0, category, sql.NullInt64{})
+	id, err := utils.GenerateID()
+	if err != nil {
+		return 0, fmt.Errorf("CreateTopic error: %v", err)
+	}
+	_, err = DB.Exec("INSERT INTO topics VALUES (?, ?, ?, ?, ?, ?)", id, title, 0, 0, category, sql.NullInt64{})
 	if err != nil {
 		return 0, fmt.Errorf("CreateTopic error: %v", err)
 	}

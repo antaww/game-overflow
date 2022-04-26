@@ -16,6 +16,7 @@ type TemplatesDataType struct {
 	ShownTopics   []sql.Topic
 	ShownTopic    sql.Topic
 	ShownMessages []sql.Message
+	ShownUser     *sql.User
 }
 
 // GetCategories returns all categories

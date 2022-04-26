@@ -72,8 +72,11 @@ func (message *Message) WithConnectedUser(user *User) MessageWithConnectedUser {
 
 // AddMessage add a message into a topic
 func AddMessage(idUser int64, idTopic int64, message string) (int64, error) {
-	id := utils.GenerateID()
-	_, err := DB.Exec("INSERT INTO messages VALUES (?, ?, ?, ?, ?)", id, message, time.Now(), idTopic, idUser)
+	id, err := utils.GenerateID()
+	if err != nil {
+		return 0, fmt.Errorf("error while generating id: %v", err)
+	}
+	_, err = DB.Exec("INSERT INTO messages VALUES (?, ?, ?, ?, ?)", id, message, time.Now(), idTopic, idUser)
 	if err != nil {
 		return 0, fmt.Errorf("CreateTopic error: %v", err)
 	}

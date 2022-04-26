@@ -29,7 +29,7 @@ func IsActiveRoute(w http.ResponseWriter, r *http.Request) {
 		if response.SessionId != "" {
 			user, err = sql.GetUserBySession(response.SessionId)
 			if err != nil {
-				utils.RouteError(err)
+				return
 			}
 		} else {
 			user, err = LoginUser(r)
@@ -43,6 +43,47 @@ func IsActiveRoute(w http.ResponseWriter, r *http.Request) {
 		}
 
 		err = sql.SetUserOnline(user.Id, response.IsOnline)
+		if err != nil {
+			utils.RouteError(err)
+		}
+	}
+}
+
+// ProfileRoute is a route that returns the user profile
+func ProfileRoute(w http.ResponseWriter, r *http.Request) {
+	var userId int64
+	var user *sql.User
+
+	query := r.URL.Query()
+	userIdString := query.Get("id")
+	userId, err := strconv.ParseInt(userIdString, 10, 64)
+	if err != nil {
+		if user, err = sql.GetUserByRequest(r); err != nil {
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+			return
+		} else {
+			userId = user.Id
+			query.Del("id")
+		}
+	}
+
+	if user == nil {
+		user, err = sql.GetUserById(userId)
+		if err != nil {
+			utils.RouteError(err)
+		}
+	}
+
+	if user.Username == "" {
+		http.Redirect(w, r, "/profile", http.StatusSeeOther)
+		return
+	}
+
+	if user == nil {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+	} else {
+		TemplatesData.ShownUser = user
+		err := utils.CallTemplate("profile", TemplatesData, w)
 		if err != nil {
 			utils.RouteError(err)
 		}

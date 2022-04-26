@@ -66,6 +66,33 @@ func (user *User) CountTopics() int {
 
 }
 
+func (user *User) GetFollowers() []User {
+	followers, err := GetFollowers(user.Id)
+	if err != nil {
+		return nil
+	}
+
+	return followers
+}
+
+func (user *User) GetFollowing() []User {
+	following, err := GetFollowing(user.Id)
+	if err != nil {
+		return nil
+	}
+
+	return following
+}
+
+func (user *User) GetTopics() []Topic {
+	topic, err := GetUserTopics(user.Id)
+	if err != nil {
+		return nil
+	}
+
+	return topic
+}
+
 // ConfirmPassword checks if the password is correct
 func ConfirmPassword(userId int64, password string) bool {
 	var user User
@@ -85,8 +112,12 @@ func ConfirmPassword(userId int64, password string) bool {
 
 // CreateUser creates a new user with generated id, creation date to now and locale to english
 func CreateUser(username, password, email string) User {
+	id, err := utils.GenerateID()
+	if err != nil {
+		utils.RouteError(err)
+	}
 	return User{
-		Id:           utils.GenerateID(),
+		Id:           id,
 		Username:     username,
 		Password:     password,
 		Email:        email,
@@ -137,14 +168,44 @@ func EditUser(idUser int64, newUser User) (bool, error) {
 	fmt.Println(request)
 	r, err := DB.Exec(request, arguments...)
 	if err != nil {
-		return false, fmt.Errorf("SaveUser error: %v", err)
+		return false, fmt.Errorf("EditUser error: %v", err)
 	}
 	_, err = r.RowsAffected()
 	if err != nil {
-		return false, fmt.Errorf("SaveUser error: %v", err)
+		return false, fmt.Errorf("EditUser error: %v", err)
 	}
 
 	return true, nil
+}
+
+// GetFollowers returns the followers of the user with the given id
+func GetFollowers(idUser int64) ([]User, error) {
+	var users []User
+	rows, err := DB.Query("SELECT * FROM users WHERE id_user IN (SELECT id_user_follower FROM follow WHERE id_user_followed = ?)", idUser)
+	if err != nil {
+		return nil, fmt.Errorf("GetFollowers error: %v", err)
+	}
+	err = Results(rows, &users)
+	if err != nil {
+		return nil, fmt.Errorf("GetFollowers error: %v", err)
+	}
+
+	return users, nil
+}
+
+// GetFollowing returns the users followed by the user with the given id
+func GetFollowing(idUser int64) ([]User, error) {
+	var users []User
+	rows, err := DB.Query("SELECT * FROM users WHERE id_user IN (SELECT id_user_followed FROM follow WHERE id_user_follower = ?)", idUser)
+	if err != nil {
+		return nil, fmt.Errorf("GetFollowing error: %v", err)
+	}
+	err = Results(rows, &users)
+	if err != nil {
+		return nil, fmt.Errorf("GetFollowing error: %v", err)
+	}
+
+	return users, nil
 }
 
 // GetUserById finds a user by id, returns nil if not found
@@ -183,13 +244,13 @@ func GetUserByRequest(r *http.Request) (*User, error) {
 func GetUserBySession(sessionId string) (*User, error) {
 	result, err := DB.Query("SELECT id_user FROM sessions WHERE id_session = ?", sessionId)
 	if err != nil {
-		return nil, fmt.Errorf("SaveUser error: %v", err)
+		return nil, fmt.Errorf("GetUserBySession error: %v", err)
 	}
 
 	var idUser int64
 	err = Results(result, &idUser)
 	if err != nil {
-		return nil, fmt.Errorf("SaveUser error: %v", err)
+		return nil, fmt.Errorf("GetUserBySession error: %v", err)
 	}
 
 	HandleSQLErrors(result)
@@ -293,7 +354,7 @@ func GetUserLikesTopics(id int64) ([]Topic, error) {
 func LoginByIdentifiants(username, password string) (bool, error) {
 	result, err := DB.Query("SELECT username, password FROM users WHERE username = ? AND password = ?", username, password)
 	if err != nil {
-		return false, fmt.Errorf("SaveUser error: %v", err)
+		return false, fmt.Errorf("LoginByIdentifiants error: %v", err)
 	}
 
 	if result.Next() {
@@ -321,16 +382,16 @@ func SaveUser(user User) (bool, error) {
 func SetUserOnline(idUser int64, isOnline bool) error {
 	_, err := DB.Exec("UPDATE users SET is_online = ? WHERE id_user = ?", isOnline, idUser)
 	if err != nil {
-		return fmt.Errorf("SaveUser error: %v", err)
+		return fmt.Errorf("SetUserOnline error: %v", err)
 	}
 	return nil
 }
 
-//SetAllUsersOffline sets all users offline
+// SetAllUsersOffline sets all users offline
 func SetAllUsersOffline() error {
 	_, err := DB.Exec("UPDATE users SET is_online = ?", false)
 	if err != nil {
-		return fmt.Errorf("SaveUser error: %v", err)
+		return fmt.Errorf("SetAllUsersOffline error: %v", err)
 	}
 	fmt.Println("All users have been set offline")
 	return nil

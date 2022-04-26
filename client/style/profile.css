@@ -1,0 +1,95 @@
+:root {
+    --avatar-size: 12rem;
+    --avatar-left: 10vw;
+    --avatar-inset-height: 3rem;
+    --color-height: 15rem;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+.color {
+    height: var(--color-height);
+    width: 100%;
+}
+
+.avatar-circle {
+    background-color: #1e2529;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: var(--avatar-size);
+    position: relative;
+    top: calc(100% - var(--avatar-inset-height));
+    left: var(--avatar-left);
+    width: var(--avatar-size);
+}
+
+.avatar-circle img {
+    border-radius: 50%;
+    height: 90%;
+    width: 90%;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    width: 100vw;
+    overflow-x: hidden;
+    margin-left: calc(var(--avatar-left) + var(--avatar-size) + 5vw);
+}
+
+.username {
+    margin-top: 0.3em;
+    font-size: 2.5rem;
+}
+
+.description {
+    max-height: 10rem;
+}
+
+section.profile {
+    position: absolute;
+    top: calc(var(--color-height) + var(--avatar-size) - var(--avatar-inset-height));
+    display: flex;
+    flex-direction: column;
+    margin-left: calc(var(--avatar-left) + 1rem);
+    width: max-content;
+}
+
+section.profile a, section.profile p {
+    margin: 0.2em 0;
+}
+
+section.profile a {
+    margin: 0.2em 0;
+    color: #aaaaaa;
+    text-decoration: none;
+}
+
+section.content .topic {
+    background-color: #1a1e23;
+    padding: 1em;
+    border-radius: 0.8em;
+    width: 50vw;
+    transition: none !important;
+}
+
+section.content .topic-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 85%;
+}
+
+section.content .topic-header {
+    margin-right: 20px;
+}
+
+section.content .topic:hover {
+    background-color: #1a1a20;
+}

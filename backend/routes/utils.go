@@ -13,7 +13,7 @@ func LoginUser(r *http.Request) (*sql.User, error) {
 	} else {
 		user, err := sql.GetUserBySession(cookie.Value)
 		if err != nil {
-			return nil, err
+			return nil, nil
 		}
 		TemplatesData.ConnectedUser = user
 

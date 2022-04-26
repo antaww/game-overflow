@@ -7,7 +7,7 @@ import (
 
 func MainError(err error) {
 	debug.PrintStack()
-	log.Println(err)
+	log.Fatal(err)
 }
 
 func RouteError(err error) {
