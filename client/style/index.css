@@ -252,7 +252,7 @@ body {
 .avatar-navbar:hover {
     cursor: pointer;
     border-radius: 10%;
-    filter: drop-shadow(0 0 0.6rem #000000);
+    background-color: rgba(232, 234, 237, .08);
 }
 
 .circle::after {
