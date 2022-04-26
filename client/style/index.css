@@ -247,6 +247,7 @@ body {
     filter: drop-shadow(0 0 0.35rem #222);
     object-fit: scale-down;
     transition: all .3s;
+    padding: 4px;
 }
 
 .avatar-navbar:hover {

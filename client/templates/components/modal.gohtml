@@ -15,7 +15,7 @@
                     <p class="modal-about">About me</p>
                     <p class="modal-description">{{.Description}}</p>
                 {{end}}
-                {{if ne .CalculateTopics 0}}
+                {{if ne .CountTopics 0}}
                     <a href="/posts?id={{.Id}}" class="modal-topics">{{.Username}}'s topics</a>
                 {{end}}
             </div>
