@@ -131,6 +131,6 @@
     display: none !important;
 }
 
-.topic-status:hover {
+.topic-status:hover, .topic-status-closed:hover {
     cursor: pointer;
 }

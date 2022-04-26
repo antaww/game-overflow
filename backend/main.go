@@ -65,6 +65,8 @@ func main() {
 
 	http.HandleFunc("/close-topic", CloseTopicRoute)
 
+	http.HandleFunc("/open-topic", OpenTopicRoute)
+
 	// Capture connection properties.
 	DatabaseConfig := mysql.Config{
 		User:                 os.Getenv("DB_USER"),
