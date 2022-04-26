@@ -246,7 +246,7 @@ body {
     display: block;
     filter: drop-shadow(0 0 0.35rem #222);
     object-fit: scale-down;
-    transition: all .3s;
+    transition: all .2s;
     padding: 4px;
 }
 
@@ -426,4 +426,16 @@ body {
 
 .modal-topics:hover {
     background-color: #2b333d;
+}
+
+.post-question:hover i {
+    opacity: 1;
+    padding-left: 8px;
+    width: 10px;
+}
+
+.post-question i {
+    opacity: 0;
+    transition: all 0.20s, opacity 0.10s ease-in;
+    width: 0;
 }

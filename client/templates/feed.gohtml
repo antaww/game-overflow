@@ -2,6 +2,7 @@
     <script defer src="/scripts/review.js"></script>
     <script defer src="/scripts/modal.js"></script>
     <script defer src="/scripts/connection_dot.js"></script>
+    <script defer src="/scripts/messages.js"></script>
     {{template "navbar" .}}
     <div class="feed-content">
         <div class="feed">
@@ -62,13 +63,16 @@
                     </div>
                 </a>
             {{end}}
+            {{$connectedUser := .ConnectedUser}}
+            {{range .ShownMessages}}
+                {{template "message" .WithConnectedUser $connectedUser}}
+            {{end}}
         </div>
         <div class="trends"></div>
 
         {{if .ConnectedUser}}
             <a href="create-topic" class="create-topic">
-                <div class="post-question">Post a question
-                    <i class="fa-solid fa-arrow-right"></i></div>
+                <div class="post-question">Post a question<i class="fa-solid fa-arrow-right"></i></div>
             </a>
         {{end}}
     </div>

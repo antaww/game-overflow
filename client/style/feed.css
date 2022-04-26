@@ -75,16 +75,19 @@
 .topic-open {
     color: #4EEE40;
     white-space: nowrap;
+    margin-left: 1vw;
 }
 
 .topic-closed {
     color: #FF7373;
     white-space: nowrap;
+    margin-left: 1vw;
 }
 
 .topic-answers {
     color: #2975B2;
     font-weight: 500;
+    margin-left: 1vw;
 }
 
 .topic-views {
@@ -163,10 +166,6 @@
     transition: all .3s;
 }
 
-.create-topic i {
-    margin-left: 1vh;
-}
-
 .create-topic:hover {
     background: #5E4BBE;
 }
@@ -176,6 +175,5 @@
 }
 
 .create-topic:hover .post-question {
-    transform: translateY(-10%);
     text-shadow: 0 3px #7331a8;
 }

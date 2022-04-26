@@ -199,3 +199,50 @@ func UserPostsRoute(w http.ResponseWriter, r *http.Request) {
 
 	}
 }
+
+func UserLikesRoute(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		if TemplatesData.ConnectedUser == nil {
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+			return
+		}
+		query := r.URL.Query()
+		if query.Has("id") {
+			queryId := query.Get("id")
+			id, err := strconv.ParseInt(queryId, 10, 64)
+			if err != nil {
+				utils.RouteError(err)
+			}
+
+			user, err := sql.GetUserById(id)
+			if err != nil {
+				utils.RouteError(err)
+			}
+
+			if TemplatesData.ConnectedUser.Id != user.Id {
+				http.Redirect(w, r, "/", http.StatusSeeOther)
+				return
+			}
+
+			topics, err := sql.GetUserLikesTopics(user.Id)
+			if err != nil {
+				utils.RouteError(err)
+			}
+
+			messages, err := sql.GetUserLikedMessages(user.Id)
+			if err != nil {
+				utils.RouteError(err)
+			}
+
+			TemplatesData.ShownTopics = topics
+			TemplatesData.ShownMessages = messages
+
+			err = utils.CallTemplate("feed", TemplatesData, w)
+			if err != nil {
+				utils.RouteError(err)
+			}
+		} else {
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+		}
+	}
+}

@@ -63,6 +63,8 @@ func main() {
 
 	http.HandleFunc("/posts", UserPostsRoute)
 
+	http.HandleFunc("/likes", UserLikesRoute)
+
 	http.HandleFunc("/close-topic", CloseTopicRoute)
 
 	http.HandleFunc("/open-topic", OpenTopicRoute)
