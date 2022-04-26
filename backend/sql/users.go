@@ -23,7 +23,7 @@ type User struct {
 	IsOnline     bool      `db:"is_online" json:"isOnline"`
 	Password     string    `db:"password" json:"password,omitempty"`
 	Email        string    `db:"email" json:"email,omitempty"`
-	Locale       string    `db:"locale" json:"locale,omitempty"` //todo
+	Locale       string    `db:"locale" json:"locale,omitempty"`
 	ProfilePic   string    `db:"profile_pic" json:"profilePic,omitempty"`
 	Description  string    `db:"description" json:"description,omitempty"`
 	CreationDate time.Time `db:"created_at" json:"creationDate"`  //todo

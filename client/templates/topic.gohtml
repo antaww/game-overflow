@@ -11,20 +11,28 @@
                 <div>
                     <div class="post-div-div">
                         {{if not .ShownTopic.IsClosed}}
-                            {{if or (eq $firstMessage.GetUser.Id .ConnectedUser.Id) (eq .ConnectedUser.Role "admin") (eq .ConnectedUser.Role "moderator")}}
-                                <a class="topic-status">
-                                    <div class="topic-open">Opened<i class="fa-solid fa-lock-open topic-open"></i>
-                                    </div>
-                                </a>
+                            {{if .ConnectedUser}}
+                                {{if or (eq $firstMessage.GetUser.Id .ConnectedUser.Id) (eq .ConnectedUser.Role "admin") (eq .ConnectedUser.Role "moderator")}}
+                                    <a class="topic-status">
+                                        <div class="topic-open">Opened<i class="fa-solid fa-lock-open topic-open"></i>
+                                        </div>
+                                    </a>
+                                {{else}}
+                                    <div class="topic-open">Opened<i class="fa-solid fa-lock-open topic-open"></i></div>
+                                {{end}}
                             {{else}}
                                 <div class="topic-open">Opened<i class="fa-solid fa-lock-open topic-open"></i></div>
                             {{end}}
                         {{else}}
-                            {{if or (eq .ConnectedUser.Role "admin") (eq .ConnectedUser.Role "moderator")}}
-                                <a class="topic-status-closed">
-                                    <div class="topic-closed">Closed<i class="fa-solid fa-lock topic-closed"></i>
-                                    </div>
-                                </a>
+                            {{if .ConnectedUser}}
+                                {{if or (eq .ConnectedUser.Role "admin") (eq .ConnectedUser.Role "moderator")}}
+                                    <a class="topic-status-closed">
+                                        <div class="topic-closed">Closed<i class="fa-solid fa-lock topic-closed"></i>
+                                        </div>
+                                    </a>
+                                {{else}}
+                                    <div class="topic-closed">Closed<i class="fa-solid fa-lock topic-closed"></i></div>
+                                {{end}}
                             {{else}}
                                 <div class="topic-closed">Closed<i class="fa-solid fa-lock topic-closed"></i></div>
                             {{end}}
