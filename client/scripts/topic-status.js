@@ -22,3 +22,15 @@ topicStatusClosed?.addEventListener('click', function (e) {
         window.location.href = `/open-topic?id=${topicId}`;
     }
 });
+
+const deleteMessage = document.querySelector('.fa-trash-can');
+
+deleteMessage?.addEventListener('click', function (e) {
+    e.preventDefault();
+    const confirmMessage = confirm('Are you sure you want to delete this message ?');
+    if (confirmMessage) {
+        const url = new URL(window.location.href);
+        const idMessage = e.target.closest.getAttribute('idMessage');
+        window.location.href = `/delete-message?idMessage=${idMessage}&id=${url.searchParams.get('id')}`;
+    }
+});
