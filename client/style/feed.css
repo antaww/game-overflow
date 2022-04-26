@@ -101,10 +101,15 @@
     border-radius: 6px;
     color: #9B9DD6;
     font-weight: 700;
-    padding: 0 2%;
+    padding: 0 1vh;
     margin-left: 1vh;
     width: fit-content;
     text-decoration: none;
+    transition: all .2s;
+}
+
+.topic-tags:hover {
+    background: #282633;
 }
 
 .topic-date {
