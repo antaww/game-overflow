@@ -192,10 +192,10 @@ func GetUserBySession(sessionId string) (*User, error) {
 }
 
 // GetUserByUsername finds a user by username, returns nil if not found
-func GetUserByUsername(username string) *User {
+func GetUserByUsername(username string) (*User, error) {
 	result, err := DB.Query("SELECT * FROM users WHERE username = ?", username)
 	if err != nil {
-		log.Fatal(err)
+		return nil, fmt.Errorf("GetUserByUsername error: %v", err)
 	}
 
 	var profilePicture []byte
@@ -203,12 +203,12 @@ func GetUserByUsername(username string) *User {
 	user := &User{}
 	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description, &user.CreationDate, &user.Role, &user.Color)
 	if err != nil {
-		log.Fatal(err)
+		return nil, fmt.Errorf("GetUserByUsername error: %v", err)
 	}
 	user.ProfilePic = string(profilePicture)
 
 	HandleSQLErrors(result)
-	return user
+	return user, nil
 }
 
 // GetUsersStatus returns an array of users with their status

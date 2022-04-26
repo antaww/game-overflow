@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"log"
 	"main/sql"
 	"main/utils"
 	"net/http"
@@ -11,13 +10,13 @@ import (
 func AdminEditUsernameRoute(w http.ResponseWriter, r *http.Request) {
 	err := utils.CallTemplate("admin-edit-username", TemplatesData, w)
 	if err != nil {
-		log.Fatal(err)
+		utils.RouteError(err)
 	}
 
 	if r.Method == "POST" {
 		err := r.ParseForm()
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		err = sql.AdminEditUsername(
@@ -26,7 +25,7 @@ func AdminEditUsernameRoute(w http.ResponseWriter, r *http.Request) {
 		)
 
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 	}
 }

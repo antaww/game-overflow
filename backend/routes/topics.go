@@ -3,7 +3,6 @@ package routes
 import (
 	"fmt"
 	"io"
-	"log"
 	"main/sql"
 	"main/utils"
 	"net/http"
@@ -29,7 +28,7 @@ func CreateTopicRoute(w http.ResponseWriter, r *http.Request) {
 		}
 		err := utils.CallTemplate("create-topic", TemplatesData, w)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 	}
 
@@ -49,7 +48,7 @@ func CreateTopicRoute(w http.ResponseWriter, r *http.Request) {
 
 		user, err := sql.GetUserByRequest(r)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		fmt.Println(category)
@@ -57,17 +56,17 @@ func CreateTopicRoute(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(tags)
 		idTopic, err := sql.CreateTopic(title, category, fields)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		idMessage, err := sql.AddMessage(user.Id, idTopic, content)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		_, err = sql.DB.Query("UPDATE topics SET id_first_message = ? WHERE id_topic = ? ", idMessage, idTopic)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		queriesCategory := url.Values{}
@@ -87,13 +86,13 @@ func DeleteMessageRoute(w http.ResponseWriter, r *http.Request) {
 
 		Id, err := strconv.ParseInt(idMessage, 10, 64)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		err = sql.DeleteMessage(Id)
 		fmt.Println("Delete message")
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		queriesId := url.Values{}
@@ -108,7 +107,7 @@ func DislikeRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "PUT" {
 		user, err := sql.GetUserByRequest(r)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		messageIdArg := r.URL.Query().Get("id")
@@ -116,42 +115,42 @@ func DislikeRoute(w http.ResponseWriter, r *http.Request) {
 
 		messageLike, err := sql.MessageGetLikeFrom(messageId, user.Id)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		if messageLike == nil {
 			_, err = sql.DislikeMessage(messageId, user.Id)
 			if err != nil {
-				log.Fatal(err)
+				utils.RouteError(err)
 			}
 		} else if !messageLike.IsLike {
 			_, err = sql.DeleteDislikeMessage(messageId, user.Id)
 			if err != nil {
-				log.Fatal(err)
+				utils.RouteError(err)
 			}
 		} else {
 			_, err = sql.DeleteLikeMessage(messageId, user.Id)
 			if err != nil {
-				log.Fatal(err)
+				utils.RouteError(err)
 			}
 
 			_, err = sql.DislikeMessage(messageId, user.Id)
 			if err != nil {
-				log.Fatal(err)
+				utils.RouteError(err)
 			}
 		}
 
 		response := LikeResponse{}
 		message, err := sql.GetMessage(messageId)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		response.Points = message.CalculatePoints()
 
 		err = utils.SendResponse(w, response)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 	}
 }
@@ -167,13 +166,13 @@ func EditMessageRoute(w http.ResponseWriter, r *http.Request) {
 
 		Id, err := strconv.ParseInt(idMessage, 10, 64)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		// make a variable message taking the content from the posts-content class in the html
 		err = sql.EditMessage(Id, string(contentMessage))
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		queriesId := url.Values{}
@@ -192,13 +191,13 @@ func FeedRoute(w http.ResponseWriter, r *http.Request) {
 
 		topics, err := sql.GetTopicsByCategory(category)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		for i := 0; i < len(topics); i++ {
 			topics[i].Tags, err = sql.GetTags(topics[i].Id)
 			if err != nil {
-				log.Fatal(err)
+				utils.RouteError(err)
 			}
 		}
 
@@ -206,7 +205,7 @@ func FeedRoute(w http.ResponseWriter, r *http.Request) {
 
 		err = utils.CallTemplate("feed", TemplatesData, w)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 	} else if queries.Has("tag") {
 		FeedTagsRoute(w, r)
@@ -222,14 +221,14 @@ func FeedTagsRoute(w http.ResponseWriter, r *http.Request) {
 
 		topics, err := sql.GetTopicsByTag(tag)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		TemplatesData.ShownTopics = topics
 
 		err = utils.CallTemplate("feed", TemplatesData, w)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 	}
 }
@@ -239,58 +238,58 @@ func LikeRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "PUT" {
 		user, err := sql.GetUserByRequest(r)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		messageIdArg := r.URL.Query().Get("id")
 		messageId, err := strconv.ParseInt(messageIdArg, 10, 64)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		messageLike, err := sql.MessageGetLikeFrom(messageId, user.Id)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		if messageLike == nil {
 			_, err = sql.LikeMessage(messageId, user.Id)
 			if err != nil {
-				log.Fatal(err)
+				utils.RouteError(err)
 			}
 		} else if messageLike.IsLike {
 			_, err = sql.DeleteLikeMessage(messageId, user.Id)
 			if err != nil {
-				log.Fatal(err)
+				utils.RouteError(err)
 			}
 		} else {
 			_, err = sql.DeleteDislikeMessage(messageId, user.Id)
 			if err != nil {
-				log.Fatal(err)
+				utils.RouteError(err)
 			}
 
 			_, err = sql.LikeMessage(messageId, user.Id)
 			if err != nil {
-				log.Fatal(err)
+				utils.RouteError(err)
 			}
 		}
 
 		err = TemplatesData.ShownTopic.FetchMessages()
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		response := LikeResponse{}
 		message, err := sql.GetMessage(messageId)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		response.Points = message.CalculatePoints()
 
 		err = utils.SendResponse(w, response)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 	}
 }
@@ -301,7 +300,7 @@ func PostMessageRoute(w http.ResponseWriter, r *http.Request) {
 
 	user, err := sql.GetUserByRequest(r)
 	if err != nil {
-		log.Fatal(err)
+		utils.RouteError(err)
 	}
 
 	if queries.Has("id") {
@@ -309,12 +308,12 @@ func PostMessageRoute(w http.ResponseWriter, r *http.Request) {
 
 		Id, err := strconv.ParseInt(id, 10, 64)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		_, err = sql.AddMessage(user.Id, Id, r.FormValue("post-text"))
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		queriesId := url.Values{}
@@ -333,34 +332,34 @@ func TopicRoute(w http.ResponseWriter, r *http.Request) {
 
 		Id, err := strconv.ParseInt(id, 10, 64)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		topic, err := sql.GetTopic(Id)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		err = sql.AddViews(Id)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		err = topic.FetchMessages()
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		topic.Tags, err = sql.GetTags(Id)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		TemplatesData.ShownTopic = *topic
 
 		err = utils.CallTemplate("topic", TemplatesData, w)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 	}
 }
@@ -373,12 +372,12 @@ func CloseTopicRoute(w http.ResponseWriter, r *http.Request) {
 
 		Id, err := strconv.ParseInt(id, 10, 64)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		user, err := sql.GetUserByRequest(r)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		IsClosed, err := sql.CloseTopic(Id, user.Id)
@@ -387,7 +386,7 @@ func CloseTopicRoute(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/topic?id="+id, http.StatusSeeOther)
 		}
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		http.Redirect(w, r, "/topic?id="+id, http.StatusSeeOther)

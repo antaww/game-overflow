@@ -3,7 +3,6 @@ package routes
 import (
 	"encoding/json"
 	"io"
-	"log"
 	"main/sql"
 	"main/utils"
 	"net/http"
@@ -23,15 +22,18 @@ func ConfirmPasswordRoute(w http.ResponseWriter, r *http.Request) {
 
 		bytesRead, err := io.ReadAll(r.Body)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		err = json.Unmarshal(bytesRead, &data)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		user, err := sql.GetUserByRequest(r)
+		if err != nil {
+			utils.RouteError(err)
+		}
 
 		valid := sql.ConfirmPassword(user.Id, data.Password)
 		var success = struct {
@@ -43,12 +45,12 @@ func ConfirmPasswordRoute(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		marshal, err := json.Marshal(success)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		_, err = w.Write(marshal)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 	}
 }
@@ -58,25 +60,32 @@ func LoginRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		err := utils.CallTemplate("login", TemplatesData, w)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 	}
 
 	if r.Method == "POST" {
 		err := r.ParseForm()
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		username := r.FormValue("username")
 		exists, err := sql.LoginByIdentifiants(username, r.FormValue("password"))
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		if exists {
-			user := sql.GetUserByUsername(username)
-			sql.SessionID(*user, w)
+			// return when error, it will just cancel the request and invite the user to retry
+			user, err := sql.GetUserByUsername(username)
+			if err != nil {
+				return
+			}
+			err = sql.AddSessionCookie(*user, w)
+			if err != nil {
+				return
+			}
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 		} else {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
@@ -92,18 +101,18 @@ func LogoutRoute(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}
-		log.Fatal(err)
+		utils.RouteError(err)
 	}
 
 	err = sql.CookieLogout(*cookie, w)
 
 	err = sql.SetUserOnline(TemplatesData.ConnectedUser.Id, false)
 	if err != nil {
-		log.Fatal(err)
+		utils.RouteError(err)
 	}
 
 	if err != nil {
-		log.Fatal(err)
+		utils.RouteError(err)
 	}
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
@@ -113,14 +122,14 @@ func SignUpRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		err := utils.CallTemplate("sign-up", TemplatesData, w)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 	}
 
 	if r.Method == "POST" {
 		err := r.ParseForm()
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		valid, err := sql.SaveUser(sql.CreateUser(
@@ -130,7 +139,7 @@ func SignUpRoute(w http.ResponseWriter, r *http.Request) {
 		))
 
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 
 		if valid {

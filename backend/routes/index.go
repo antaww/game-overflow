@@ -37,13 +37,13 @@ func IndexRoute(w http.ResponseWriter, r *http.Request) {
 	path := strings.TrimPrefix(r.URL.Path, "/")
 	_, err := LoginUser(r)
 	if err != nil {
-		log.Fatal(err)
+		utils.RouteError(err)
 	}
 
 	if path == "" {
 		err := utils.CallTemplate("main", TemplatesData, w)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 	}
 }
@@ -52,7 +52,7 @@ func IndexRoute(w http.ResponseWriter, r *http.Request) {
 func LogHandler(w http.ResponseWriter, r *http.Request) {
 	matches, err := regexp.MatchString("\\.(css|png)$", r.URL.String())
 	if err != nil {
-		log.Fatal(err)
+		utils.RouteError(err)
 	}
 
 	if !matches {
@@ -64,7 +64,7 @@ func LogHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		_, err := LoginUser(r)
 		if err != nil {
-			log.Fatal(err)
+			utils.RouteError(err)
 		}
 	}
 
