@@ -194,30 +194,30 @@ body {
 @keyframes rotateX {
     0% {
 
-        transform: rotateX(-90deg)
+        transform: rotateX(-90deg);
     }
 
     70% {
-        transform: rotateX(20deg)
+        transform: rotateX(20deg);
     }
 
     100% {
-        transform: rotateX(0deg)
+        transform: rotateX(0deg);
     }
 }
 
 @keyframes rotateXreverse {
     0% {
 
-        transform: rotateX(0deg)
+        transform: rotateX(0deg);
     }
 
     70% {
-        transform: rotateX(20deg)
+        transform: rotateX(20deg);
     }
 
     100% {
-        transform: rotateX(-90deg)
+        transform: rotateX(-90deg);
     }
 }
 
