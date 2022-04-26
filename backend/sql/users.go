@@ -32,6 +32,12 @@ type User struct {
 	DefaultColor int
 }
 
+type Like struct {
+	IdMessage int64 `db:"id_message" json:"idMessage"`
+	IdUser    int64 `db:"id_user" json:"idUser"`
+	Like      bool  `db:"like" json:"like"`
+}
+
 func (user *User) CalculateDefaultColor() {
 	if user.ProfilePic != "" {
 
@@ -237,6 +243,40 @@ func GetUserTopics(id int64) ([]Topic, error) {
 	result, err := DB.Query("SELECT * FROM topics WHERE id_first_message in (SELECT id_message FROM messages WHERE id_user = ?)", id)
 	if err != nil {
 		return nil, fmt.Errorf("GetUserTopics error: %v", err)
+	}
+
+	for result.Next() {
+		topic := Topic{}
+		err = result.Scan(&topic.Id, &topic.Title, &topic.IsClosed, &topic.Views, &topic.Category, &topic.IdFirstMessage)
+		topics = append(topics, topic)
+	}
+	HandleSQLErrors(result)
+
+	return topics, nil
+}
+
+func GetUserLikedMessages(id int64) ([]Message, error) {
+	var messages []Message
+	result, err := DB.Query("SELECT * FROM messages WHERE id_message in (SELECT id_message FROM message_like WHERE id_user = ? and `like` = 1) AND id_message not in (SELECT id_first_message FROM topics)", id)
+	if err != nil {
+		return nil, fmt.Errorf("GetUserLikes error: %v", err)
+	}
+
+	for result.Next() {
+		message := Message{}
+		err = result.Scan(&message.Id, &message.Content, &message.CreatedAt, &message.IdTopic, &message.AuthorId)
+		messages = append(messages, message)
+	}
+	HandleSQLErrors(result)
+
+	return messages, nil
+}
+
+func GetUserLikesTopics(id int64) ([]Topic, error) {
+	var topics []Topic
+	result, err := DB.Query("SELECT * FROM topics WHERE id_first_message in (SELECT id_message FROM message_like WHERE id_user = ? AND `like` = 1)", id)
+	if err != nil {
+		return nil, fmt.Errorf("GetUserLikesTopics error: %v", err)
 	}
 
 	for result.Next() {

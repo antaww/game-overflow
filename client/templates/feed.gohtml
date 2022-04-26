@@ -62,6 +62,10 @@
                     </div>
                 </a>
             {{end}}
+            {{$connectedUser := .ConnectedUser}}
+            {{range .ShownMessages}}
+                {{template "message" .WithConnectedUser $connectedUser}}
+            {{end}}
         </div>
         <div class="trends"></div>
 

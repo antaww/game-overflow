@@ -1,0 +1,64 @@
+{{define "message"}}
+    <div class="post sub-post" data-post-id="{{.Id}}">
+        <div>
+            <div>
+                <a>
+                    <div class="circle {{if .Message.GetUser.IsOnline}} connected {{else}} disconnected {{end}}">
+                        <img alt="" class="avatar modalProfileBtn"
+                             src="{{template "avatar" .Message.GetUser.ProfilePic}}">
+                        {{template "modal" .Message.GetUser}}
+                    </div>
+                </a>
+                <a class="topic-user">
+                    <p>{{.Message.GetUser.Username}}</p>
+                </a>
+            </div>
+            <div class="topic-content-likes">
+                <div>
+                    <p class="posts-content">{{.Message.Content}}</p>
+                    <label class="edit-message" for="edit-text"></label>
+                </div>
+                <div class="topic-likes">
+                    <a href="#" class="like-btn">
+                        <i class="fa-solid fa-angle-up"></i>
+                    </a>
+                    <p class="points">{{.Message.CalculatePoints}}</p>
+                    <a href="#" class="dislike-btn">
+                        <i class="fa-solid fa-angle-down"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {{if .ConnectedUser}}
+            {{if eq .Message.GetUser.Id .ConnectedUser.Id}}
+                <div class="topic-general-info">
+                    <div class="topic-date">{{formatDate .CreatedAt}}</div>
+                    <div class="edit-delete-comment">
+                        <form action="delete-message?idMessage={{.Message.Id}}&id={{.Message.IdTopic}}" method="post">
+                            <button type="submit" class="delete-comment">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </form>
+                        <div class="edit-comment">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </div>
+                        <div IdMessage="{{.Message.Id}}" IdTopic="{{.Message.IdTopic}}" class="send-edited-form">
+                            <div class="send-edited-comment no-display">
+                                Confirm
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{else}}
+                <div class="topic-general-info">
+                    <div class="topic-date">{{formatDate .CreatedAt}}</div>
+                </div>
+            {{end}}
+        {{else}}
+            <div class="topic-general-info">
+                <div class="topic-date">{{formatDate .CreatedAt}}</div>
+            </div>
+        {{end}}
+    </div>
+{{end}}

@@ -15,6 +15,7 @@ type TemplatesDataType struct {
 	Locales       map[string]string
 	ShownTopics   []sql.Topic
 	ShownTopic    sql.Topic
+	ShownMessages []sql.Message
 }
 
 // GetCategories returns all categories
