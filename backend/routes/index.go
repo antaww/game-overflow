@@ -56,6 +56,8 @@ func LogHandler(w http.ResponseWriter, r *http.Request) {
 		utils.RouteError(err)
 	}
 
+	TemplatesData.ShownMessages = []sql.Message{}
+
 	if !matches {
 		log.Printf("%v %v", r.Method, r.URL.String())
 		go func() {
