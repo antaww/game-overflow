@@ -42,12 +42,11 @@
                     <div class="topic-general-info">
                         <div class="topic-date">{{formatDate .CreatedAt}}</div>
                         <div class="edit-delete-comment">
-                            <form action="delete-message?idMessage={{.Message.Id}}&id={{.Message.IdTopic}}"
-                                  method="post">
-                                <button type="submit" class="delete-comment">
+                            <div idMessage="{{.Message.Id}}" id="{{.Message.IdTopic}}">
+                                <div class="delete-comment">
                                     <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </form>
+                                </div>
+                            </div>
                             {{if eq .Message.GetUser.Id .ConnectedUser.Id}}
                                 <div class="edit-comment">
                                     <i class="fa-solid fa-pen-to-square"></i>
