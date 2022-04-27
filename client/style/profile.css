@@ -31,7 +31,7 @@ body {
     border-radius: 50%;
     height: 90%;
     width: 90%;
-    object-fit: scale-down;
+    object-fit: contain;
 }
 
 .content {
