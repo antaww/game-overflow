@@ -16,7 +16,6 @@ function preventDefaultForScrollKeys(e) {
     }
 }
 
-// modern Chrome requires { passive: false } when adding event
 var supportsPassive = false;
 try {
     window.addEventListener("test", null, Object.defineProperty({}, 'passive', {
@@ -30,7 +29,6 @@ try {
 var wheelOpt = supportsPassive ? {passive: false} : false;
 var wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
 
-// call this to Disable
 function disableScroll() {
     window.addEventListener('DOMMouseScroll', preventDefault, false); // older FF
     window.addEventListener(wheelEvent, preventDefault, wheelOpt); // modern desktop
@@ -38,18 +36,12 @@ function disableScroll() {
     window.addEventListener('keydown', preventDefaultForScrollKeys, false);
 }
 
-// call this to Enable
 function enableScroll() {
     window.removeEventListener('DOMMouseScroll', preventDefault, false);
     window.removeEventListener(wheelEvent, preventDefault, wheelOpt);
     window.removeEventListener('touchmove', preventDefault, wheelOpt);
     window.removeEventListener('keydown', preventDefaultForScrollKeys, false);
 }
-
-//log everytime window is scrolled
-window.addEventListener('scroll', e => {
-    console.log(window.scrollY);
-});
 
 btn.forEach(element => {
     element.addEventListener('click', e => {
@@ -59,7 +51,6 @@ btn.forEach(element => {
         });
         modal.classList.add('modal-display');
         disableScroll();
-        console.log('modal opened');
     });
 });
 
@@ -68,7 +59,6 @@ span.forEach(element => {
         modals.forEach(modal => {
             modal.classList.remove('modal-display');
             enableScroll();
-            console.log('modal closed');
         });
     });
 });
@@ -79,7 +69,6 @@ document.addEventListener('click', e => {
             if (e.target.classList.contains('modal-display')) {
                 modal.classList.remove('modal-display');
                 enableScroll();
-                console.log('modal closed by outside');
             }
         }
     });
@@ -91,7 +80,6 @@ document.addEventListener('keydown', e => {
             if (e.keyCode === 27) {
                 modal.classList.remove('modal-display');
                 enableScroll();
-                console.log('modal closed from esc');
             }
         }
     })
