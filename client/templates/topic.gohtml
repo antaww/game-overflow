@@ -45,7 +45,9 @@
                             </div>
                         </a>
                         <a class="topic-user">
-                            <p>{{$firstMessage.GetUser.Username}}</p>
+                            <p>
+                                {{safeHTML $firstMessage.GetUser.DisplayRole}} {{$firstMessage.GetUser.Username}}
+                            </p>
                         </a>
                     </div>
                     <div class="topic-content-likes">

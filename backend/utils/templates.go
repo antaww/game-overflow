@@ -11,6 +11,9 @@ var TemplateMap = template.FuncMap{
 	"safeURL": func(u string) template.URL {
 		return template.URL(u)
 	},
+	"safeHTML": func(u string) template.HTML {
+		return template.HTML(u)
+	},
 	"formatDate": func(t time.Time) string {
 		return t.Format("2006-01-02 15:04:05")
 	},

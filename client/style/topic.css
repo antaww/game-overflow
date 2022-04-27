@@ -52,6 +52,7 @@
 
 .topic-user > p {
     margin: 0;
+    white-space: nowrap;
 }
 
 .messages {

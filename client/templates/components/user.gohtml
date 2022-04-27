@@ -2,7 +2,7 @@
     <div class="user">
         <img alt="{{.Username}}" class="avatar" src="{{template "avatar" .ProfilePic}}">
         <a class="username" href="/profile?id={{.Id}}">
-            {{.Username}}
+            {{safeHTML .DisplayRole}} {{.Username}}
         </a>
     </div>
 {{end}}

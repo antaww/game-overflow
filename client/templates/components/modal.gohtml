@@ -8,7 +8,7 @@
                 <div class="modal-top-box">
                     <img class="avatar modal-avatar" src="{{template "avatar" .ProfilePic}}" alt="">
                     <div class="modal-name-id">
-                        <p class="modal-name">{{.Username}}</p>
+                        <p class="modal-name">{{safeHTML .DisplayRole}} {{.Username}}</p>
                         <span class="modal-id">{{.Id}}</span>
                     </div>
                 </div>

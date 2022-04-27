@@ -38,6 +38,17 @@ type Like struct {
 	Like      bool  `db:"like" json:"like"`
 }
 
+func (user *User) DisplayRole() string {
+	switch user.Role {
+	case RoleAdmin:
+		return "<i class=\"fa-solid fa-crown\"></i>"
+	case RoleModerator:
+		return "<i class=\"fa-solid fa-gavel\"></i>"
+	default:
+		return "<i></i>"
+	}
+}
+
 func (user *User) CalculateDefaultColor() {
 	if user.ProfilePic != "" {
 

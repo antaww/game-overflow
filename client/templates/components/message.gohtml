@@ -10,7 +10,7 @@
                     </div>
                 </a>
                 <a class="topic-user">
-                    <p>{{.Message.GetUser.Username}}</p>
+                    <p>{{safeHTML .Message.GetUser.DisplayRole}} {{.Message.GetUser.Username}}</p>
                 </a>
             </div>
             <div class="topic-content-likes">

@@ -29,7 +29,7 @@
         </section>
         <section class="content">
             <h1 class="username">
-                {{$user.Username}}
+                {{safeHTML $user.DisplayRole}} {{$user.Username}}
             </h1>
             <p class="description">
                 {{$user.Description}}
