@@ -70,4 +70,8 @@ document.addEventListener('click', event => {
     }
 });
 
+//if avatar is clicked, redirect to /profile
+document.querySelector('.avatar-navbar').addEventListener('click', event => {
+    window.location.href = '/profile';
+});
 
