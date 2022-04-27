@@ -135,14 +135,6 @@ body {
     background-color: #FFF0 !important;
 }
 
-.actions.username {
-    position: relative;
-}
-
-.actions.categories {
-    position: relative;
-}
-
 .block {
     display: block !important;
     animation: rotateX 300ms ease-in-out forwards;
@@ -156,6 +148,11 @@ body {
 
 .dropdown, .dropdown-categories {
     position: absolute;
+}
+
+.dropdown-categories .dropdown-options i {
+    width: 25px;
+    margin-left: -8px;
 }
 
 .none {
@@ -176,25 +173,54 @@ body {
     width: 83%;
 }
 
+.dropdown-actions:last-child a button {
+    border-radius: 0 0 10px 10px;
+}
+
 .dropdown-categories {
     top: 10vh;
     background-color: #263137;
     border-radius: 15px;
+    display: flex;
+    flex-direction: column;
 }
 
 .dropdown-options {
     background-color: #263137;
     border: none;
-    cursor: pointer;
-    width: 100%;
-    text-align: left;
-    font-weight: 600;
     color: #FFF;
-    padding: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 10px 15px;
+    text-align: left;
     transition: all .3s;
+    width: 100%;
 }
 
-.log-out {
+.dropdown-actions .dropdown-options:hover {
+    background-color: #1a1e23;
+}
+
+.actions.username {
+    position: relative;
+}
+
+.actions.username .dropdown-options {
+    padding-left: 20px;
+    padding-right: 50px;
+    min-width: 120%;
+}
+
+.actions.username .dropdown-options i {
+    margin-right: 5px;
+}
+
+.actions.categories {
+    position: relative;
+}
+
+.log-out, .log-out * {
     color: #FF7373;
 }
 
@@ -226,10 +252,6 @@ body {
     100% {
         transform: rotateX(-90deg);
     }
-}
-
-.dropdown-actions .dropdown-options:hover {
-    background-color: #1a1e23;
 }
 
 .avatar {

@@ -49,36 +49,13 @@
         <div class="categories">
             <p>Categories <i class="fa-solid fa-angle-down dropdown-arrow"></i></p>
             <div class="dropdown-categories none">
-                <div class="dropdown-actions">
-                    <a href="/feed?category=pc">
-                        <button value="PC" class="dropdown-options">PC</button>
-                    </a>
-                </div>
-                <div class="dropdown-actions">
-                    <a href="/feed?category=xbox">
-                        <button value="Xbox" class="dropdown-options">Xbox</button>
-                    </a>
-                </div>
-                <div class="dropdown-actions">
-                    <a href="/feed?category=playstation">
-                        <button value="Playstation" class="dropdown-options">Playstation</button>
-                    </a>
-                </div>
-                <div class="dropdown-actions">
-                    <a href="/feed?category=nintendo">
-                        <button value="Nintendo" class="dropdown-options">Nintendo</button>
-                    </a>
-                </div>
-                <div class="dropdown-actions">
-                    <a href="/feed?category=mobile">
-                        <button value="Nintendo" class="dropdown-options">Mobile</button>
-                    </a>
-                </div>
-                <div class="dropdown-actions">
-                    <a href="/feed?category=others">
-                        <button value="Accessories" class="dropdown-options">Others</button>
-                    </a>
-                </div>
+                {{range .GetCategories}}
+                    <div class="dropdown-actions">
+                        <a href="/feed?category={{.Name}}">
+                            <button class="dropdown-options" data-test="{{.Icon}}" value="{{.Name}}">{{safeHTML .Icon}} {{.Name}}</button>
+                        </a>
+                    </div>
+                {{end}}
             </div>
         </div>
         <div class="search-bar">
@@ -116,27 +93,36 @@
                     <div class="dropdown none">
                         <div class="dropdown-actions">
                             <a href="/profile">
-                                <button value="profile" class="dropdown-options">Profile</button>
+                                <button value="profile" class="dropdown-options">
+                                <i class="fa fa-user"></i> Profile
+                                </button>
                             </a>
                         </div>
                         <div class="dropdown-actions">
                             <a href="/posts?id={{.ConnectedUser.Id}}">
-                                <button value="posts" class="dropdown-options">My posts</button>
+                                <button value="posts" class="dropdown-options">
+                                    <i class="fa-solid fa-message"></i> My posts
+                                </button>
                             </a>
                         </div>
                         <div class="dropdown-actions">
                             <a href="/likes?id={{.ConnectedUser.Id}}">
-                                <button value="posts" class="dropdown-options">My likes</button>
+                                <button value="posts" class="dropdown-options">
+                                    <i class="fa-solid fa-heart"></i> My likes
+                                </button>
                             </a>
                         </div>
                         <div class="dropdown-actions">
                             <a href="/settings">
-                                <button value="settings" class="dropdown-options">Settings</button>
+                                <button value="settings" class="dropdown-options">
+                                    <i class="fa-solid fa-cog"></i> Settings</button>
                             </a>
                         </div>
                         <div class="dropdown-actions">
                             <a href="/logout">
-                                <button value="logout" class="dropdown-options log-out">Log out</button>
+                                <button value="logout" class="dropdown-options log-out">
+                                    <i class="fa-solid fa-sign-out-alt"></i> Log out
+                                </button>
                             </a>
                         </div>
                     </div>
