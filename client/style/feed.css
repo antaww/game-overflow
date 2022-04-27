@@ -9,7 +9,7 @@
     display: flex;
     margin-top: 12vh;
     flex-direction: column;
-    width: 40%;
+    width: min(50rem, 60vw);
 }
 
 .topic {
@@ -33,6 +33,20 @@
     display: flex;
     flex-direction: column;
     width: 90%;
+}
+
+.user-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 3vw;
+}
+
+.username {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 5px;
+    white-space: nowrap;
 }
 
 .topic-header {

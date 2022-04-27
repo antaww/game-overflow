@@ -2,7 +2,6 @@
 @import url("./login.css");
 @import url("./feed.css");
 @import url("./topic.css");
-@import url("./profile.css");
 
 :root {
     --tooltip-color: #111111;
@@ -163,7 +162,7 @@ body {
 }
 
 .dropdown {
-    top: 8.5vh;
+    top: 10vh;
     background-color: #263137;
     border-radius: 15px;
     width: 83%;

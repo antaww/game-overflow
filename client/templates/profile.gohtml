@@ -1,5 +1,6 @@
 {{define "content"}}
     {{template "navbar" .}}
+    <link rel="stylesheet" href="/static/profile.css">
     {{$user := .ShownUser}}
     <div class="color" style="background-color: {{decimalToHex $user.Color}};">
         <div class="avatar-circle">

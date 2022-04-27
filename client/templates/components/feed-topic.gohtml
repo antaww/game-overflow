@@ -1,7 +1,13 @@
 {{define "feed-topic"}}
+    {{$author := .GetFirstMessage.GetUser}}
     <a href="/topic?id={{.Id}}" class="topic">
-        <div class="circle {{if .GetFirstMessage.GetUser.IsOnline}}dis{{end}}connected avatar-wrapper">
-            <img alt="" class="avatar" src="{{template "avatar" .GetFirstMessage.GetUser.ProfilePic}}">
+        <div class="user-wrapper">
+            <div class="circle {{if $author.IsOnline}}dis{{end}}connected avatar-wrapper">
+                <img alt="" class="avatar" src="{{template "avatar" $author.ProfilePic}}">
+            </div>
+            <p class="username">
+                {{safeHTML $author.DisplayRole}} {{$author.Username}}
+            </p>
         </div>
         <div class="topic-info">
             <div class="topic-header">
