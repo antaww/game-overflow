@@ -45,7 +45,7 @@ function setUsersOnline() {
         body: body
     }).then(response => response.json())
         .then(data => {
-            data.forEach(user => {
+            data?.forEach(user => {
                 const users = document.querySelectorAll(".topic-user");
                 let userElements = [...users].filter(e => e.innerText === user.username).map(e => e.parentElement.querySelector(".circle"));
                 userElements.forEach(userElement => {
