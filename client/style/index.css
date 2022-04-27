@@ -155,10 +155,6 @@ body {
     margin-left: -8px;
 }
 
-.none {
-    display: none;
-}
-
 .username a {
     display: flex;
     align-items: center;
@@ -526,4 +522,8 @@ body {
     border-width: 5px;
     border-style: solid;
     border-color: var(--tooltip-color) transparent transparent transparent;
+}
+
+.none {
+    display: none;
 }
