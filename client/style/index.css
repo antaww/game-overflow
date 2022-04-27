@@ -97,11 +97,7 @@ body {
     padding-right: 1.5vw;
     display: flex;
     align-items: center;
-}
-
-.account-options > div {
-    margin: 1%;
-    white-space: nowrap;
+    height: 100%;
 }
 
 .actions {
@@ -162,10 +158,9 @@ body {
 }
 
 .dropdown {
-    top: 10vh;
     background-color: #263137;
     border-radius: 15px;
-    width: 83%;
+    top: 100%;
 }
 
 .dropdown-actions:last-child a button {

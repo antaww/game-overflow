@@ -68,6 +68,7 @@
                 </label>
             </form>
         </div>
+
         <div class="account-options">
             {{if not .ConnectedUser}}
                 <div class="actions">
@@ -90,41 +91,41 @@
                             <img class="avatar-navbar" src="{{template "avatar" .ConnectedUser.ProfilePic}}" alt="test">
                         </div>
                     </a>
-                    <div class="dropdown none">
-                        <div class="dropdown-actions">
-                            <a href="/profile">
-                                <button value="profile" class="dropdown-options">
+                </div>
+                <div class="dropdown none">
+                    <div class="dropdown-actions">
+                        <a href="/profile">
+                            <button value="profile" class="dropdown-options">
                                 <i class="fa fa-user"></i> Profile
-                                </button>
-                            </a>
-                        </div>
-                        <div class="dropdown-actions">
-                            <a href="/posts?id={{.ConnectedUser.Id}}">
-                                <button value="posts" class="dropdown-options">
-                                    <i class="fa-solid fa-message"></i> My posts
-                                </button>
-                            </a>
-                        </div>
-                        <div class="dropdown-actions">
-                            <a href="/likes?id={{.ConnectedUser.Id}}">
-                                <button value="posts" class="dropdown-options">
-                                    <i class="fa-solid fa-heart"></i> My likes
-                                </button>
-                            </a>
-                        </div>
-                        <div class="dropdown-actions">
-                            <a href="/settings">
-                                <button value="settings" class="dropdown-options">
-                                    <i class="fa-solid fa-cog"></i> Settings</button>
-                            </a>
-                        </div>
-                        <div class="dropdown-actions">
-                            <a href="/logout">
-                                <button value="logout" class="dropdown-options log-out">
-                                    <i class="fa-solid fa-sign-out-alt"></i> Log out
-                                </button>
-                            </a>
-                        </div>
+                            </button>
+                        </a>
+                    </div>
+                    <div class="dropdown-actions">
+                        <a href="/posts?id={{.ConnectedUser.Id}}">
+                            <button value="posts" class="dropdown-options">
+                                <i class="fa-solid fa-message"></i> My posts
+                            </button>
+                        </a>
+                    </div>
+                    <div class="dropdown-actions">
+                        <a href="/likes?id={{.ConnectedUser.Id}}">
+                            <button value="posts" class="dropdown-options">
+                                <i class="fa-solid fa-heart"></i> My likes
+                            </button>
+                        </a>
+                    </div>
+                    <div class="dropdown-actions">
+                        <a href="/settings">
+                            <button value="settings" class="dropdown-options">
+                                <i class="fa-solid fa-cog"></i> Settings</button>
+                        </a>
+                    </div>
+                    <div class="dropdown-actions">
+                        <a href="/logout">
+                            <button value="logout" class="dropdown-options log-out">
+                                <i class="fa-solid fa-sign-out-alt"></i> Log out
+                            </button>
+                        </a>
                     </div>
                 </div>
             {{end}}
