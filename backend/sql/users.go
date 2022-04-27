@@ -41,11 +41,13 @@ type Like struct {
 func (user *User) DisplayRole() string {
 	switch user.Role {
 	case RoleAdmin:
-		return "<i class=\"fa-solid fa-crown\"></i>"
+		return "<i class=\"fa-solid fa-crown fa-fw\"></i>"
 	case RoleModerator:
-		return "<i class=\"fa-solid fa-gavel\"></i>"
+		return "<i class=\"fa-solid fa-gavel fa-fw\"></i>"
+	case RoleUser:
+		return "<i class=\"fa-solid\"></i>"
 	default:
-		return "<i></i>"
+		return ""
 	}
 }
 
