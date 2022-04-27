@@ -40,3 +40,14 @@ categories.addEventListener('click', event => {
     }
 });
 
+document.addEventListener('click', e => {
+    if (!e.target.classList.contains('dropdown-categories') || (!e.target.classList.contains('dropdown'))) {
+        dropdown.classList.remove('block');
+        dropdown.classList.add('block-reverse');
+        dropdownCategories.classList.remove('block');
+        dropdownCategories.classList.add('block-reverse');
+        setTimeout(() => dropdown.classList.toggle('none'), timeout);
+        setTimeout(() => dropdownCategories.classList.toggle('none'), timeout);
+    }
+});
+
