@@ -6,7 +6,6 @@ const dropdownArrow = document.querySelector('.dropdown-arrow');
 let timeout = 300; //temps en ms (doit être identique à la valeur de l'animation css)
 
 username?.addEventListener('click', event => {
-    console.log('username clicked');
     if (dropdown.classList.contains('block')) {
         dropdown.classList.remove('block');
         dropdown.classList.add('block-reverse');
@@ -39,14 +38,10 @@ function categories_checker() {
 }
 
 categories.addEventListener('click', event => {
-    console.log('categories clicked');
     categories_checker();
 });
 
-//If the user's click is not username or categories, close dropdown if it is opened and dropdownCategories if it is opened
 document.addEventListener('click', event => {
-    console.log(event.target);
-
     if (event.target.classList.contains('username_dropdown') || event.target.classList.contains('categories') || event.target.closest('.categories')) {
         return;
     } else {
@@ -70,7 +65,6 @@ document.addEventListener('click', event => {
     }
 });
 
-//if avatar is clicked, redirect to /profile
 document.querySelector('.avatar-navbar').addEventListener('click', event => {
     window.location.href = '/profile';
 });
