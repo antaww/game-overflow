@@ -60,7 +60,7 @@ func LogHandler(w http.ResponseWriter, r *http.Request) {
 	TemplatesData.ShownMessages = []sql.Message{}
 
 	if !matches {
-		log.Printf("%v %v", r.Method, r.URL.String())
+		log.Printf("%v %v", r.Method, r.URL.RequestURI())
 		go func() {
 			PageLoadedTime = time.Now()
 		}()

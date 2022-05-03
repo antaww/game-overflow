@@ -84,6 +84,7 @@ func (user *User) GetFollowers() []User {
 	if err != nil {
 		return nil
 	}
+	fmt.Println("followers", followers)
 
 	return followers
 }
@@ -93,6 +94,7 @@ func (user *User) GetFollowing() []User {
 	if err != nil {
 		return nil
 	}
+	fmt.Println("following", following)
 
 	return following
 }
@@ -198,9 +200,13 @@ func GetFollowers(idUser int64) ([]User, error) {
 	if err != nil {
 		return nil, fmt.Errorf("GetFollowers error: %v", err)
 	}
-	err = Results(rows, &users)
-	if err != nil {
-		return nil, fmt.Errorf("GetFollowers error: %v", err)
+	for rows.Next() {
+		user := &User{}
+		err = rows.Scan(&user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &user.ProfilePic, &user.Description, &user.CreationDate, &user.Role, &user.Color)
+		if err != nil {
+			return nil, fmt.Errorf("GetFollowers error: %v", err)
+		}
+		users = append(users, *user)
 	}
 
 	return users, nil
@@ -213,9 +219,13 @@ func GetFollowing(idUser int64) ([]User, error) {
 	if err != nil {
 		return nil, fmt.Errorf("GetFollowing error: %v", err)
 	}
-	err = Results(rows, &users)
-	if err != nil {
-		return nil, fmt.Errorf("GetFollowing error: %v", err)
+	for rows.Next() {
+		user := &User{}
+		err = rows.Scan(&user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &user.ProfilePic, &user.Description, &user.CreationDate, &user.Role, &user.Color)
+		if err != nil {
+			return nil, fmt.Errorf("GetFollowing error: %v", err)
+		}
+		users = append(users, *user)
 	}
 
 	return users, nil

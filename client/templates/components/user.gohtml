@@ -1,8 +1,9 @@
 {{define "user"}}
-    <div class="user">
+    <a class="user" href="/profile?id={{.Id}}">
         <img alt="{{.Username}}" class="avatar" src="{{template "avatar" .ProfilePic}}">
-        <a class="username" href="/profile?id={{.Id}}">
+
+        <p class="username">
             {{safeHTML .DisplayRole}} {{.Username}}
-        </a>
-    </div>
+        </p>
+    </a>
 {{end}}

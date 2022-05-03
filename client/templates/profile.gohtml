@@ -59,7 +59,7 @@
                 {{end}}
             </h2>
             {{if gt (len $following) 0}}
-                <ul class="following">
+                <ul class="followings">
                     {{range $following}}
                         <li class="following">
                             {{template "user" . }}
@@ -77,7 +77,7 @@
             {{if gt (len $followers) 0}}
                 <ul class="followers">
                     {{range $followers}}
-                        <li class="followers">
+                        <li class="follower">
                             {{template "user" . }}
                         </li>
                     {{end}}
