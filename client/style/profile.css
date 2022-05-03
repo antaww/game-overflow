@@ -44,7 +44,7 @@ body {
     margin-left: calc(var(--avatar-left) + var(--avatar-size) + 5vw);
 }
 
-.username {
+.profile-username {
     margin-top: 0.3em;
     font-size: 2.5rem;
 }
