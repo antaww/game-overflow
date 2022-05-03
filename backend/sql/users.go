@@ -53,7 +53,6 @@ func (user *User) DisplayRole() string {
 
 func (user *User) CalculateDefaultColor() {
 	if user.ProfilePic != "" {
-
 		img, err := utils.GetImageFromBase64(user.ProfilePic)
 		if err != nil {
 			log.Println(err)
@@ -65,8 +64,6 @@ func (user *User) CalculateDefaultColor() {
 	} else {
 		user.DefaultColor = 0xcccccc
 	}
-
-	fmt.Println(user.DefaultColor)
 }
 
 func (user *User) CountTopics() int {
@@ -84,7 +81,6 @@ func (user *User) GetFollowers() []User {
 	if err != nil {
 		return nil
 	}
-	fmt.Println("followers", followers)
 
 	return followers
 }
@@ -94,7 +90,6 @@ func (user *User) GetFollowing() []User {
 	if err != nil {
 		return nil
 	}
-	fmt.Println("following", following)
 
 	return following
 }
@@ -180,7 +175,6 @@ func EditUser(idUser int64, newUser User) (bool, error) {
 	request += strings.Join(requestEdits, ",") + " WHERE id_user = ?"
 	arguments = append(arguments, idUser)
 
-	fmt.Println(request)
 	r, err := DB.Exec(request, arguments...)
 	if err != nil {
 		return false, fmt.Errorf("EditUser error: %v", err)
@@ -381,11 +375,9 @@ func LoginByIdentifiants(username, password string) (bool, error) {
 	}
 
 	if result.Next() {
-		fmt.Println("result OK => login page loading")
 		HandleSQLErrors(result)
 		return true, nil
 	} else {
-		fmt.Println("result not found")
 		HandleSQLErrors(result)
 		return false, nil
 	}
@@ -393,7 +385,7 @@ func LoginByIdentifiants(username, password string) (bool, error) {
 
 // SaveUser saves a user in the database
 func SaveUser(user User) (bool, error) {
-	_, err := DB.Exec("INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", user.Id, user.Username, user.IsOnline, user.Password, user.Email, user.Locale, user.ProfilePic, user.Description, user.CreationDate, user.Role)
+	_, err := DB.Exec("INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", user.Id, user.Username, user.IsOnline, user.Password, user.Email, user.Locale, user.ProfilePic, user.Description, user.CreationDate, user.Role, user.Color)
 	if err != nil {
 		return false, fmt.Errorf("SaveUser error: %v", err)
 	}
