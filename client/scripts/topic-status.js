@@ -21,18 +21,3 @@ topicStatusClosed?.addEventListener('click', function (e) {
         window.location.href = `/open-topic?id=${topicId}`;
     }
 });
-
-const deleteMessage = document.querySelectorAll('.delete-comment');
-
-deleteMessage.forEach(element => {
-    element.addEventListener('click', e => {
-        let clicked = e.target;
-        e.preventDefault();
-        const confirmMessage = confirm('Are you sure you want to delete this message ?');
-        if (confirmMessage) {
-            const url = new URL(window.location.href);
-            const idMessage = clicked.parentElement.parentElement.getAttribute('idMessage');
-            window.location.href = `/delete-message?idMessage=${idMessage}&id=${url.searchParams.get('id')}`;
-        }
-    });
-});
