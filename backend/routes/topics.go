@@ -22,11 +22,17 @@ type EditMessageResponse struct {
 // CreateTopicRoute is the route for creating a new topic
 func CreateTopicRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		if TemplatesData.ConnectedUser == nil {
+		templateData, err := GetTemplatesDataFromRoute(w, r)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		if templateData.ConnectedUser == nil {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		}
-		err := utils.CallTemplate("create-topic", TemplatesData, w)
+
+		err = utils.CallTemplate("create-topic", templateData, w)
 		if err != nil {
 			utils.RouteError(err)
 		}
@@ -213,51 +219,66 @@ func EditMessageRoute(w http.ResponseWriter, r *http.Request) {
 
 // FeedRoute is the route for the feed
 func FeedRoute(w http.ResponseWriter, r *http.Request) {
-	queries := r.URL.Query()
+	if r.Method == "GET" {
+		queries := r.URL.Query()
 
-	if queries.Has("category") {
-		category := queries.Get("category")
+		if queries.Has("category") {
 
-		topics, err := sql.GetTopicsByCategory(category)
-		if err != nil {
-			utils.RouteError(err)
-		}
+			category := queries.Get("category")
 
-		for i := 0; i < len(topics); i++ {
-			topics[i].Tags, err = sql.GetTags(topics[i].Id)
+			topics, err := sql.GetTopicsByCategory(category)
 			if err != nil {
 				utils.RouteError(err)
 			}
-		}
 
-		TemplatesData.ShownTopics = topics
+			for i := 0; i < len(topics); i++ {
+				topics[i].Tags, err = sql.GetTags(topics[i].Id)
+				if err != nil {
+					utils.RouteError(err)
+				}
+			}
 
-		err = utils.CallTemplate("feed", TemplatesData, w)
-		if err != nil {
-			utils.RouteError(err)
+			templateData, err := GetTemplatesDataFromRoute(w, r)
+			if err != nil {
+				utils.RouteError(err)
+			}
+
+			templateData.ShownTopics = topics
+
+			err = utils.CallTemplate("feed", templateData, w)
+			if err != nil {
+				utils.RouteError(err)
+			}
+		} else if queries.Has("tag") {
+			FeedTagsRoute(w, r)
 		}
-	} else if queries.Has("tag") {
-		FeedTagsRoute(w, r)
 	}
 }
 
 // FeedTagsRoute is the route for the feed by tags
 func FeedTagsRoute(w http.ResponseWriter, r *http.Request) {
-	queries := r.URL.Query()
+	if r.Method == "GET" {
+		queries := r.URL.Query()
 
-	if queries.Has("tag") {
-		tag := queries.Get("tag")
+		if queries.Has("tag") {
+			tag := queries.Get("tag")
 
-		topics, err := sql.GetTopicsByTag(tag)
-		if err != nil {
-			utils.RouteError(err)
-		}
+			topics, err := sql.GetTopicsByTag(tag)
+			if err != nil {
+				utils.RouteError(err)
+			}
 
-		TemplatesData.ShownTopics = topics
+			templateData, err := GetTemplatesDataFromRoute(w, r)
+			if err != nil {
+				utils.RouteError(err)
+			}
 
-		err = utils.CallTemplate("feed", TemplatesData, w)
-		if err != nil {
-			utils.RouteError(err)
+			templateData.ShownTopics = topics
+
+			err = utils.CallTemplate("feed", templateData, w)
+			if err != nil {
+				utils.RouteError(err)
+			}
 		}
 	}
 }
@@ -301,11 +322,6 @@ func LikeRoute(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				utils.RouteError(err)
 			}
-		}
-
-		err = TemplatesData.ShownTopic.FetchMessages()
-		if err != nil {
-			utils.RouteError(err)
 		}
 
 		response := LikeResponse{}
@@ -384,9 +400,14 @@ func TopicRoute(w http.ResponseWriter, r *http.Request) {
 			utils.RouteError(err)
 		}
 
-		TemplatesData.ShownTopic = *topic
+		templateData, err := GetTemplatesDataFromRoute(w, r)
+		if err != nil {
+			utils.RouteError(err)
+		}
 
-		err = utils.CallTemplate("topic", TemplatesData, w)
+		templateData.ShownTopic = topic
+
+		err = utils.CallTemplate("topic", templateData, w)
 		if err != nil {
 			utils.RouteError(err)
 		}

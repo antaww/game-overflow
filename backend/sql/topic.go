@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"main/utils"
+	"net/http"
 )
 
 type Topic struct {
@@ -93,6 +94,47 @@ func CloseTopic(topicId int64, userId int64) (bool, error) {
 
 	return affected > 0, nil
 }
+
+// GetShownTopic returns the actual shown topic on the URL
+func GetShownTopic(r *http.Request) (*Topic, error) {
+	queries := r.URL.Query()
+	id := queries.Get("id")
+	if id == "" {
+		return nil, nil
+	}
+
+	topic := &Topic{}
+	rows, err := DB.Query("SELECT * FROM topics WHERE id_topic = ?", id)
+	if err != nil {
+		return nil, err
+	}
+
+	err = Results(rows, &topic.Id, &topic.Title, &topic.IsClosed, &topic.Views, &topic.Category, &topic.IdFirstMessage)
+	if err != nil {
+		return nil, err
+	}
+
+	HandleSQLErrors(rows)
+
+	err = topic.FetchMessages()
+	if err != nil {
+		return nil, err
+	}
+
+	err = topic.FetchTags()
+	if err != nil {
+		return nil, err
+	}
+
+	return topic, nil
+}
+
+/*// GetShownTopics returns the actual shown topics on the URL
+func GetShownTopics(r *http.Request) ([]Topic, error) {
+	queries := r.URL.Query()
+	category := queries.Get("category")
+}
+*/
 
 // OpenTopic opens topic from user
 func OpenTopic(topicId int64, userId int64) (bool, error) {

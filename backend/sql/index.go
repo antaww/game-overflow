@@ -40,7 +40,7 @@ func AddSessionCookie(user User, w http.ResponseWriter) error {
 	return err
 }
 
-func CookieLogout(getCookie http.Cookie, w http.ResponseWriter) error {
+func DeleteSessionCookie(sessionId string, w http.ResponseWriter) error {
 	cookie := &http.Cookie{
 		HttpOnly: false,
 		Name:     "session",
@@ -49,6 +49,6 @@ func CookieLogout(getCookie http.Cookie, w http.ResponseWriter) error {
 	}
 	http.SetCookie(w, cookie)
 
-	_, err := DB.Exec("DELETE FROM sessions WHERE sessions.id_session = (?)", getCookie.Value)
+	_, err := DB.Exec("DELETE FROM sessions WHERE sessions.id_session = ?", sessionId)
 	return err
 }

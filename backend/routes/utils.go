@@ -5,25 +5,28 @@ import (
 	"net/http"
 )
 
-func LoginUser(r *http.Request) (*sql.User, error) {
-	cookie, err := r.Cookie("session")
-
+func GetTemplatesDataFromRoute(w http.ResponseWriter, r *http.Request) (*TemplatesDataType, error) {
+	connectedUser, err := sql.GetUserByRequest(r)
 	if err != nil {
-		TemplatesData.ConnectedUser = nil
-	} else {
-		user, err := sql.GetUserBySession(cookie.Value)
-		if err != nil {
-			return nil, nil
-		}
-		TemplatesData.ConnectedUser = user
-
-		err = sql.SetUserOnline(TemplatesData.ConnectedUser.Id, true)
-		if err != nil {
-			return nil, err
-		}
-
-		return user, nil
+		return nil, err
 	}
 
-	return nil, nil
+	locales, err := sql.GetLocales()
+	if err != nil {
+		return nil, err
+	}
+
+	shownTopic, err := sql.GetShownTopic(r)
+	if err != nil {
+		return nil, err
+	}
+
+	return &TemplatesDataType{
+		ConnectedUser: connectedUser,
+		Locales:       locales,
+		ShownTopics:   nil,
+		ShownTopic:    shownTopic,
+		ShownMessages: nil,
+		ShownUser:     nil,
+	}, nil
 }
