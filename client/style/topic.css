@@ -139,3 +139,17 @@
 .message-deleted {
     color: #8080807a;
 }
+
+/* OPTIONS TOPIC CATEGORY */
+
+.change-topic-category-label {
+    font-size: 90%;
+}
+
+#change-topic-category {
+
+}
+
+#change-topic-category option {
+    background: #1a66a5;
+}
