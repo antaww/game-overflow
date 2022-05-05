@@ -141,5 +141,26 @@ a {
 .follow-button {
     top: -50%;
     position: relative;
-    left: 70%;
+    left: 60%;
 }
+
+.follow-button:hover {
+    cursor: pointer;
+}
+
+.modal-topics.unfollow-btn:hover {
+    background-color: #7c222270;
+}
+
+.modal-topics.unfollow-btn:hover i {
+    opacity: 1;
+    padding-left: 8px;
+    width: 10px;
+}
+
+.modal-topics.unfollow-btn i {
+    opacity: 0;
+    transition: all .5s, opacity 0.10s ease-in;
+    width: 0;
+}
+

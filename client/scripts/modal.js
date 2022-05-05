@@ -98,7 +98,8 @@ followBtn.forEach(element => {
                 body: JSON.stringify({id: id})
             }).then(res => {
                 if (res.status === 200) {
-                    clicked.innerText = 'Unfollow';
+                    clicked.innerHTML = '<i\n' +
+                        '                                                class="fa-solid fa-xmark"></i> Unfollow';
                     clicked.classList.add('unfollow-btn');
                     clicked.classList.remove('follow-btn');
                 }
