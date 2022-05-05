@@ -3,20 +3,31 @@
         <div class="modal-content">
             <div class="modal-banner" style="background-color: {{decimalToHex .Color}}">
                 <span class="close">&times;</span>
+                <a class="modal-href-avatar" href="/profile?id={{.Id}}">
+                    <img class="avatar modal-avatar" src="{{template "avatar" .User.ProfilePic}}" alt="">
+                </a>
             </div>
             <div class="modal-padding">
-                <a class="modal-top-box" href="/profile?id={{.Id}}">
-                    <img class="avatar modal-avatar" src="{{template "avatar" .User.ProfilePic}}" alt="">
-                    <div class="modal-name-id">
-                        <p class="modal-name">{{safeHTML .User.DisplayRole}} {{.User.Username}}</p>
-                        <span class="modal-id">{{.User.Id}}</span>
-                    </div>
-                    {{if .ConnectedUser}}
-                        <div class="follow-button">
-                            <a data-id="{{.User.Id}}" class="modal-topics">Follow</a>
+                <div class="modal-top-box">
+
+                    <div class="follow-box">
+                        <div class="modal-name-id">
+                            <a href="/profile?id={{.Id}}">
+                                <p class="modal-name">{{safeHTML .User.DisplayRole}} {{.User.Username}}</p>
+                            </a>
+                            <span class="modal-id">{{.User.Id}}</span>
                         </div>
-                    {{end}}
-                </a>
+                        {{if .ConnectedUser}}
+                            <div class="follow-button">
+                                {{if .ConnectedUser.IsFollowingUser .User.Id}}
+                                    <a data-id="{{.User.Id}}" class="modal-topics unfollow-btn">Unfollow</a>
+                                {{else}}
+                                    <a data-id="{{.User.Id}}" class="modal-topics follow-btn">Follow</a>
+                                {{end}}
+                            </div>
+                        {{end}}
+                    </div>
+                </div>
                 <div class="modal-gotop">
                     <hr>
                     <p class="modal-about">About me</p>

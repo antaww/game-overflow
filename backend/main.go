@@ -31,6 +31,8 @@ func main() {
 
 	http.HandleFunc("/admin/edit-username", AdminEditUsernameRoute)
 
+	http.HandleFunc("/cookies", CookieRoute)
+
 	http.HandleFunc("/confirm-password", ConfirmPasswordRoute)
 
 	http.HandleFunc("/create-topic", CreateTopicRoute)
@@ -74,6 +76,8 @@ func main() {
 	http.HandleFunc("/change-category", ChangeCategoryRoute)
 
 	http.HandleFunc("/follow", FollowUserRoute)
+
+	http.HandleFunc("/unfollow", UnfollowUserRoute)
 
 	// Capture connection properties.
 	DatabaseConfig := mysql.Config{

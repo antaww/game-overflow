@@ -1,6 +1,7 @@
 package sql
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"main/utils"
@@ -18,18 +19,18 @@ const (
 )
 
 type User struct {
-	Id             int64     `db:"id_user" json:"id,omitempty"`
-	Username       string    `db:"username" json:"username"`
-	IsOnline       bool      `db:"is_online" json:"isOnline"`
-	Password       string    `db:"password" json:"password,omitempty"`
-	Email          string    `db:"email" json:"email,omitempty"`
-	Locale         string    `db:"locale" json:"locale,omitempty"`
-	ProfilePic     string    `db:"profile_pic" json:"profilePic,omitempty"`
-	Description    string    `db:"description" json:"description,omitempty"`
-	CreationDate   time.Time `db:"created_at" json:"creationDate"`  //todo
-	Role           Role      `db:"role_type" json:"role,omitempty"` //todo
-	Color          int       `db:"color" json:"color,omitempty"`
-	CookiesEnabled bool      `db:"cookies_enabled" json:"cookiesEnabled"`
+	Id             int64        `db:"id_user" json:"id,omitempty"`
+	Username       string       `db:"username" json:"username"`
+	IsOnline       bool         `db:"is_online" json:"isOnline"`
+	Password       string       `db:"password" json:"password,omitempty"`
+	Email          string       `db:"email" json:"email,omitempty"`
+	Locale         string       `db:"locale" json:"locale,omitempty"`
+	ProfilePic     string       `db:"profile_pic" json:"profilePic,omitempty"`
+	Description    string       `db:"description" json:"description,omitempty"`
+	CreationDate   time.Time    `db:"created_at" json:"creationDate"`  //todo
+	Role           Role         `db:"role_type" json:"role,omitempty"` //todo
+	Color          int          `db:"color" json:"color,omitempty"`
+	CookiesEnabled sql.NullBool `db:"cookies_enabled" json:"cookiesEnabled"`
 	DefaultColor   int
 }
 
@@ -49,6 +50,21 @@ type Like struct {
 	IdMessage int64 `db:"id_message" json:"idMessage"`
 	IdUser    int64 `db:"id_user" json:"idUser"`
 	Like      bool  `db:"like" json:"like"`
+}
+
+func (user *User) IsFollowingUser(userId int64) bool {
+	var isFollowing bool
+	result, err := DB.Query("SELECT * FROM follow WHERE id_user_followed = ? AND id_user_follower = ? LIMIT 1", userId, user.Id)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if result.Next() {
+		isFollowing = true
+	} else {
+		isFollowing = false
+	}
+	return isFollowing
+
 }
 
 func (user *User) DisplayRole() string {
@@ -116,13 +132,23 @@ func (user *User) GetTopics() []Topic {
 	return topic
 }
 
+func (user *User) GetHasCookieEnabled() sql.NullBool {
+	enabled, err := GetUserHasCookiesEnabled(user.Id)
+	if err != nil {
+		utils.SQLError(err)
+	}
+
+	return enabled
+}
+
 func (user *User) SetCookiesEnabled(enabled bool) error {
-	err := SetUserCookiesEnabled(user.Id, enabled)
+	nullBool := sql.NullBool{Bool: enabled, Valid: true}
+	err := SetUserCookiesEnabled(user.Id, nullBool)
 	if err != nil {
 		return err
 	}
 
-	user.CookiesEnabled = enabled
+	user.CookiesEnabled = nullBool
 	return nil
 }
 
@@ -318,6 +344,23 @@ func GetUserByUsername(username string) (*User, error) {
 	return user, nil
 }
 
+// GetUserHasCookiesEnabled returns true if the user has cookies enabled
+func GetUserHasCookiesEnabled(id int64) (sql.NullBool, error) {
+	enabled := sql.NullBool{Bool: false, Valid: false}
+	result, err := DB.Query("SELECT cookies_enabled FROM users WHERE id_user = ?", id)
+	if err != nil {
+		return enabled, fmt.Errorf("GetUserHasCookiesEnabled error: %v", err)
+	}
+
+	err = Results(result, &enabled)
+	if err != nil {
+		return enabled, fmt.Errorf("GetUserHasCookiesEnabled error: %v", err)
+	}
+
+	HandleSQLErrors(result)
+	return enabled, nil
+}
+
 // GetUsersStatus returns an array of users with their status
 func GetUsersStatus(users []string) ([]*User, error) {
 	var usersOnline []*User
@@ -436,7 +479,7 @@ func SetAllUsersOffline() error {
 }
 
 // SetUserCookiesEnabled sets a user's cookies enabled
-func SetUserCookiesEnabled(idUser int64, cookiesEnabled bool) error {
+func SetUserCookiesEnabled(idUser int64, cookiesEnabled sql.NullBool) error {
 	_, err := DB.Exec("UPDATE users SET cookies_enabled = ? WHERE id_user = ?", cookiesEnabled, idUser)
 	if err != nil {
 		return fmt.Errorf("SetUserCookiesEnabled error: %v", err)
@@ -455,6 +498,21 @@ func FollowUser(idUserFollowed, idUserFollower int64) error {
 	}
 	if affected == 0 {
 		return fmt.Errorf("FollowUser error: no rows affected")
+	}
+	return nil
+}
+
+func UnfollowUser(idUserFollowed, idUserFollower int64) error {
+	result, err := DB.Exec("DELETE FROM follow WHERE id_user_followed = ? AND id_user_follower = ?", idUserFollowed, idUserFollower)
+	if err != nil {
+		return fmt.Errorf("UnfollowUser error: %v", err)
+	}
+	affected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("UnfollowUser error: %v", err)
+	}
+	if affected == 0 {
+		return fmt.Errorf("UnfollowUser error: no rows affected")
 	}
 	return nil
 }
