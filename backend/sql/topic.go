@@ -198,3 +198,28 @@ func ChangeCategory(id int64, category string) error {
 	}
 	return nil
 }
+
+func DeleteTopic(id int64) error {
+	fmt.Println(id)
+	_, err := DB.Exec("DELETE FROM message_like WHERE id_message IN (SELECT id_message FROM messages WHERE id_topic = ?)", id)
+	if err != nil {
+		return fmt.Errorf("DeleteTopic error: %v", err)
+	}
+	fmt.Println("message_like deleted")
+	_, err = DB.Exec("DELETE FROM messages WHERE id_topic = ?", id)
+	if err != nil {
+		return fmt.Errorf("DeleteTopic error: %v", err)
+	}
+	fmt.Println("messages deleted")
+	_, err = DB.Exec("DELETE FROM have WHERE id_topic = ?", id)
+	if err != nil {
+		return fmt.Errorf("DeleteTopic error: %v", err)
+	}
+	fmt.Println("have deleted")
+	_, err = DB.Exec("DELETE FROM topics WHERE id_topic = ?", id)
+	if err != nil {
+		return fmt.Errorf("DeleteTopic error: %v", err)
+	}
+	fmt.Println("topic deleted")
+	return nil
+}

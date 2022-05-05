@@ -21,3 +21,17 @@ topicStatusClosed?.addEventListener('click', function (e) {
         window.location.href = `/open-topic?id=${topicId}`;
     }
 });
+
+const deleteTopic = document.querySelectorAll('.delete-topic');
+
+deleteTopic.forEach(element => {
+    element.addEventListener('click', e => {
+        let clicked = e.target;
+        e.preventDefault();
+        const confirmMessage = confirm('Are you sure you want to delete this topic ?');
+        if (confirmMessage) {
+            const url = new URL(window.location.href);
+            window.location.href = `/delete-topic?id=${url.searchParams.get('id')}`;
+        }
+    });
+});

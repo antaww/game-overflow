@@ -111,14 +111,14 @@
     cursor: pointer;
 }
 
-.delete-comment, .edit-comment {
+.delete-comment, .edit-comment, .delete-topic {
     cursor: pointer;
     background: none;
     border: none;
     margin-left: 3vh;
 }
 
-.delete-comment > i {
+.delete-comment > i, .delete-topic > i {
     color: #FF7373;
 }
 
