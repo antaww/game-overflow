@@ -103,7 +103,7 @@ func (user *User) GetTopics() []Topic {
 	return topic
 }
 
-func (user *User) UserWithConnectedUser() UserWithConnectedUser {
+func (user *User) WithConnectedUser() UserWithConnectedUser {
 	return UserWithConnectedUser{
 		ConnectedUser: user,
 		User:          user,
