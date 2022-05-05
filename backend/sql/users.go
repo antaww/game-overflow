@@ -33,6 +33,18 @@ type User struct {
 	DefaultColor   int
 }
 
+type UserWithConnectedUser struct {
+	*User
+	ConnectedUser *User
+}
+
+func (user *User) WithConnectedUser(connectedUser *User) *UserWithConnectedUser {
+	return &UserWithConnectedUser{
+		ConnectedUser: connectedUser,
+		User:          user,
+	}
+}
+
 type Like struct {
 	IdMessage int64 `db:"id_message" json:"idMessage"`
 	IdUser    int64 `db:"id_user" json:"idUser"`
