@@ -3,8 +3,8 @@
         <div class="modal-content">
             <div class="modal-banner" style="background-color: {{decimalToHex .Color}}">
                 <span class="close">&times;</span>
-                <a class="modal-href-avatar" href="/profile?id={{.Id}}">
-                    <img class="avatar modal-avatar" src="{{template "avatar" .User.ProfilePic}}" alt="">
+                <a class="avatar modal-href-avatar" href="/profile?id={{.Id}}">
+                    <img class="modal-avatar" src="{{template "avatar" .User.ProfilePic}}" alt="">
                 </a>
             </div>
             <div class="modal-padding">
@@ -12,7 +12,7 @@
 
                     <div class="follow-box">
                         <div class="modal-name-id">
-                            <a href="/profile?id={{.Id}}">
+                            <a class="modal-name-link" href="/profile?id={{.Id}}">
                                 <p class="modal-name">{{safeHTML .User.DisplayRole}} {{.User.Username}}</p>
                             </a>
                             <span class="modal-id">{{.User.Id}}</span>
