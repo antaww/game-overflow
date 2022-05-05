@@ -1,7 +1,7 @@
 .new-topic {
-    margin-top: 13vh;
     display: flex;
     flex-direction: column;
+    margin-top: 13vh;
 }
 
 .new-topic > p {
@@ -28,20 +28,20 @@
 }
 
 .create-topic-input, .create-topic-category {
-    background-color: #1F1F23;
+    background-color: #1f1f23;
     border: none;
     border-radius: 0.5rem;
     font-size: 1.1rem;
-    margin-top: 1vh;
     margin-bottom: 0.5em;
+    margin-top: 1vh;
     padding: 1vh;
     position: relative;
 }
 
 textarea.create-topic-input {
-    resize: vertical;
-    min-height: 8em;
     max-height: 100em;
+    min-height: 8em;
+    resize: vertical;
 }
 
 #topic-form label {
@@ -49,31 +49,31 @@ textarea.create-topic-input {
 }
 
 .required-input::after {
+    color: #ff0000;
     content: "*";
-    color: red;
-    opacity: 1;
     display: inline;
     font-size: 1.2rem;
-    margin-left: 0.5vh;
-    top: 0.5vh;
     left: 0;
+    margin-left: 0.5vh;
+    opacity: 1;
+    top: 0.5vh;
     z-index: 10000;
 }
 
 #btn-submit {
-    background-color: #17629E;
+    background-color: #17629e;
     border: none;
     border-radius: 15px;
-    color: #FFF;
+    color: #ffffff;
     cursor: pointer;
-    font-weight: 700;
     font-size: 1.2rem;
+    font-weight: 700;
     margin: 2rem 0;
     padding: 1vh 2vh 1vh 1vh;
-    width: fit-content;
+    transition: background-color 0.5s ease-in-out;
     white-space: nowrap;
 
-    transition: background-color 0.5s ease-in-out;
+    width: fit-content;
 }
 
 #btn-submit i {
@@ -87,43 +87,67 @@ textarea.create-topic-input {
 }
 
 .message-toolbar {
+    background-color: #1a1e23;
+    border-radius: 0.5rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 1vh;
-    background-color: #1a1e23;
-    border-radius: 0.5rem;
 }
 
 .message-toolbar-btn {
-    background-color: #1F1F23;
+    background-color: #1f1f23;
     border: none;
     border-radius: 0.5rem;
-    color: #FFF;
+    color: #ffffff;
     cursor: pointer;
-    font-weight: 700;
     font-size: 1.2rem;
+    font-weight: 700;
     margin-top: 1vh;
     padding: 1vh 2vh 1vh 1vh;
-    width: fit-content;
-    white-space: nowrap;
-
     transition: background-color 0.5s ease-in-out;
+    white-space: nowrap;
+    width: fit-content;
 }
 
 .message-toolbar-btn i {
     pointer-events: none;
 }
 
+.create-topic-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    max-width: 40rem;
+}
+
+.create-topic-tags-input {
+    min-width: 12rem;
+    width: min-content;
+}
+
+.tag-list {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: .5em;
+}
+
+.create-topic-input::-webkit-calendar-picker-indicator, .create-topic-input::-webkit-search-results-button {
+    display: none !important;
+}
+
 .tag {
+    background-color: #80808021;
+    border-radius: 5px;
+    margin-bottom: .5em;
+    margin-left: 10px;
     max-width: 19em;
     overflow: hidden;
-    text-overflow: ellipsis;
-    background-color: #80808021;
-    width: fit-content;
     padding: 5px;
-    margin-bottom: .5em;
-    border-radius: 12%;
+    text-overflow: ellipsis;
+
+    width: fit-content;
 }
 
 .tag-cross:hover {

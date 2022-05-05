@@ -33,19 +33,23 @@
                               name="content" placeholder="Content" required rows="5"></textarea>
                 </div>
 
-                <div class="create-topic-tags create-topic-options">
+                <div class="create-topic-options">
                     <label for="tags">Tags</label>
-                    <input class="create-topic-input" id="tags" name="tags" placeholder="Tags" type="text"
-                           list="tags-data" autocomplete="off">
-                    <datalist id="tags-data">
-                        {{range .GetTags}}
-                        <option value="{{.Name}}">
+                    <div class="create-topic-input create-topic-tags">
+                        <span class="tag-list"></span>
+                        <input autocomplete="off" class="create-topic-input create-topic-tags-input" id="tags" list="tags-data" maxlength="32" minlength="2"
+                               name="tags" placeholder="Tags" type="text">
+                        <datalist id="tags-data">
+                            {{range .GetTags}}
+                                <option value="{{.Name}}"></option>
                             {{end}}
-                    </datalist>
+                        </datalist>
+                    </div>
                 </div>
 
-                <button class="btn confirm" id="btn-submit" name="submit" type="submit" value="Post">Create<i
-                            class="fa-solid fa-check"></i></button>
+                <button class="btn confirm" id="btn-submit" name="submit" type="submit" value="Post">
+                    Create<i class="fa-solid fa-check"></i>
+                </button>
             </form>
 
         </div>
