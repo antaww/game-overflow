@@ -190,3 +190,11 @@ func GetTopicsByTag(tag string) ([]Topic, error) {
 
 	return topics, nil
 }
+
+func ChangeCategory(id int64, category string) error {
+	_, err := DB.Exec("UPDATE topics SET category_name = ? WHERE id_topic = ?", category, id)
+	if err != nil {
+		return fmt.Errorf("CloseTopic error: %v", err)
+	}
+	return nil
+}

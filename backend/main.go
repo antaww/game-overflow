@@ -71,6 +71,8 @@ func main() {
 
 	http.HandleFunc("/open-topic", OpenTopicRoute)
 
+	http.HandleFunc("/change-category", ChangeCategoryRoute)
+
 	http.HandleFunc("/follow", FollowUserRoute)
 
 	// Capture connection properties.

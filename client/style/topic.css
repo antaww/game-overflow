@@ -147,9 +147,14 @@
 }
 
 #change-topic-category {
-
+    background-color: #2b333d;
+    margin-bottom: 1vh;
 }
 
 #change-topic-category option {
-    background: #1a66a5;
+    background: #2b333d;
+}
+
+#change-topic-category option:hover {
+    background: #171A1D;
 }
