@@ -51,6 +51,21 @@ type Like struct {
 	Like      bool  `db:"like" json:"like"`
 }
 
+func (user *User) IsFollowingUser(userId int64) bool {
+	var isFollowing bool
+	result, err := DB.Query("SELECT * FROM follow WHERE id_user_followed = ? AND id_user_follower = ? LIMIT 1", userId, user.Id)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if result.Next() {
+		isFollowing = true
+	} else {
+		isFollowing = false
+	}
+	return isFollowing
+
+}
+
 func (user *User) DisplayRole() string {
 	switch user.Role {
 	case RoleAdmin:
@@ -455,6 +470,21 @@ func FollowUser(idUserFollowed, idUserFollower int64) error {
 	}
 	if affected == 0 {
 		return fmt.Errorf("FollowUser error: no rows affected")
+	}
+	return nil
+}
+
+func UnfollowUser(idUserFollowed, idUserFollower int64) error {
+	result, err := DB.Exec("DELETE FROM follow WHERE id_user_followed = ? AND id_user_follower = ?", idUserFollowed, idUserFollower)
+	if err != nil {
+		return fmt.Errorf("UnfollowUser error: %v", err)
+	}
+	affected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("UnfollowUser error: %v", err)
+	}
+	if affected == 0 {
+		return fmt.Errorf("UnfollowUser error: no rows affected")
 	}
 	return nil
 }

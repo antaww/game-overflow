@@ -90,21 +90,38 @@ followBtn.forEach(element => {
     element.addEventListener('click', e => {
         let clicked = e.target;
         const id = clicked.getAttribute('data-id');
-        fetch('/follow', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({id: id})
-        }).then(res => {
-            if (res.status === 200) {
-                clicked.innerText = 'Unfollow';
-                clicked.classList.add('unfollow-button');
-                clicked.classList.remove('follow-button');
-            }
-        });
+        if (clicked.classList.contains('follow-btn')) {
+            fetch('/follow', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id: id})
+            }).then(res => {
+                if (res.status === 200) {
+                    clicked.innerText = 'Unfollow';
+                    clicked.classList.add('unfollow-btn');
+                    clicked.classList.remove('follow-btn');
+                }
+            });
+        } else if (clicked.classList.contains('unfollow-btn')) {
+            fetch('/unfollow', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id: id})
+            }).then(res => {
+                if (res.status === 200) {
+                    clicked.innerText = 'Follow';
+                    clicked.classList.add('follow-btn');
+                    clicked.classList.remove('unfollow-btn');
+                }
+            });
+        }
     });
 });
+
 
 
 

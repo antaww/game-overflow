@@ -19,7 +19,11 @@
                         </div>
                         {{if .ConnectedUser}}
                             <div class="follow-button">
-                                <a data-id="{{.User.Id}}" class="modal-topics">Follow</a>
+                                {{if .ConnectedUser.IsFollowingUser .User.Id}}
+                                    <a data-id="{{.User.Id}}" class="modal-topics unfollow-btn">Unfollow</a>
+                                {{else}}
+                                    <a data-id="{{.User.Id}}" class="modal-topics follow-btn">Follow</a>
+                                {{end}}
                             </div>
                         {{end}}
                     </div>
