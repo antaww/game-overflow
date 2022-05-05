@@ -114,3 +114,22 @@ textarea.create-topic-input {
 .message-toolbar-btn i {
     pointer-events: none;
 }
+
+.tag {
+    max-width: 19em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: #80808021;
+    width: fit-content;
+    padding: 5px;
+    margin-bottom: .5em;
+    border-radius: 12%;
+}
+
+.tag-cross:hover {
+    cursor: pointer;
+}
+
+.tag-cross {
+    margin-left: .3em;
+}
