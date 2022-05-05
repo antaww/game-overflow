@@ -6,6 +6,7 @@ import (
 	"main/sql"
 	"main/utils"
 	"net/http"
+	"strconv"
 )
 
 // ConfirmPasswordRoute is the route for the confirm password request
@@ -146,6 +147,32 @@ func SignUpRoute(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 		} else {
 			http.Redirect(w, r, "/sign-up", http.StatusSeeOther)
+		}
+	}
+}
+
+func CookieRoute(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		queries := r.URL.Query()
+		if queries.Has("accept") {
+			accept, err := strconv.ParseBool(queries.Get("accept"))
+			if err != nil {
+				w.WriteHeader(http.StatusBadRequest)
+				return
+			}
+
+			user, err := sql.GetUserByRequest(r)
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
+
+			err = user.SetCookiesEnabled(accept)
+			if err != nil {
+				utils.RouteError(err)
+			}
+
+			w.WriteHeader(http.StatusOK)
 		}
 	}
 }

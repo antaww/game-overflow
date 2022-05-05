@@ -31,6 +31,8 @@ func main() {
 
 	http.HandleFunc("/admin/edit-username", AdminEditUsernameRoute)
 
+	http.HandleFunc("/cookies", CookieRoute)
+
 	http.HandleFunc("/confirm-password", ConfirmPasswordRoute)
 
 	http.HandleFunc("/create-topic", CreateTopicRoute)
