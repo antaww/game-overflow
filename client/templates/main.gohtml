@@ -19,6 +19,15 @@
                     </a>
                 {{end}}
             {{end}}
+
+            {{if .ConnectedUser}}
+                {{if not .ConnectedUser.GetHasCookieEnabled.Valid}}
+                    <div class="cookies">
+                        <script defer src="/scripts/cookies.js"></script>
+                        {{template "cookies-banner" .}}
+                    </div>
+                {{end}}
+            {{end}}
         </body>
     </html>
 {{end}}

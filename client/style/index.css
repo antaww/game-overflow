@@ -3,6 +3,7 @@
 @import url("./feed.css");
 @import url("./topic.css");
 @import url("./modal.css");
+@import url("./cookies.css");
 
 :root {
     --tooltip-color: #111111;

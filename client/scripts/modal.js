@@ -2,8 +2,7 @@ const modals = document.querySelectorAll('.myModal');
 const btn = document.querySelectorAll('.modalProfileBtn');
 const span = document.querySelectorAll('.close');
 
-
-var keys = {37: 1, 38: 1, 39: 1, 40: 1};
+const keys = {37: 1, 38: 1, 39: 1, 40: 1};
 
 function preventDefault(e) {
     e.preventDefault();
@@ -16,18 +15,18 @@ function preventDefaultForScrollKeys(e) {
     }
 }
 
-var supportsPassive = false;
+let supportsPassive = false;
 try {
     window.addEventListener("test", null, Object.defineProperty({}, 'passive', {
-        get: function () {
+        get: () => {
             supportsPassive = true;
         }
     }));
 } catch (e) {
 }
 
-var wheelOpt = supportsPassive ? {passive: false} : false;
-var wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
+const wheelOpt = supportsPassive ? {passive: false} : false;
+const wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
 
 function disableScroll() {
     window.addEventListener('DOMMouseScroll', preventDefault, false); // older FF
