@@ -53,18 +53,12 @@ type Like struct {
 }
 
 func (user *User) IsFollowingUser(userId int64) bool {
-	var isFollowing bool
 	result, err := DB.Query("SELECT * FROM follow WHERE id_user_followed = ? AND id_user_follower = ? LIMIT 1", userId, user.Id)
 	if err != nil {
 		log.Fatal(err)
 	}
-	if result.Next() {
-		isFollowing = true
-	} else {
-		isFollowing = false
-	}
-	return isFollowing
 
+	return result.Next()
 }
 
 func (user *User) DisplayRole() string {
@@ -272,6 +266,15 @@ func GetFollowing(idUser int64) ([]User, error) {
 	}
 
 	return users, nil
+}
+
+func GetSessionId(r *http.Request) (string, error) {
+	sessionId, err := r.Cookie("session")
+	if err != nil {
+		return "", fmt.Errorf("GetSessionId error: %v", err)
+	}
+
+	return sessionId.Value, nil
 }
 
 // GetUserById finds a user by id, returns nil if not found

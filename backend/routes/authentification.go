@@ -11,7 +11,8 @@ import (
 
 // ConfirmPasswordRoute is the route for the confirm password request
 func ConfirmPasswordRoute(w http.ResponseWriter, r *http.Request) {
-	if TemplatesData.ConnectedUser == nil {
+	user, err := sql.GetUserByRequest(r)
+	if user == nil || err != nil {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
@@ -59,7 +60,12 @@ func ConfirmPasswordRoute(w http.ResponseWriter, r *http.Request) {
 // LoginRoute is the route for handling the login page
 func LoginRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		err := utils.CallTemplate("login", TemplatesData, w)
+		templateData, err := GetTemplatesDataFromRoute(w, r)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		err = utils.CallTemplate("login", templateData, w)
 		if err != nil {
 			utils.RouteError(err)
 		}
@@ -96,7 +102,7 @@ func LoginRoute(w http.ResponseWriter, r *http.Request) {
 
 // LogoutRoute is the route to log out the user
 func LogoutRoute(w http.ResponseWriter, r *http.Request) {
-	cookie, err := r.Cookie("session")
+	connectedUser, err := sql.GetUserByRequest(r)
 	if err != nil {
 		if err == http.ErrNoCookie {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
@@ -105,23 +111,33 @@ func LogoutRoute(w http.ResponseWriter, r *http.Request) {
 		utils.RouteError(err)
 	}
 
-	err = sql.CookieLogout(*cookie, w)
-
-	err = sql.SetUserOnline(TemplatesData.ConnectedUser.Id, false)
+	sessionId, err := sql.GetSessionId(r)
 	if err != nil {
 		utils.RouteError(err)
 	}
 
+	err = sql.DeleteSessionCookie(sessionId, w)
 	if err != nil {
 		utils.RouteError(err)
 	}
+
+	err = sql.SetUserOnline(connectedUser.Id, false)
+	if err != nil {
+		utils.RouteError(err)
+	}
+
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 // SignUpRoute is the route for handling the signup page
 func SignUpRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		err := utils.CallTemplate("sign-up", TemplatesData, w)
+		templateData, err := GetTemplatesDataFromRoute(w, r)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		err = utils.CallTemplate("sign-up", templateData, w)
 		if err != nil {
 			utils.RouteError(err)
 		}

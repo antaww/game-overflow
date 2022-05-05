@@ -32,7 +32,7 @@ func IsActiveRoute(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		} else {
-			user, err = LoginUser(r)
+			user, err = sql.GetUserByRequest(r)
 			if err != nil {
 				utils.RouteError(err)
 			}
@@ -82,8 +82,14 @@ func ProfileRoute(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	TemplatesData.ShownUser = user
-	err = utils.CallTemplate("profile", TemplatesData, w)
+	templateData, err := GetTemplatesDataFromRoute(w, r)
+	if err != nil {
+		utils.RouteError(err)
+	}
+
+	templateData.ShownUser = user
+
+	err = utils.CallTemplate("profile", templateData, w)
 	if err != nil {
 		utils.RouteError(err)
 	}
@@ -92,14 +98,18 @@ func ProfileRoute(w http.ResponseWriter, r *http.Request) {
 // SettingsRoute is a route that handles the settings of the user
 func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		if TemplatesData.ConnectedUser == nil {
+		templateData, err := GetTemplatesDataFromRoute(w, r)
+		if err != nil {
+			utils.RouteError(err)
+		}
+		if templateData.ConnectedUser == nil {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		}
 
-		TemplatesData.ConnectedUser.CalculateDefaultColor()
+		templateData.ConnectedUser.CalculateDefaultColor()
 
-		err := utils.CallTemplate("settings", TemplatesData, w)
+		err = utils.CallTemplate("settings", templateData, w)
 		if err != nil {
 			utils.RouteError(err)
 		}
@@ -162,13 +172,6 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 			utils.RouteError(err)
 		}
 
-		updatedUser, err := sql.GetUserByRequest(r)
-		if err != nil {
-			utils.RouteError(err)
-		}
-
-		TemplatesData.ConnectedUser = updatedUser
-
 		r.Method = "GET"
 		http.Redirect(w, r, "/settings", http.StatusSeeOther)
 	}
@@ -204,7 +207,12 @@ func UsersActive(w http.ResponseWriter, r *http.Request) {
 
 func UserPostsRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		if TemplatesData.ConnectedUser == nil {
+		templateData, err := GetTemplatesDataFromRoute(w, r)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		if templateData.ConnectedUser == nil {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		}
@@ -227,9 +235,9 @@ func UserPostsRoute(w http.ResponseWriter, r *http.Request) {
 				utils.RouteError(err)
 			}
 
-			TemplatesData.ShownTopics = topics
+			templateData.ShownTopics = topics
 
-			err = utils.CallTemplate("feed", TemplatesData, w)
+			err = utils.CallTemplate("feed", templateData, w)
 			if err != nil {
 				utils.RouteError(err)
 			}
@@ -242,7 +250,12 @@ func UserPostsRoute(w http.ResponseWriter, r *http.Request) {
 
 func UserLikesRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		if TemplatesData.ConnectedUser == nil {
+		templateData, err := GetTemplatesDataFromRoute(w, r)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		if templateData.ConnectedUser == nil {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		}
@@ -259,7 +272,7 @@ func UserLikesRoute(w http.ResponseWriter, r *http.Request) {
 				utils.RouteError(err)
 			}
 
-			if TemplatesData.ConnectedUser.Id != user.Id {
+			if templateData.ConnectedUser.Id != user.Id {
 				http.Redirect(w, r, "/", http.StatusSeeOther)
 				return
 			}
@@ -274,10 +287,10 @@ func UserLikesRoute(w http.ResponseWriter, r *http.Request) {
 				utils.RouteError(err)
 			}
 
-			TemplatesData.ShownTopics = topics
-			TemplatesData.ShownMessages = messages
+			templateData.ShownTopics = topics
+			templateData.ShownMessages = messages
 
-			err = utils.CallTemplate("feed", TemplatesData, w)
+			err = utils.CallTemplate("feed", templateData, w)
 			if err != nil {
 				utils.RouteError(err)
 			}
@@ -289,7 +302,12 @@ func UserLikesRoute(w http.ResponseWriter, r *http.Request) {
 
 func FollowUserRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
-		if TemplatesData.ConnectedUser == nil {
+		templateData, err := GetTemplatesDataFromRoute(w, r)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		if templateData.ConnectedUser == nil {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		}
@@ -300,16 +318,17 @@ func FollowUserRoute(w http.ResponseWriter, r *http.Request) {
 		var response struct {
 			Id string `json:"id"`
 		}
-		err := json.NewDecoder(body).Decode(&response)
+		err = json.NewDecoder(body).Decode(&response)
 		if err != nil {
 			utils.RouteError(err)
 		}
+
 		idUserFollowed, err := strconv.ParseInt(response.Id, 10, 64)
 		if err != nil {
 			utils.RouteError(err)
 		}
 
-		err = sql.FollowUser(idUserFollowed, TemplatesData.ConnectedUser.Id)
+		err = sql.FollowUser(idUserFollowed, templateData.ConnectedUser.Id)
 		if err != nil {
 			w.WriteHeader(http.StatusForbidden)
 			return
@@ -320,7 +339,8 @@ func FollowUserRoute(w http.ResponseWriter, r *http.Request) {
 
 func UnfollowUserRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
-		if TemplatesData.ConnectedUser == nil {
+		user, err := sql.GetUserByRequest(r)
+		if err != nil || user == nil {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		}
@@ -331,7 +351,7 @@ func UnfollowUserRoute(w http.ResponseWriter, r *http.Request) {
 		var response struct {
 			Id string `json:"id"`
 		}
-		err := json.NewDecoder(body).Decode(&response)
+		err = json.NewDecoder(body).Decode(&response)
 		if err != nil {
 			utils.RouteError(err)
 		}
@@ -340,7 +360,7 @@ func UnfollowUserRoute(w http.ResponseWriter, r *http.Request) {
 			utils.RouteError(err)
 		}
 
-		err = sql.UnfollowUser(idUserFollowed, TemplatesData.ConnectedUser.Id)
+		err = sql.UnfollowUser(idUserFollowed, user.Id)
 		if err != nil {
 			w.WriteHeader(http.StatusForbidden)
 			return
