@@ -2,6 +2,7 @@
     <script defer src="/scripts/messages.js"></script>
     <script defer src="/scripts/modal.js"></script>
     <script defer src="/scripts/topic-status.js"></script>
+    <script defer src="/scripts/topic-category.js"></script>
     {{template "navbar" .}}
     {{$connectedUser := .ConnectedUser}}
     <div class="feed-content">
@@ -55,6 +56,20 @@
                             <a href="/feed?category={{.ShownTopic.Category}}" style="text-decoration: none">
                                 <div class="topic-category">{{.ShownTopic.Category}}</div>
                             </a>
+                            {{if .ConnectedUser}}
+                                {{if or (eq .ConnectedUser.Role "admin") (eq .ConnectedUser.Role "moderator")}}
+                                    <label for="change-topic-category" class="change-topic-category-label">Change category : </label>
+                                    <select name="change-topic-category" id="change-topic-category">
+                                        <option value="">{{.ShownTopic.Category}}</option>
+                                        <option value="nintendo">Nintendo</option>
+                                        <option value="mobile">Mobile</option>
+                                        <option value="others">Others</option>
+                                        <option value="pc">Pc</option>
+                                        <option value="playstation">Playstation</option>
+                                        <option value="xbox">Xbox</option>
+                                    </select>
+                                {{end}}
+                            {{end}}
                             <p class="topic-title">{{.ShownTopic.Title}}</p>
                             {{if le .ShownTopic.Views 1}}
                                 <div class="topic-views posts-views">{{.ShownTopic.Views}} view
