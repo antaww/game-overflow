@@ -456,3 +456,31 @@ func OpenTopicRoute(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/topic?id="+id, http.StatusSeeOther)
 	}
 }
+
+func ChangeCategoryRoute(w http.ResponseWriter, r *http.Request) {
+	queries := r.URL.Query()
+
+	if queries.Has("id") {
+		id := queries.Get("id")
+		category := queries.Get("category")
+
+		user, err := sql.GetUserByRequest(r)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		if user.Role == "admin" || user.Role == "moderator" {
+			Id, err := strconv.ParseInt(id, 10, 64)
+			if err != nil {
+				utils.RouteError(err)
+			}
+
+			err = sql.ChangeCategory(Id, category)
+			if err != nil {
+				utils.RouteError(err)
+			}
+		}
+		http.Redirect(w, r, "/topic?id="+id, http.StatusSeeOther)
+	}
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
