@@ -22,17 +22,16 @@ topicStatusClosed?.addEventListener('click', function (e) {
     }
 });
 
-const deleteMessage = document.querySelectorAll('.delete-comment');
+const deleteTopic = document.querySelectorAll('.delete-topic');
 
-deleteMessage.forEach(element => {
+deleteTopic.forEach(element => {
     element.addEventListener('click', e => {
         let clicked = e.target;
         e.preventDefault();
-        const confirmMessage = confirm('Are you sure you want to delete this message ?');
+        const confirmMessage = confirm('Are you sure you want to delete this topic ?');
         if (confirmMessage) {
             const url = new URL(window.location.href);
-            const idMessage = clicked.parentElement.parentElement.getAttribute('idMessage');
-            window.location.href = `/delete-message?idMessage=${idMessage}&id=${url.searchParams.get('id')}`;
+            window.location.href = `/delete-topic?id=${url.searchParams.get('id')}`;
         }
     });
 });

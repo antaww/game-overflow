@@ -66,7 +66,14 @@
     border: none;
     width: 100%;
     padding: 2vh;
+    resize: vertical;
+    min-height: 3em;
+    max-height: 40em;
     /*margin-top: 6vh;*/
+}
+
+.text-area::-webkit-scrollbar {
+    display: none;
 }
 
 .write-message {
@@ -111,14 +118,14 @@
     cursor: pointer;
 }
 
-.delete-comment, .edit-comment {
+.delete-comment, .edit-comment, .delete-topic {
     cursor: pointer;
     background: none;
     border: none;
     margin-left: 3vh;
 }
 
-.delete-comment > i {
+.delete-comment > i, .delete-topic > i {
     color: #FF7373;
 }
 
