@@ -115,13 +115,6 @@ func (user *User) GetTopics() []Topic {
 	return topic
 }
 
-func (user *User) WithConnectedUser() UserWithConnectedUser {
-	return UserWithConnectedUser{
-		ConnectedUser: user,
-		User:          user,
-	}
-}
-
 // ConfirmPassword checks if the password is correct
 func ConfirmPassword(userId int64, password string) bool {
 	var user User
