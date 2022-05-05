@@ -18,19 +18,18 @@ const (
 )
 
 type User struct {
-	Id             int64     `db:"id_user" json:"id,omitempty"`
-	Username       string    `db:"username" json:"username"`
-	IsOnline       bool      `db:"is_online" json:"isOnline"`
-	Password       string    `db:"password" json:"password,omitempty"`
-	Email          string    `db:"email" json:"email,omitempty"`
-	Locale         string    `db:"locale" json:"locale,omitempty"`
-	ProfilePic     string    `db:"profile_pic" json:"profilePic,omitempty"`
-	Description    string    `db:"description" json:"description,omitempty"`
-	CreationDate   time.Time `db:"created_at" json:"creationDate"`  //todo
-	Role           Role      `db:"role_type" json:"role,omitempty"` //todo
-	Color          int       `db:"color" json:"color,omitempty"`
-	CookiesEnabled bool      `db:"cookies_enabled" json:"cookiesEnabled"`
-	DefaultColor   int
+	Id           int64     `db:"id_user" json:"id,omitempty"`
+	Username     string    `db:"username" json:"username"`
+	IsOnline     bool      `db:"is_online" json:"isOnline"`
+	Password     string    `db:"password" json:"password,omitempty"`
+	Email        string    `db:"email" json:"email,omitempty"`
+	Locale       string    `db:"locale" json:"locale,omitempty"`
+	ProfilePic   string    `db:"profile_pic" json:"profilePic,omitempty"`
+	Description  string    `db:"description" json:"description,omitempty"`
+	CreationDate time.Time `db:"created_at" json:"creationDate"`  //todo
+	Role         Role      `db:"role_type" json:"role,omitempty"` //todo
+	Color        int       `db:"color" json:"color,omitempty"`
+	DefaultColor int
 }
 
 type UserWithConnectedUser struct {
@@ -49,6 +48,19 @@ type Like struct {
 	IdMessage int64 `db:"id_message" json:"idMessage"`
 	IdUser    int64 `db:"id_user" json:"idUser"`
 	Like      bool  `db:"like" json:"like"`
+}
+
+func (user *User) DisplayRole() string {
+	switch user.Role {
+	case RoleAdmin:
+		return "<i class=\"fa-solid fa-crown fa-fw\"></i>"
+	case RoleModerator:
+		return "<i class=\"fa-solid fa-gavel fa-fw\"></i>"
+	case RoleUser:
+		return "<i class=\"fa-solid\"></i>"
+	default:
+		return ""
+	}
 }
 
 func (user *User) CalculateDefaultColor() {
@@ -74,19 +86,6 @@ func (user *User) CountTopics() int {
 
 	return len(topic)
 
-}
-
-func (user *User) DisplayRole() string {
-	switch user.Role {
-	case RoleAdmin:
-		return "<i class=\"fa-solid fa-crown fa-fw\"></i>"
-	case RoleModerator:
-		return "<i class=\"fa-solid fa-gavel fa-fw\"></i>"
-	case RoleUser:
-		return "<i class=\"fa-solid\"></i>"
-	default:
-		return ""
-	}
 }
 
 func (user *User) GetFollowers() []User {
@@ -116,14 +115,11 @@ func (user *User) GetTopics() []Topic {
 	return topic
 }
 
-func (user *User) SetCookiesEnabled(enabled bool) error {
-	err := SetUserCookiesEnabled(user.Id, enabled)
-	if err != nil {
-		return err
+func (user *User) WithConnectedUser() UserWithConnectedUser {
+	return UserWithConnectedUser{
+		ConnectedUser: user,
+		User:          user,
 	}
-
-	user.CookiesEnabled = enabled
-	return nil
 }
 
 // ConfirmPassword checks if the password is correct
@@ -257,7 +253,7 @@ func GetUserById(id int64) (*User, error) {
 	var profilePicture []byte
 
 	user := &User{}
-	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description, &user.CreationDate, &user.Role, &user.Color, &user.CookiesEnabled)
+	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description, &user.CreationDate, &user.Role, &user.Color)
 	if err != nil {
 		return nil, fmt.Errorf("GetUserById error: %v", err)
 	}
@@ -308,7 +304,7 @@ func GetUserByUsername(username string) (*User, error) {
 	var profilePicture []byte
 
 	user := &User{}
-	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description, &user.CreationDate, &user.Role, &user.Color, &user.CookiesEnabled)
+	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description, &user.CreationDate, &user.Role, &user.Color)
 	if err != nil {
 		return nil, fmt.Errorf("GetUserByUsername error: %v", err)
 	}
@@ -446,15 +442,6 @@ func FollowUser(idUserFollowed, idUserFollower int64) error {
 	}
 	if affected == 0 {
 		return fmt.Errorf("FollowUser error: no rows affected")
-	}
-	return nil
-}
-
-// SetUserCookiesEnabled sets a user's cookies enabled
-func SetUserCookiesEnabled(idUser int64, cookiesEnabled bool) error {
-	_, err := DB.Exec("UPDATE users SET cookies_enabled = ? WHERE id_user = ?", cookiesEnabled, idUser)
-	if err != nil {
-		return fmt.Errorf("SetUserCookiesEnabled error: %v", err)
 	}
 	return nil
 }
