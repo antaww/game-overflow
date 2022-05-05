@@ -14,9 +14,11 @@
 
 .topic {
     display: flex;
-    margin-bottom: 3vh;
+    margin-bottom: 2vh;
     align-items: center;
     text-decoration: none;
+    border: 2px solid transparent;
+    border-radius: 1vh;
 }
 
 .feed > a > img {
@@ -39,7 +41,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 3vw;
+    width: 4em;
 }
 
 .username {
@@ -196,4 +198,12 @@
 
 .create-topic:hover .post-question {
     text-shadow: 0 3px #7331a8;
+}
+
+.topic-tags-box {
+    display: flex;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: calc(min(50rem, 60vw) / 2);
+    flex-flow: wrap;
 }

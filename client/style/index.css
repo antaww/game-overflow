@@ -351,12 +351,16 @@ body {
 }
 
 .topic {
-    transition: all .3s;
+    transition: all .1s;
+    box-sizing: content-box;
+    padding: 12px;
 }
 
 .topic:hover {
     background: #232b2f;
+    border: 2px #ffffff5e solid;
 }
+
 
 .points-letters {
     font-size: 80%;
