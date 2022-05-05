@@ -423,6 +423,21 @@ func SetAllUsersOffline() error {
 	return nil
 }
 
+func FollowUser(idUserFollowed, idUserFollower int64) error {
+	result, err := DB.Exec("INSERT INTO follow VALUES (?, ?)", idUserFollowed, idUserFollower)
+	if err != nil {
+		return fmt.Errorf("FollowUser error: %v", err)
+	}
+	affected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("FollowUser error: %v", err)
+	}
+	if affected == 0 {
+		return fmt.Errorf("FollowUser error: no rows affected")
+	}
+	return nil
+}
+
 // SetUserCookiesEnabled sets a user's cookies enabled
 func SetUserCookiesEnabled(idUser int64, cookiesEnabled bool) error {
 	_, err := DB.Exec("UPDATE users SET cookies_enabled = ? WHERE id_user = ?", cookiesEnabled, idUser)

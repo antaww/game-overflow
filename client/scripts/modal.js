@@ -85,5 +85,26 @@ document.addEventListener('keydown', e => {
     })
 });
 
+const followBtn = document.querySelectorAll('.follow-button');
+followBtn.forEach(element => {
+    element.addEventListener('click', e => {
+        let clicked = e.target;
+        const id = clicked.getAttribute('data-id');
+        fetch('/follow', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id: id})
+        }).then(res => {
+            if (res.status === 200) {
+                clicked.innerText = 'Unfollow';
+                clicked.classList.add('unfollow-button');
+                clicked.classList.remove('follow-button');
+            }
+        });
+    });
+});
+
 
 
