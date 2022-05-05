@@ -21,11 +21,6 @@ type MessageWithConnectedUser struct {
 	ConnectedUser *User
 }
 
-type UserWithConnectedUser struct {
-	ConnectedUser *User
-	*User
-}
-
 type MessageLike struct {
 	IdMessage int64 `db:"id_message"`
 	IdUser    int64 `db:"id_user"`
