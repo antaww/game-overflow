@@ -1,0 +1,123 @@
+
+.modalProfileBtn:hover {
+    cursor: pointer;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    margin: auto;
+    width: fit-content;
+    min-width: 18vw;
+    min-height: 30vw;
+    border-radius: 2vw;
+    background-color: #2e3944;
+    animation: modalSlide .2s ease-out forwards;
+    overflow: hidden;
+}
+
+.modal-about {
+    font-weight: bold;
+    color: #7e8082;
+    text-transform: uppercase;
+    text-shadow: 0 0 1px #00000017, 0 0 10px #00000061;
+}
+
+.modal-display {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+@keyframes modalSlide {
+    from {
+        transform: translateX(10%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.modal-id {
+    color: #6a6c6e;
+}
+
+.modal-name-id {
+    display: flex;
+    align-items: center;
+    gap: .3em;
+    position: relative;
+    top: -3em;
+    margin-left: 1em;
+}
+
+.modal-name {
+    font-weight: bold;
+    font-size: 1.6em;
+    position: relative;
+}
+
+.modal-top-box {
+    display: flex;
+    text-decoration: none;
+}
+
+.modal-banner {
+    height: 9vh;
+    box-shadow: 0 0 1px #00000061, 0 0 10px #00000061 inset;
+    padding-right: 1vw;
+}
+
+.modal-padding {
+    padding: 20px;
+}
+
+.modal-topics {
+    text-decoration: none;
+    background-color: #8080802e;
+    border-radius: .5em;
+    padding: .2em;
+    transition: all .3s;
+}
+
+.modal-bubble {
+    background-color: #8080802e;
+    border-radius: .5em;
+    padding: .2em;
+    width: fit-content;
+    height: fit-content;
+}
+
+.modal-topics:hover {
+    background-color: #2b333d;
+}
+
+.avatar.modal-avatar {
+    width: 5em;
+    height: 5em;
+    padding: 4px;
+    border: #2e3944 3px solid;
+    background-color: #2e3944;
+    position: relative;
+    top: -3em;
+    filter: drop-shadow(0px -4px 0.2rem #222222) !important;
+}
+
+.modal-gotop {
+    position: relative;
+    top: -5vh;
+}

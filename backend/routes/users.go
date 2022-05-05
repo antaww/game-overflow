@@ -53,40 +53,39 @@ func IsActiveRoute(w http.ResponseWriter, r *http.Request) {
 func ProfileRoute(w http.ResponseWriter, r *http.Request) {
 	var userId int64
 	var user *sql.User
+	var err error
 
 	query := r.URL.Query()
-	userIdString := query.Get("id")
-	userId, err := strconv.ParseInt(userIdString, 10, 64)
-	if err != nil {
-		if user, err = sql.GetUserByRequest(r); err != nil {
+	if query.Has("id") {
+		userIdString := query.Get("id")
+		userId, err = strconv.ParseInt(userIdString, 10, 64)
+
+		if err == nil {
+			user, err = sql.GetUserById(userId)
+		}
+	}
+
+	if user == nil {
+		user, err = sql.GetUserByRequest(r)
+		if err != nil {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
-		} else {
-			userId = user.Id
+		}
+
+		if user != nil {
 			query.Del("id")
 		}
 	}
 
-	if user == nil {
-		user, err = sql.GetUserById(userId)
-		if err != nil {
-			utils.RouteError(err)
-		}
-	}
-
-	if user.Username == "" {
-		http.Redirect(w, r, "/profile", http.StatusSeeOther)
+	if user == nil || user.Username == "" {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
 
-	if user == nil {
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
-	} else {
-		TemplatesData.ShownUser = user
-		err := utils.CallTemplate("profile", TemplatesData, w)
-		if err != nil {
-			utils.RouteError(err)
-		}
+	TemplatesData.ShownUser = user
+	err = utils.CallTemplate("profile", TemplatesData, w)
+	if err != nil {
+		utils.RouteError(err)
 	}
 }
 

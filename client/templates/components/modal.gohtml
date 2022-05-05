@@ -5,7 +5,7 @@
                 <span class="close">&times;</span>
             </div>
             <div class="modal-padding">
-                <div class="modal-top-box">
+                <a class="modal-top-box" href="/profile?id={{.Id}}">
                     <img class="avatar modal-avatar" src="{{template "avatar" .User.ProfilePic}}" alt="">
                     <div class="modal-name-id">
                         <p class="modal-name">{{safeHTML .User.DisplayRole}} {{.User.Username}}</p>
@@ -16,7 +16,7 @@
                             <a data-id="{{.User.Id}}" class="modal-topics">Follow</a>
                         </div>
                     {{end}}
-                </div>
+                </a>
                 <div class="modal-gotop">
                     <hr>
                     <p class="modal-about">About me</p>

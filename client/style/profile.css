@@ -44,9 +44,13 @@ body {
     margin-left: calc(var(--avatar-left) + var(--avatar-size) + 5vw);
 }
 
-.username {
+.profile-username {
     margin-top: 0.3em;
     font-size: 2.5rem;
+}
+
+.user-id {
+    color: #8e959f;
 }
 
 .description {
@@ -93,4 +97,28 @@ section.content .topic-header {
 
 section.content .topic:hover {
     background-color: #1a1a20;
+}
+
+.followers, .followings {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.follower, .following {
+    list-style: none;
+    margin: 0;
+}
+
+.user {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a1e23;
+    padding: 1em 1.2em;
+    margin: 0.3em;
+    border-radius: 0.8em;
+    text-decoration: none;
 }

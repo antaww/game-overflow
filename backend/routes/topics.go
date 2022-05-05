@@ -51,9 +51,6 @@ func CreateTopicRoute(w http.ResponseWriter, r *http.Request) {
 			utils.RouteError(err)
 		}
 
-		fmt.Println(category)
-		fmt.Println(title)
-		fmt.Println(tags)
 		idTopic, err := sql.CreateTopic(title, category, fields)
 		if err != nil {
 			utils.RouteError(err)
@@ -395,14 +392,14 @@ func CloseTopicRoute(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				utils.RouteError(err)
 			}
-			fmt.Println(TopicFirstMessage.AuthorId)
+
 			IsClosed, err := sql.CloseTopic(Id, TopicFirstMessage.AuthorId)
+			if err != nil {
+				utils.RouteError(err)
+			}
 
 			if !IsClosed {
 				http.Redirect(w, r, "/topic?id="+id, http.StatusSeeOther)
-			}
-			if err != nil {
-				utils.RouteError(err)
 			}
 		} else {
 			IsClosed, err := sql.CloseTopic(Id, user.Id)
@@ -445,14 +442,14 @@ func OpenTopicRoute(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				utils.RouteError(err)
 			}
-			fmt.Println(TopicFirstMessage.AuthorId)
+
 			IsOpen, err := sql.OpenTopic(Id, TopicFirstMessage.AuthorId)
+			if err != nil {
+				utils.RouteError(err)
+			}
 
 			if !IsOpen {
 				http.Redirect(w, r, "/topic?id="+id, http.StatusSeeOther)
-			}
-			if err != nil {
-				utils.RouteError(err)
 			}
 		}
 

@@ -89,6 +89,11 @@ func main() {
 		utils.MainError(err)
 	}
 
+	// SetMaxIdleConns sets the maximum number of database transactions at the same time.
+	// Setting this to 0 means that there is no limit and prevent random errors happening that stops the application.
+	// It may lower performances a bit.
+	DB.SetMaxIdleConns(0)
+
 	pingErr := DB.Ping()
 	if pingErr != nil {
 		utils.MainError(pingErr)
