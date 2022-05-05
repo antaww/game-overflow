@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"log"
 	"main/sql"
 	"main/utils"
@@ -16,6 +17,7 @@ type TemplatesDataType struct {
 	ShownTopic    *sql.Topic
 	ShownMessages []sql.Message
 	ShownUser     *sql.User
+	GetAllTags    []string
 }
 
 // GetCategories returns all categories
@@ -79,4 +81,13 @@ func LogHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.DefaultServeMux.ServeHTTP(w, r)
+}
+
+func (t TemplatesDataType) GetTags() []sql.Tags {
+	tags, err := sql.GetAllTags()
+	if err != nil {
+		log.Println(err)
+	}
+	fmt.Println("tags:", tags)
+	return tags
 }

@@ -37,6 +37,8 @@ func main() {
 
 	http.HandleFunc("/create-topic", CreateTopicRoute)
 
+	http.HandleFunc("/delete-topic", DeleteTopicRoute)
+
 	http.HandleFunc("/delete-message", DeleteMessageRoute)
 
 	http.HandleFunc("/dislike", DislikeRoute)

@@ -79,6 +79,38 @@ func CreateTopicRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func DeleteTopicRoute(w http.ResponseWriter, r *http.Request) {
+	queries := r.URL.Query()
+
+	if queries.Has("id") {
+		idTopic := queries.Get("id")
+		Id, err := strconv.ParseInt(idTopic, 10, 64)
+
+		topic, err := sql.GetTopic(Id)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		topicFirstMsg, err := topic.GetFirstMessage()
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		user, err := sql.GetUserByRequest(r)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		if user.Role == "admin" || user.Role == "moderator" || user.Id == topicFirstMsg.AuthorId {
+			err := sql.DeleteTopic(Id)
+			if err != nil {
+				utils.RouteError(err)
+			}
+		}
+	}
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
 // DeleteMessageRoute is the route for deleting a message
 func DeleteMessageRoute(w http.ResponseWriter, r *http.Request) {
 	queries := r.URL.Query()
@@ -497,9 +529,6 @@ func ChangeCategoryRoute(w http.ResponseWriter, r *http.Request) {
 			}
 
 			err = sql.ChangeCategory(Id, category)
-			if err != nil {
-				utils.RouteError(err)
-			}
 		}
 		http.Redirect(w, r, "/topic?id="+id, http.StatusSeeOther)
 	}

@@ -11,13 +11,15 @@
             <form action="/create-topic" id="topic-form" method="POST">
                 <div class="create-topic-title create-topic-options">
                     <label class="required-input" for="title">Title</label>
-                    <input class="create-topic-input" id="title" maxlength="50" minlength="1" name="title" placeholder="Title" required type="text">
+                    <input class="create-topic-input" id="title" maxlength="50" minlength="1" name="title"
+                           placeholder="Title" required type="text">
                 </div>
                 <div class="create-topic-options">
                     <p class="required-input">Choose a category:</p>
                     <div class="create-topic-category">
                         {{range .GetCategories}}
-                            <input checked class="create-topic-input" id="{{.Name}}" name="category" {{if eq .Name "pc"}}required{{end}} type="radio" value="{{.Name}}">
+                            <input checked class="create-topic-input" id="{{.Name}}" name="category"
+                                   {{if eq .Name "pc"}}required{{end}} type="radio" value="{{.Name}}">
                             <span class="create-topic-input-radio"></span>
                             <label for="{{.Name}}">{{.Name}}</label>
                         {{end}}
@@ -33,12 +35,20 @@
 
                 <div class="create-topic-tags create-topic-options">
                     <label for="tags">Tags</label>
-                    <input class="create-topic-input" id="tags" name="tags" placeholder="Tags" type="text">
+                    <input class="create-topic-input" id="tags" name="tags" placeholder="Tags" type="text"
+                           list="tags-data" autocomplete="off">
+                    <datalist id="tags-data">
+                        {{range .GetTags}}
+                        <option value="{{.Name}}">
+                            {{end}}
+                    </datalist>
                 </div>
 
-                <button class="btn confirm" id="btn-submit" name="submit" type="submit" value="Post">Create<i class="fa-solid fa-check"></i></button>
+                <button class="btn confirm" id="btn-submit" name="submit" type="submit" value="Post">Create<i
+                            class="fa-solid fa-check"></i></button>
             </form>
 
         </div>
     </div>
+
 {{end}}

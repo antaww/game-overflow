@@ -101,17 +101,17 @@
                         <a href="/feed?tag={{.}}" class="topic-tags">{{.}}</a>
                     {{end}}
                     <div class="topic-date">{{formatDate $firstMessage.CreatedAt}}</div>
-{{/*                    {{if .ConnectedUser}}*/}}
-{{/*                        {{if or (eq $firstMessage.GetUser.Id .ConnectedUser.Id) (eq .ConnectedUser.Role "admin") (eq .ConnectedUser.Role "moderator")}}*/}}
-{{/*                            <div class="edit-delete-comment">*/}}
-{{/*                                <div id="{{.ShownTopic.Id}}">*/}}
-{{/*                                    <div class="delete-comment">*/}}
-{{/*                                        <i class="fa-solid fa-trash-can"></i>*/}}
-{{/*                                    </div>*/}}
-{{/*                                </div>*/}}
-{{/*                            </div>*/}}
-{{/*                        {{end}}*/}}
-{{/*                    {{end}}*/}}
+                    {{if .ConnectedUser}}
+                        {{if or (eq $firstMessage.GetUser.Id .ConnectedUser.Id) (eq .ConnectedUser.Role "admin") (eq .ConnectedUser.Role "moderator")}}
+                            <div class="edit-delete-comment">
+                                <div id="{{.ShownTopic.Id}}">
+                                    <div class="delete-topic">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        {{end}}
+                    {{end}}
                 </div>
 
             </div>

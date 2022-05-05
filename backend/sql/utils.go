@@ -32,3 +32,12 @@ func Results(rows *sql.Rows, dest ...interface{}) error {
 	}
 	return nil
 }
+
+func contains(tags []Tags, tag Tags) bool {
+	for _, t := range tags {
+		if t == tag {
+			return true
+		}
+	}
+	return false
+}
