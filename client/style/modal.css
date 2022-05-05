@@ -69,11 +69,17 @@
     font-weight: bold;
     font-size: 1.6em;
     position: relative;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .modal-top-box {
     display: flex;
     text-decoration: none;
+    margin-left: 5em;
 }
 
 .modal-banner {
@@ -120,4 +126,20 @@
 .modal-gotop {
     position: relative;
     top: -5vh;
+}
+
+.modal-href-avatar {
+    top: 11vh;
+    position: relative;
+    left: 1.5vh;
+}
+
+a {
+    text-decoration: none;
+}
+
+.follow-button {
+    top: -50%;
+    position: relative;
+    left: 70%;
 }
