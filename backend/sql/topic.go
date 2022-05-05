@@ -17,6 +17,10 @@ type Topic struct {
 	Tags           []string
 }
 
+type Tags struct {
+	Name string `db:"tag_name"`
+}
+
 // GetAnswersNumber returns the number of answers for a topic
 func (topic Topic) GetAnswersNumber() int {
 	err := topic.FetchMessages()

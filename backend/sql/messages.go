@@ -238,3 +238,24 @@ func MessageGetLikeFrom(messageId, userId int64) (*MessageLike, error) {
 		return nil, nil
 	}
 }
+
+func GetAllTags() ([]Tags, error) {
+	rows, err := DB.Query("SELECT tag_name FROM have")
+	if err != nil {
+		return nil, fmt.Errorf("GetAllTags error: %v", err)
+	}
+	//save all tags in a slice
+	var tags []Tags
+	for rows.Next() {
+		var tag string
+		err = rows.Scan(&tag)
+		if err != nil {
+			return nil, fmt.Errorf("GetAllTags error: %v", err)
+		}
+		if !contains(tags, Tags{tag}) {
+			tags = append(tags, Tags{tag})
+		}
+	}
+	HandleSQLErrors(rows)
+	return tags, nil
+}
