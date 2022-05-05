@@ -106,6 +106,13 @@ func (user *User) GetTopics() []Topic {
 	return topic
 }
 
+func (user *User) UserWithConnectedUser() UserWithConnectedUser {
+	return UserWithConnectedUser{
+		ConnectedUser: user,
+		User:          user,
+	}
+}
+
 // ConfirmPassword checks if the password is correct
 func ConfirmPassword(userId int64, password string) bool {
 	var user User
@@ -407,5 +414,20 @@ func SetAllUsersOffline() error {
 		return fmt.Errorf("SetAllUsersOffline error: %v", err)
 	}
 	fmt.Println("All users have been set offline")
+	return nil
+}
+
+func FollowUser(idUserFollowed, idUserFollower int64) error {
+	result, err := DB.Exec("INSERT INTO follow VALUES (?, ?)", idUserFollowed, idUserFollower)
+	if err != nil {
+		return fmt.Errorf("FollowUser error: %v", err)
+	}
+	affected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("FollowUser error: %v", err)
+	}
+	if affected == 0 {
+		return fmt.Errorf("FollowUser error: no rows affected")
+	}
 	return nil
 }

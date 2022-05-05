@@ -287,3 +287,33 @@ func UserLikesRoute(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
+func FollowUserRoute(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		if TemplatesData.ConnectedUser == nil {
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+			return
+		}
+
+		body := r.Body
+		defer body.Close()
+
+		var response struct {
+			Id string `json:"id"`
+		}
+		err := json.NewDecoder(body).Decode(&response)
+		if err != nil {
+			utils.RouteError(err)
+		}
+		idUserFollowed, err := strconv.ParseInt(response.Id, 10, 64)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		err = sql.FollowUser(idUserFollowed, TemplatesData.ConnectedUser.Id)
+		if err != nil {
+			w.WriteHeader(http.StatusForbidden)
+		}
+	}
+	w.WriteHeader(http.StatusOK)
+}

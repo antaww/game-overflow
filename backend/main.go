@@ -71,6 +71,8 @@ func main() {
 
 	http.HandleFunc("/open-topic", OpenTopicRoute)
 
+	http.HandleFunc("/follow", FollowUserRoute)
+
 	// Capture connection properties.
 	DatabaseConfig := mysql.Config{
 		User:                 os.Getenv("DB_USER"),

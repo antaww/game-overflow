@@ -6,7 +6,7 @@
                     <div class="circle {{if .Message.GetUser.IsOnline}} connected {{else}} disconnected {{end}}">
                         <img alt="" class="avatar modalProfileBtn"
                              src="{{template "avatar" .Message.GetUser.ProfilePic}}">
-                        {{template "modal" .Message.GetUser}}
+                        {{template "modal" .Message.GetUser.UserWithConnectedUser .ConnectedUser}}
                     </div>
                 </a>
                 <a class="topic-user">

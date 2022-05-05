@@ -6,21 +6,26 @@
             </div>
             <div class="modal-padding">
                 <div class="modal-top-box">
-                    <img class="avatar modal-avatar" src="{{template "avatar" .ProfilePic}}" alt="">
+                    <img class="avatar modal-avatar" src="{{template "avatar" .User.ProfilePic}}" alt="">
                     <div class="modal-name-id">
-                        <p class="modal-name">{{safeHTML .DisplayRole}} {{.Username}}</p>
-                        <span class="modal-id">{{.Id}}</span>
+                        <p class="modal-name">{{safeHTML .User.DisplayRole}} {{.User.Username}}</p>
+                        <span class="modal-id">{{.User.Id}}</span>
                     </div>
+                    {{if .ConnectedUser}}
+                        <div class="follow-button">
+                            <a data-id="{{.User.Id}}" class="modal-topics">Follow</a>
+                        </div>
+                    {{end}}
                 </div>
                 <div class="modal-gotop">
                     <hr>
                     <p class="modal-about">About me</p>
-                    <p class="modal-role modal-bubble">{{.Role}}</p>
-                    {{if ne .Description ""}}
-                        <p class="modal-description">{{.Description}}</p>
+                    <p class="modal-role modal-bubble">{{.User.Role}}</p>
+                    {{if ne .User.Description ""}}
+                        <p class="modal-description">{{.User.Description}}</p>
                     {{end}}
                     {{if ne .CountTopics 0}}
-                        <a href="/posts?id={{.Id}}" class="modal-topics">{{.Username}}'s topics</a>
+                        <a href="/posts?id={{.User.Id}}" class="modal-topics">{{.User.Username}}'s topics</a>
                     {{end}}
                 </div>
             </div>
