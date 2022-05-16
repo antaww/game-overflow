@@ -1,6 +1,6 @@
 {{define "user"}}
     <a class="user" href="/profile?id={{.Id}}">
-        <img alt="{{.Username}}" class="avatar" src="{{template "avatar" .ProfilePic}}">
+        <img alt="{{.Username}}" class="avatar" src="{{template "avatar" .ProfilePic.String}}">
 
         <p class="username">
             {{safeHTML .DisplayRole}} {{.Username}}

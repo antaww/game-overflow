@@ -41,7 +41,7 @@
                         <a>
                             <div class="circle {{if $firstMessage.GetUser.IsOnline}} connected {{else}} disconnected {{end}}">
                                 <img alt="" class="avatar modalProfileBtn"
-                                     src="{{template "avatar" $firstMessage.GetUser.ProfilePic}}">
+                                     src="{{template "avatar" $firstMessage.GetUser.ProfilePic.String}}">
                                 {{template "modal" $firstMessage.GetUser.WithConnectedUser .ConnectedUser}}
                             </div>
                         </a>
@@ -123,7 +123,7 @@
                 {{end}}
             </div>
 
-            {{if and (.ConnectedUser) (not .ShownTopic.IsClosed)}}
+            {{if and (.ConnectedUser) (not .ShownTopic.IsClosed) (ne .ConnectedUser.Role "banned")}}
                 <div class="write-message">
                     <form action="/post-message?id={{.ShownTopic.Id}}" method="POST">
                         <label>

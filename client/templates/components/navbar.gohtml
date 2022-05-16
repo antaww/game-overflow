@@ -88,7 +88,7 @@
                                 class="log-in username_dropdown">{{safeHTML .ConnectedUser.DisplayRole}} {{.ConnectedUser.Username}}
                         </button>
                         <div class="circle {{if not .ConnectedUser.IsOnline}}dis{{end}}connected">
-                            <img class="avatar-navbar" src="{{template "avatar" .ConnectedUser.ProfilePic}}" alt="test">
+                            <img class="avatar-navbar" src="{{template "avatar" .ConnectedUser.ProfilePic.String}}" alt="test">
                         </div>
                     </a>
                 </div>

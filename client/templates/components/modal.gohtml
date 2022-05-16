@@ -4,7 +4,7 @@
             <div class="modal-banner" style="background-color: {{decimalToHex .Color}}">
                 <span class="close">&times;</span>
                 <a class="avatar modal-href-avatar" href="/profile?id={{.Id}}">
-                    <img class="modal-avatar" src="{{template "avatar" .User.ProfilePic}}" alt="">
+                    <img class="modal-avatar" src="{{template "avatar" .User.ProfilePic.String}}" alt="">
                 </a>
             </div>
             <div class="modal-padding">
@@ -33,8 +33,8 @@
                     <hr>
                     <p class="modal-about">About me</p>
                     <p class="modal-role modal-bubble">{{.User.Role}}</p>
-                    {{if ne .User.Description ""}}
-                        <p class="modal-description">{{.User.Description}}</p>
+                    {{if ne .User.Description.String ""}}
+                        <p class="modal-description">{{.User.Description.String}}</p>
                     {{end}}
                     {{if ne .CountTopics 0}}
                         <a href="/posts?id={{.User.Id}}" class="modal-topics">{{.User.Username}}'s topics</a>

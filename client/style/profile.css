@@ -46,6 +46,7 @@ body {
 
 .profile-username {
     font-size: 2.5rem;
+    display: flex;
     margin-top: 0.3em;
 }
 
@@ -128,3 +129,48 @@ li .user:hover {
     text-decoration: none;
     transition: all 0.2s;
 }
+
+.fa-ellipsis-vertical {
+    color: #838383;
+    position: relative;
+    top: 1.5vh;
+    margin: 0 2vh;
+}
+
+.dots-clicked {
+    color: #626262!important;
+}
+
+.ban-options {
+    background-color: #273136;
+    display: flex;
+    align-items: center;
+}
+
+.ban-option, .unban-option {
+    display: flex;
+    font-size: 2.5vh;
+    cursor: pointer;
+    width: fit-content;
+    background-color: #273136;
+    padding: 1vh;
+}
+
+.user-status {
+    margin: 0;
+}
+
+.ban-icon, .unban-icon {
+    display: flex;
+    align-items: center;
+    margin-right: 1vh;
+}
+
+.ban {
+    color: #FF7373;
+}
+
+.unban {
+    color: #7FFF7F;
+}
+

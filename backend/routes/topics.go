@@ -569,8 +569,13 @@ func SearchRoute(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				utils.RouteError(err)
 			}
+			fmt.Println("search: ", search)
 
 			templateData.ShownTopics = topics
+			if len(templateData.ShownTopics) == 0 {
+				http.Redirect(w, r, "/", http.StatusSeeOther)
+				return
+			}
 
 			err = utils.CallTemplate("feed", templateData, w)
 			if err != nil {
