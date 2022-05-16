@@ -534,3 +534,31 @@ func ChangeCategoryRoute(w http.ResponseWriter, r *http.Request) {
 	}
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
+
+func SearchRoute(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		templateData, err := GetTemplatesDataFromRoute(w, r)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		search := r.FormValue("search")
+
+		if search == "" {
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+			return
+		} else {
+			topics, err := sql.SearchTopics(search)
+			if err != nil {
+				utils.RouteError(err)
+			}
+
+			templateData.ShownTopics = topics
+
+			err = utils.CallTemplate("feed", templateData, w)
+			if err != nil {
+				utils.RouteError(err)
+			}
+		}
+	}
+}

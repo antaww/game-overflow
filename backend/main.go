@@ -81,6 +81,8 @@ func main() {
 
 	http.HandleFunc("/unfollow", UnfollowUserRoute)
 
+	http.HandleFunc("/search", SearchRoute)
+
 	// Capture connection properties.
 	DatabaseConfig := mysql.Config{
 		User:                 os.Getenv("DB_USER"),

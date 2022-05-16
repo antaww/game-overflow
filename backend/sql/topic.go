@@ -269,3 +269,25 @@ func DeleteTopic(id int64) error {
 	fmt.Println("topic deleted")
 	return nil
 }
+
+//SearchTopics returns every topic that contains the search string
+func SearchTopics(search string) ([]Topic, error) {
+	rows, err := DB.Query("SELECT * FROM topics WHERE title LIKE ?", "%"+search+"%")
+	if err != nil {
+		return nil, err
+	}
+	var topics []Topic
+	for rows.Next() {
+		var topic Topic
+		err = rows.Scan(&topic.Id, &topic.Title, &topic.IsClosed, &topic.Views, &topic.Category, &topic.IdFirstMessage)
+		if err != nil {
+			return nil, err
+		}
+
+		topics = append(topics, topic)
+	}
+
+	HandleSQLErrors(rows)
+
+	return topics, nil
+}

@@ -68,4 +68,3 @@ document.addEventListener('click', event => {
 document.querySelector('.avatar-navbar').addEventListener('click', event => {
     window.location.href = '/profile';
 });
-
