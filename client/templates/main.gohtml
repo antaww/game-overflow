@@ -1,14 +1,20 @@
 {{define "content"}}
     {{template "navbar" .}}
 
-    <div class="main-content">
-        {{template "feed-options" .}}
+    <div class="feed-content">
+        <div class="feed">
+            {{template "feed-options" .}}
 
-        {{range .ShownTopics}}
-            {{template "feed-topic" .}}
-        {{end}}
+            {{range .ShownTopics}}
+                {{template "feed-topic" .}}
+            {{end}}
 
-        {{if .ConnectedUser}}
+            <div class="trends">
+                
+            </div>
+        </div>
+
+        {{if and (.ConnectedUser) (ne .ConnectedUser.Role "banned")}}
             <a href="create-topic" class="create-topic">
                 <div class="post-question">Post a question<i class="fa-solid fa-arrow-right"></i></div>
             </a>

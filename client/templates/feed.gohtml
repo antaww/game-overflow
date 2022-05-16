@@ -12,7 +12,6 @@
                 {{template "message" $message.WithConnectedUser .ConnectedUser}}
             {{end}}
         </div>
-        <div class="trends"></div>
 
         {{if and (.ConnectedUser) (ne .ConnectedUser.Role "banned")}}
             <a href="create-topic" class="create-topic">
