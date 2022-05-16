@@ -16,6 +16,7 @@ const (
 	RoleAdmin     Role = "admin"
 	RoleModerator Role = "moderator"
 	RoleUser      Role = "user"
+	RoleBan Role = "banned"
 )
 
 type User struct {
@@ -517,5 +518,14 @@ func UnfollowUser(idUserFollowed, idUserFollower int64) error {
 	if affected == 0 {
 		return fmt.Errorf("UnfollowUser error: no rows affected")
 	}
+	return nil
+}
+
+func BanUser(idUser int64) error {
+	_, err := DB.Exec("UPDATE users SET role_type = ? and profile_pic = ? and description = ? WHERE id_user = ?", "banned", idUser, "", "")
+	if err != nil {
+		return fmt.Errorf("BanUser error: %v", err)
+	}
+
 	return nil
 }

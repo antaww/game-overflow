@@ -71,6 +71,10 @@ func main() {
 
 	http.HandleFunc("/likes", UserLikesRoute)
 
+	http.HandleFunc("/ban-user", UserBan)
+
+	http.HandleFunc("/unban-user", UserUnban)
+
 	http.HandleFunc("/close-topic", CloseTopicRoute)
 
 	http.HandleFunc("/open-topic", OpenTopicRoute)

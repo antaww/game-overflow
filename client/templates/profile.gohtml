@@ -1,6 +1,7 @@
 {{define "content"}}
     {{template "navbar" .}}
     <link rel="stylesheet" href="/static/profile.css">
+    <script defer src="/scripts/ban.js"></script>
     {{$user := .ShownUser}}
     <div class="color" style="background-color: {{decimalToHex $user.Color}};">
         <div class="avatar-circle">
@@ -34,6 +35,17 @@
         <section class="content">
             <h1 class="profile-username">
                 {{safeHTML $user.DisplayRole}} {{$user.Username}}
+                <i class="fa-solid "></i>
+                <div class="ban-options no-display">
+                    <div class="ban-option ban">fa-ellipsis-vertical
+                        <i class="fa-solid fa-book-skull ban-icon"></i>
+                        <p class="user-status">BAN USER</p>
+                    </div>
+                    <div class="unban-option unban no-display">
+                        <i class="fa-solid fa-book-reader unban-icon"></i>
+                        <p class="user-status">UNBAN USER</p>
+                    </div>
+                </div>
             </h1>
             <p class="description">
                 {{$user.Description}}

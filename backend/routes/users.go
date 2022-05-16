@@ -8,6 +8,7 @@ import (
 	"main/utils"
 	"mime/multipart"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 )
@@ -299,6 +300,44 @@ func UserLikesRoute(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
+func UserBan(w http.ResponseWriter, r *http.Request) {
+	queries := r.URL.Query()
+
+	if queries.Has("id") {
+		id := queries.Get("id")
+		Id, err := strconv.ParseInt(id, 10, 64)
+
+		topic, err := sql.GetTopic(Id)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		topicFirstMsg, err := topic.GetFirstMessage()
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		user, err := sql.GetUserByRequest(r)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		if user.Role == "admin" {
+			err := sql.DeleteTopic(Id)
+			if err != nil {
+				utils.RouteError(err)
+			}
+		}
+		queriesId := url.Values{}
+		queriesId.Add("id", id)
+
+		http.Redirect(w, r, "/profile?id="+queriesId.Encode(), http.StatusSeeOther)
+	}
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+//func UserUnban(w http.ResponseWriter, r *http.Request) {}
 
 func FollowUserRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
