@@ -3,7 +3,7 @@ const unbanBtn = document.querySelector('.unban-option');
 const dots = document.querySelector('.fa-ellipsis-vertical');
 const options = document.querySelector('.ban-options');
 
-dots.addEventListener('click', () => {
+dots?.addEventListener('click', () => {
     dots.classList.toggle('dots-clicked');
     options.classList.toggle('no-display');
 });

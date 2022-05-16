@@ -1,10 +1,12 @@
 package routes
 
 import (
+	"database/sql"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"io"
-	"main/sql"
+	sql2 "main/sql"
 	"main/utils"
 	"mime/multipart"
 	"net/http"
@@ -25,15 +27,15 @@ func IsActiveRoute(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		var user *sql.User
+		var user *sql2.User
 
 		if response.SessionId != "" {
-			user, err = sql.GetUserBySession(response.SessionId)
+			user, err = sql2.GetUserBySession(response.SessionId)
 			if err != nil {
 				return
 			}
 		} else {
-			user, err = sql.GetUserByRequest(r)
+			user, err = sql2.GetUserByRequest(r)
 			if err != nil {
 				utils.RouteError(err)
 			}
@@ -43,7 +45,7 @@ func IsActiveRoute(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = sql.SetUserOnline(user.Id, response.IsOnline)
+		err = sql2.SetUserOnline(user.Id, response.IsOnline)
 		if err != nil {
 			utils.RouteError(err)
 		}
@@ -53,7 +55,7 @@ func IsActiveRoute(w http.ResponseWriter, r *http.Request) {
 // ProfileRoute is a route that returns the user profile
 func ProfileRoute(w http.ResponseWriter, r *http.Request) {
 	var userId int64
-	var user *sql.User
+	var user *sql2.User
 	var err error
 
 	query := r.URL.Query()
@@ -62,12 +64,12 @@ func ProfileRoute(w http.ResponseWriter, r *http.Request) {
 		userId, err = strconv.ParseInt(userIdString, 10, 64)
 
 		if err == nil {
-			user, err = sql.GetUserById(userId)
+			user, err = sql2.GetUserById(userId)
 		}
 	}
 
 	if user == nil {
-		user, err = sql.GetUserByRequest(r)
+		user, err = sql2.GetUserByRequest(r)
 		if err != nil {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
@@ -129,10 +131,10 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 			utils.RouteError(err)
 		}
 
-		newUser := sql.User{
+		newUser := sql2.User{
 			Username:    r.FormValue("username"),
 			Email:       r.FormValue("email"),
-			Description: r.FormValue("description"),
+			Description: sql.NullString{Valid: true, String: string(r.FormValue("description"))},
 			Locale:      r.FormValue("locale"),
 			Color:       int(color),
 		}
@@ -160,15 +162,15 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 			}
 
 			profilePicture += base64.StdEncoding.EncodeToString(bytes)
-			newUser.ProfilePic = profilePicture
+			newUser.ProfilePic.String = profilePicture
 		}
 
-		user, err := sql.GetUserByRequest(r)
+		user, err := sql2.GetUserByRequest(r)
 		if err != nil {
 			utils.RouteError(err)
 		}
 
-		_, err = sql.EditUser(user.Id, newUser)
+		_, err = sql2.EditUser(user.Id, newUser)
 		if err != nil {
 			utils.RouteError(err)
 		}
@@ -193,7 +195,7 @@ func UsersActive(w http.ResponseWriter, r *http.Request) {
 			utils.RouteError(err)
 		}
 
-		usersOnline, err := sql.GetUsersStatus(response.Users)
+		usersOnline, err := sql2.GetUsersStatus(response.Users)
 		if err != nil {
 			utils.RouteError(err)
 		}
@@ -225,12 +227,12 @@ func UserPostsRoute(w http.ResponseWriter, r *http.Request) {
 				utils.RouteError(err)
 			}
 
-			user, err := sql.GetUserById(id)
+			user, err := sql2.GetUserById(id)
 			if err != nil {
 				utils.RouteError(err)
 			}
 
-			topics, err := sql.GetUserTopics(user.Id)
+			topics, err := sql2.GetUserTopics(user.Id)
 
 			if err != nil {
 				utils.RouteError(err)
@@ -268,7 +270,7 @@ func UserLikesRoute(w http.ResponseWriter, r *http.Request) {
 				utils.RouteError(err)
 			}
 
-			user, err := sql.GetUserById(id)
+			user, err := sql2.GetUserById(id)
 			if err != nil {
 				utils.RouteError(err)
 			}
@@ -278,12 +280,12 @@ func UserLikesRoute(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			topics, err := sql.GetUserLikesTopics(user.Id)
+			topics, err := sql2.GetUserLikesTopics(user.Id)
 			if err != nil {
 				utils.RouteError(err)
 			}
 
-			messages, err := sql.GetUserLikedMessages(user.Id)
+			messages, err := sql2.GetUserLikedMessages(user.Id)
 			if err != nil {
 				utils.RouteError(err)
 			}
@@ -305,34 +307,24 @@ func UserBan(w http.ResponseWriter, r *http.Request) {
 	queries := r.URL.Query()
 
 	if queries.Has("id") {
-		id := queries.Get("id")
-		Id, err := strconv.ParseInt(id, 10, 64)
+		idUser := queries.Get("id")
+		fmt.Println(idUser)
+		Id, err := strconv.ParseInt(idUser, 10, 64)
 
-		topic, err := sql.GetTopic(Id)
-		if err != nil {
-			utils.RouteError(err)
-		}
-
-		topicFirstMsg, err := topic.GetFirstMessage()
-		if err != nil {
-			utils.RouteError(err)
-		}
-
-		user, err := sql.GetUserByRequest(r)
+		user, err := sql2.GetUserByRequest(r)
 		if err != nil {
 			utils.RouteError(err)
 		}
 
 		if user.Role == "admin" {
-			err := sql.DeleteTopic(Id)
+			err := sql2.BanUser(Id)
 			if err != nil {
 				utils.RouteError(err)
 			}
 		}
 		queriesId := url.Values{}
-		queriesId.Add("id", id)
+		queriesId.Add("id", idUser)
 
-		http.Redirect(w, r, "/profile?id="+queriesId.Encode(), http.StatusSeeOther)
 	}
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
@@ -367,7 +359,7 @@ func FollowUserRoute(w http.ResponseWriter, r *http.Request) {
 			utils.RouteError(err)
 		}
 
-		err = sql.FollowUser(idUserFollowed, templateData.ConnectedUser.Id)
+		err = sql2.FollowUser(idUserFollowed, templateData.ConnectedUser.Id)
 		if err != nil {
 			w.WriteHeader(http.StatusForbidden)
 			return
@@ -378,7 +370,7 @@ func FollowUserRoute(w http.ResponseWriter, r *http.Request) {
 
 func UnfollowUserRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
-		user, err := sql.GetUserByRequest(r)
+		user, err := sql2.GetUserByRequest(r)
 		if err != nil || user == nil {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
@@ -399,7 +391,7 @@ func UnfollowUserRoute(w http.ResponseWriter, r *http.Request) {
 			utils.RouteError(err)
 		}
 
-		err = sql.UnfollowUser(idUserFollowed, user.Id)
+		err = sql2.UnfollowUser(idUserFollowed, user.Id)
 		if err != nil {
 			w.WriteHeader(http.StatusForbidden)
 			return

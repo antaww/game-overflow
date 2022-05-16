@@ -26,8 +26,8 @@ type User struct {
 	Password       string       `db:"password" json:"password,omitempty"`
 	Email          string       `db:"email" json:"email,omitempty"`
 	Locale         string       `db:"locale" json:"locale,omitempty"`
-	ProfilePic     string       `db:"profile_pic" json:"profilePic,omitempty"`
-	Description    string       `db:"description" json:"description,omitempty"`
+	ProfilePic     sql.NullString       `db:"profile_pic" json:"profilePic,omitempty"`
+	Description    sql.NullString       `db:"description" json:"description,omitempty"`
 	CreationDate   time.Time    `db:"created_at" json:"creationDate"`  //todo
 	Role           Role         `db:"role_type" json:"role,omitempty"` //todo
 	Color          int          `db:"color" json:"color,omitempty"`
@@ -76,8 +76,8 @@ func (user *User) DisplayRole() string {
 }
 
 func (user *User) CalculateDefaultColor() {
-	if user.ProfilePic != "" {
-		img, err := utils.GetImageFromBase64(user.ProfilePic)
+	if user.ProfilePic.String != "" {
+		img, err := utils.GetImageFromBase64(user.ProfilePic.String)
 		if err != nil {
 			log.Println(err)
 		}
@@ -196,13 +196,13 @@ func EditUser(idUser int64, newUser User) (bool, error) {
 		requestEdits = append(requestEdits, "locale = ?")
 		arguments = append(arguments, newUser.Locale)
 	}
-	if newUser.ProfilePic != "" {
+	if newUser.ProfilePic.String != "" {
 		requestEdits = append(requestEdits, "profile_pic = ?")
 		arguments = append(arguments, newUser.ProfilePic)
 	}
-	if newUser.Description != "" {
+	if newUser.Description.String != "" {
 		requestEdits = append(requestEdits, "description = ?")
-		arguments = append(arguments, newUser.Description)
+		arguments = append(arguments, newUser.Description.String)
 	}
 	if newUser.Username != "" {
 		requestEdits = append(requestEdits, "username = ?")
@@ -287,11 +287,11 @@ func GetUserById(id int64) (*User, error) {
 	var profilePicture []byte
 
 	user := &User{}
-	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description, &user.CreationDate, &user.Role, &user.Color, &user.CookiesEnabled)
+	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description.String, &user.CreationDate, &user.Role, &user.Color, &user.CookiesEnabled)
 	if err != nil {
 		return nil, fmt.Errorf("GetUserById error: %v", err)
 	}
-	user.ProfilePic = string(profilePicture)
+	user.ProfilePic = sql.NullString{Valid: true, String: string(profilePicture)}
 
 	HandleSQLErrors(result)
 	return user, nil
@@ -338,11 +338,11 @@ func GetUserByUsername(username string) (*User, error) {
 	var profilePicture []byte
 
 	user := &User{}
-	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description, &user.CreationDate, &user.Role, &user.Color, &user.CookiesEnabled)
+	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description.String, &user.CreationDate, &user.Role, &user.Color, &user.CookiesEnabled)
 	if err != nil {
 		return nil, fmt.Errorf("GetUserByUsername error: %v", err)
 	}
-	user.ProfilePic = string(profilePicture)
+	user.ProfilePic = sql.NullString{Valid: true, String: string(profilePicture)}
 
 	HandleSQLErrors(result)
 	return user, nil
@@ -455,7 +455,7 @@ func LoginByIdentifiants(username, password string) (bool, error) {
 
 // SaveUser saves a user in the database
 func SaveUser(user User) (bool, error) {
-	_, err := DB.Exec("INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", user.Id, user.Username, user.IsOnline, user.Password, user.Email, user.Locale, user.ProfilePic, user.Description, user.CreationDate, user.Role, user.Color)
+	_, err := DB.Exec("INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", user.Id, user.Username, user.IsOnline, user.Password, user.Email, user.Locale, user.ProfilePic, user.Description.String, user.CreationDate, user.Role, user.Color)
 	if err != nil {
 		return false, fmt.Errorf("SaveUser error: %v", err)
 	}
@@ -522,10 +522,14 @@ func UnfollowUser(idUserFollowed, idUserFollower int64) error {
 }
 
 func BanUser(idUser int64) error {
-	_, err := DB.Exec("UPDATE users SET role_type = ? and profile_pic = ? and description = ? WHERE id_user = ?", "banned", idUser, "", "")
+	_, err := DB.Exec("UPDATE users SET role_type = 'banned', profile_pic = '', description = '' WHERE id_user = ?", idUser)
 	if err != nil {
 		return fmt.Errorf("BanUser error: %v", err)
 	}
 
+	_, err = DB.Exec("UPDATE users SET profile_pic = '', description = '' WHERE id_user = ?", idUser)
+	if err != nil {
+		return fmt.Errorf("BanUser error: %v", err)
+	}
 	return nil
 }

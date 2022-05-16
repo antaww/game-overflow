@@ -3,7 +3,7 @@
     <a href="/topic?id={{.Id}}" class="topic">
         <div class="user-wrapper">
             <div class="circle {{if $author.IsOnline}}dis{{end}}connected avatar-wrapper">
-                <img alt="" class="avatar" src="{{template "avatar" $author.ProfilePic}}">
+                <img alt="" class="avatar" src="{{template "avatar" $author.ProfilePic.String}}">
             </div>
             <p class="username">
                 {{safeHTML $author.DisplayRole}} {{$author.Username}}
