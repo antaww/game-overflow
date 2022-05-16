@@ -29,6 +29,7 @@ func main() {
 
 	http.HandleFunc("/", IndexRoute)
 	http.HandleFunc("/admin/edit-username", AdminEditUsernameRoute)
+	http.HandleFunc("/ban-user", UserBan)
 	http.HandleFunc("/change-category", ChangeCategoryRoute)
 	http.HandleFunc("/close-topic", CloseTopicRoute)
 	http.HandleFunc("/confirm-password", ConfirmPasswordRoute)
@@ -53,6 +54,7 @@ func main() {
 	http.HandleFunc("/settings", SettingsRoute)
 	http.HandleFunc("/sign-up", SignUpRoute)
 	http.HandleFunc("/topic", TopicRoute)
+	http.HandleFunc("/unban-user", UserUnban)
 	http.HandleFunc("/unfollow", UnfollowUserRoute)
 	http.HandleFunc("/users-active", UsersActive)
 

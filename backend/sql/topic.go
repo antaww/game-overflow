@@ -239,8 +239,29 @@ func GetTopicsByCategory(category string) ([]Topic, error) {
 	return GetTopics(rows)
 }
 
-func GetRecentTopics(length int) ([]Topic, error) {
-	rows, err := DB.Query("SELECT * FROM topics ORDER BY id_topic DESC LIMIT ?", length)
+// GetNewestTopics returns newest topics, limited by limit
+func GetNewestTopics(limit int) ([]Topic, error) {
+	rows, err := DB.Query("SELECT * FROM topics ORDER BY id_topic DESC LIMIT ?", limit)
+	if err != nil {
+		return nil, err
+	}
+
+	return GetTopics(rows)
+}
+
+// GetOldestTopics returns oldest topics, limited by limit
+func GetOldestTopics(limit int) ([]Topic, error) {
+	rows, err := DB.Query("SELECT * FROM topics ORDER BY id_topic LIMIT ?", limit)
+	if err != nil {
+		return nil, err
+	}
+
+	return GetTopics(rows)
+}
+
+// GetPopularTopics returns popular topics, limited by limit
+func GetPopularTopics(limit int) ([]Topic, error) {
+	rows, err := DB.Query("SELECT * FROM topics ORDER BY views DESC LIMIT ?", limit)
 	if err != nil {
 		return nil, err
 	}

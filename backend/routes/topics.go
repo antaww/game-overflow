@@ -79,6 +79,7 @@ func CreateTopicRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// DeleteTopicRoute is the route for deleting a topic
 func DeleteTopicRoute(w http.ResponseWriter, r *http.Request) {
 	queries := r.URL.Query()
 
@@ -245,21 +246,9 @@ func FeedRoute(w http.ResponseWriter, r *http.Request) {
 			templateData.ShownTopics = topics
 
 			if queries.Has("s") {
-				sortTypes := sql.GetFeedSortingTypes()
 				sortType := queries.Get("s")
 
-				var isValid bool
-				for _, sortType := range sortTypes {
-					if sortType == sortType {
-						isValid = true
-						break
-					}
-				}
-
-				if isValid {
-					templateData.FeedSort = sql.FeedSortType(sortType)
-					templateData.ShownTopics.SortBy(templateData.FeedSort)
-				}
+				templateData.SortTopics(sortType)
 			}
 
 			err = utils.CallTemplate("feed", templateData, w)

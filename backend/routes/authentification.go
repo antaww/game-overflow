@@ -97,7 +97,6 @@ func LoginRoute(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if exists {
-			// return when error, it will just cancel the request and invite the user to retry
 			user, err := sql.GetUserByUsername(username)
 			if err != nil {
 				return
