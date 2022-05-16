@@ -261,7 +261,6 @@ func GetAllTags() ([]Tags, error) {
 }
 
 func (message *Message) IsLiked(userId int64) (bool, error) {
-	fmt.Println("isLiked")
 	like, err := MessageGetLikeFrom(message.Id, userId)
 	if err != nil {
 		return false, err
@@ -273,7 +272,6 @@ func (message *Message) IsLiked(userId int64) (bool, error) {
 }
 
 func (message *Message) IsDisliked(userId int64) (bool, error) {
-	fmt.Println("isDisLiked")
 	like, err := MessageGetLikeFrom(message.Id, userId)
 	if err != nil {
 		return false, err
