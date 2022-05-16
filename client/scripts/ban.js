@@ -13,16 +13,19 @@ banBtn?.addEventListener('click', e =>{
     e.preventDefault();
     const confirmMessage = confirm('Are you sure you want to ban this user ?');
     if (confirmMessage) {
-        banBtn.classList.toggle('no-display');
-        unbanBtn.classList.toggle('no-display');
         const url = new URL(window.location.href);
         window.location.href = `/ban-user?id=${url.searchParams.get('id')}`;
     }
 });
 
-unbanBtn?.addEventListener('click', () => {
-    banBtn.classList.toggle('no-display');
-    unbanBtn.classList.toggle('no-display');
+unbanBtn?.addEventListener('click', e => {
+    let clicked = e.target;
+    e.preventDefault();
+    const confirmMessage = confirm('Are you sure you want to unban this user ?');
+    if (confirmMessage) {
+        const url = new URL(window.location.href);
+        window.location.href = `/unban-user?id=${url.searchParams.get('id')}`;
+    }
 });
 
 

@@ -73,7 +73,7 @@ func main() {
 
 	http.HandleFunc("/ban-user", UserBan)
 
-	//http.HandleFunc("/unban-user", UserUnban)
+	http.HandleFunc("/unban-user", UserUnban)
 
 	http.HandleFunc("/close-topic", CloseTopicRoute)
 

@@ -1,8 +1,8 @@
 :root {
-    --avatar-size: 12rem;
-    --avatar-left: 10vw;
-    --avatar-inset-height: 3rem;
     --color-height: 15rem;
+    --avatar-inset-height: 3rem;
+    --avatar-left: 10vw;
+    --avatar-size: 12rem;
 }
 
 body {
@@ -15,39 +15,39 @@ body {
 }
 
 .avatar-circle {
+    align-items: center;
     background-color: #1e2529;
     border-radius: 50%;
     display: flex;
-    justify-content: center;
-    align-items: center;
     height: var(--avatar-size);
+    justify-content: center;
+    left: var(--avatar-left);
     position: relative;
     top: calc(100% - var(--avatar-inset-height));
-    left: var(--avatar-left);
     width: var(--avatar-size);
 }
 
 .avatar-circle img {
     border-radius: 50%;
     height: 90%;
-    width: 90%;
     object-fit: contain;
+    width: 90%;
 }
 
 .content {
+    align-items: start;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: start;
-    width: 100vw;
-    overflow-x: hidden;
     margin-left: calc(var(--avatar-left) + var(--avatar-size) + 5vw);
+    overflow-x: hidden;
+    width: 100vw;
 }
 
 .profile-username {
-    margin-top: 0.3em;
     font-size: 2.5rem;
     display: flex;
+    margin-top: 0.3em;
 }
 
 .user-id {
@@ -59,11 +59,11 @@ body {
 }
 
 section.profile {
-    position: absolute;
-    top: calc(var(--color-height) + var(--avatar-size) - var(--avatar-inset-height));
     display: flex;
     flex-direction: column;
     margin-left: calc(var(--avatar-left) + 1rem);
+    position: absolute;
+    top: calc(var(--color-height) + var(--avatar-size) - var(--avatar-inset-height));
     width: max-content;
 }
 
@@ -72,24 +72,23 @@ section.profile a, section.profile p {
 }
 
 section.profile a {
-    margin: 0.2em 0;
     color: #aaaaaa;
+    margin: 0.2em 0;
     text-decoration: none;
 }
 
 section.content .topic {
     background-color: #1a1e23;
-    padding: 1em;
     border-radius: 0.8em;
+    padding: 1em;
     width: 50vw;
-    transition: none !important;
 }
 
 section.content .topic-header {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     font-size: 85%;
+    justify-content: space-between;
 }
 
 section.content .topic-header {
@@ -100,11 +99,16 @@ section.content .topic:hover {
     background-color: #1a1a20;
 }
 
+li .user:hover {
+    background-color: #1a1a20;
+    border: 2px #ffffff5e solid;
+}
+
 .followers, .followings {
-    margin: 0;
-    padding: 0;
     display: flex;
     flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
 }
 
 .follower, .following {
@@ -113,15 +117,17 @@ section.content .topic:hover {
 }
 
 .user {
+    align-items: center;
+    background-color: #1a1e23;
+    border: 2px solid rgba(0, 0, 0, 0);
+    border-radius: 0.8em;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
-    background-color: #1a1e23;
-    padding: 1em 1.2em;
     margin: 0.3em;
-    border-radius: 0.8em;
+    padding: 1em 1.2em;
     text-decoration: none;
+    transition: all 0.2s;
 }
 
 .fa-ellipsis-vertical {
@@ -167,3 +173,4 @@ section.content .topic:hover {
 .unban {
     color: #7FFF7F;
 }
+

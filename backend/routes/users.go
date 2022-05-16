@@ -325,11 +325,37 @@ func UserBan(w http.ResponseWriter, r *http.Request) {
 		queriesId := url.Values{}
 		queriesId.Add("id", idUser)
 
+		http.Redirect(w, r, "/profile?"+queriesId.Encode(), http.StatusSeeOther)
 	}
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
-//func UserUnban(w http.ResponseWriter, r *http.Request) {}
+func UserUnban(w http.ResponseWriter, r *http.Request) {
+	queries := r.URL.Query()
+
+	if queries.Has("id") {
+		fmt.Println("unban func")
+		idUser := queries.Get("id")
+		Id, err := strconv.ParseInt(idUser, 10, 64)
+
+		user, err := sql2.GetUserByRequest(r)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		if user.Role == "admin" {
+			err := sql2.UnbanUser(Id)
+			if err != nil {
+				utils.RouteError(err)
+			}
+		}
+		queriesId := url.Values{}
+		queriesId.Add("id", idUser)
+
+		http.Redirect(w, r, "/profile?"+queriesId.Encode(), http.StatusSeeOther)
+	}
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
 
 func FollowUserRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {

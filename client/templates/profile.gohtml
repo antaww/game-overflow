@@ -44,17 +44,24 @@
         <section class="content">
             <h1 class="profile-username">
                 {{safeHTML $user.DisplayRole}} {{$user.Username}}
-                <i class="fa-solid fa-ellipsis-vertical"></i>
-                <div class="ban-options no-display">
-                    <div class="ban-option ban">
-                        <i class="fa-solid fa-book-skull ban-icon"></i>
-                        <p class="user-status">BAN USER</p>
-                    </div>
-                    <div class="unban-option unban no-display">
-                        <i class="fa-solid fa-book-reader unban-icon"></i>
-                        <p class="user-status">UNBAN USER</p>
-                    </div>
-                </div>
+                {{if .ConnectedUser}}
+                    {{if eq .ConnectedUser.Role "admin"}}
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                        <div class="ban-options no-display">
+                            {{if eq $user.Role "banned"}}
+                                <div class="unban-option unban">
+                                    <i class="fa-solid fa-book-reader unban-icon"></i>
+                                    <p class="user-status">UNBAN USER</p>
+                                </div>
+                            {{else}}
+                                <div class="ban-option ban">
+                                    <i class="fa-solid fa-book-skull ban-icon"></i>
+                                    <p class="user-status">BAN USER</p>
+                                </div>
+                            {{end}}
+                        </div>
+                    {{end}}
+                {{end}}
             </h1>
             <p class="description">
                 {{$user.Description.String}}

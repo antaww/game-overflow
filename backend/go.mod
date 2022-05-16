@@ -10,4 +10,5 @@ require (
 require (
 	github.com/cenkalti/dominantcolor v1.0.0 // indirect
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 // indirect
+	golang.org/x/crypto v0.0.0-20220513210258-46612604a0f9 // indirect
 )

@@ -7,23 +7,23 @@
 
 .feed {
     display: flex;
-    margin-top: 12vh;
     flex-direction: column;
+    margin-top: 12vh;
     width: min(50rem, 60vw);
 }
 
 .topic {
-    display: flex;
-    margin-bottom: 2vh;
     align-items: center;
-    text-decoration: none;
     border: 2px solid transparent;
     border-radius: 1vh;
+    display: flex;
+    margin-bottom: 2vh;
+    text-decoration: none;
 }
 
 .feed > a > img {
-    height: 8vh;
     border-radius: 12px;
+    height: 8vh;
 }
 
 .feed .topic-info {
@@ -31,16 +31,16 @@
 }
 
 .avatar-wrapper, .topic-info {
-    margin-left: 4%;
     display: flex;
     flex-direction: column;
+    margin-left: 4%;
     width: 90%;
 }
 
 .user-wrapper {
+    align-items: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
     width: 4em;
 }
 
@@ -54,8 +54,8 @@
 .topic-header {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     font-size: 85%;
+    justify-content: space-between;
 }
 
 .sub-title {
@@ -69,19 +69,19 @@
 }
 
 .topic-category {
-    background: #5B37A8;
+    background: #5b37a8;
     border-radius: 9px;
-    text-transform: uppercase;
-    color: #BFBEFF;
+    color: #bfbeff;
     font-weight: 800;
     padding: 0 1vh;
+    text-transform: uppercase;
     width: fit-content;
 }
 
 .topic-title, .topic-likes, .feed-likes {
-    font-weight: 700;
-    color: #FFFFFF;
+    color: #ffffff;
     font-size: 2.5vh;
+    font-weight: 700;
     margin: 0;
 }
 
@@ -90,19 +90,19 @@
 }
 
 .topic-open {
-    color: #4EEE40;
-    white-space: nowrap;
+    color: #4eee40;
     margin-left: 1vw;
+    white-space: nowrap;
 }
 
 .topic-closed {
-    color: #FF7373;
-    white-space: nowrap;
+    color: #ff7373;
     margin-left: 1vw;
+    white-space: nowrap;
 }
 
 .topic-answers {
-    color: #2975B2;
+    color: #2975b2;
     font-weight: 500;
     margin-left: 1vw;
 }
@@ -116,13 +116,13 @@
 .topic-tags {
     background: #383359;
     border-radius: 6px;
-    color: #9B9DD6;
+    color: #9b9dd6;
     font-weight: 700;
-    padding: 0 1vh;
     margin-left: 1vh;
-    width: fit-content;
+    padding: 0 1vh;
     text-decoration: none;
     transition: all .2s;
+    width: fit-content;
 }
 
 .topic-tags:hover {
@@ -130,20 +130,20 @@
 }
 
 .topic-date {
-    color: #6D808F;
+    color: #6d808f;
     font-style: italic;
     font-weight: 400;
 }
 
 .topic-likes {
+    align-items: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
 .feed-likes {
-    display: flex;
     align-items: center;
+    display: flex;
     gap: .3em;
 }
 
@@ -156,12 +156,12 @@
 }
 
 .views-tags {
-    display: flex;
     align-items: center;
+    display: flex;
 }
 
 .topic-likes a {
-    color: #FFFFFF;
+    color: #ffffff;
     text-decoration: none;
 }
 
@@ -174,22 +174,22 @@
 /* CREATE TOPIC */
 
 .create-topic {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    background: #7B61FF;
-    border-radius: 15px;
-    font-weight: 700;
-    padding: 1vh 2vh 1vh 1vh;
-    margin: 3vh;
-    white-space: nowrap;
-    text-decoration: none;
+    background: #7b61ff;
     border: none;
+    border-radius: 15px;
+    bottom: 0;
+    font-weight: 700;
+    margin: 3vh;
+    padding: 1vh 2vh 1vh 1vh;
+    position: fixed;
+    right: 0;
+    text-decoration: none;
     transition: all .3s;
+    white-space: nowrap;
 }
 
 .create-topic:hover {
-    background: #5E4BBE;
+    background: #5e4bbe;
 }
 
 .post-question {
@@ -202,8 +202,8 @@
 
 .topic-tags-box {
     display: flex;
+    flex-flow: wrap;
     overflow: hidden;
     text-overflow: ellipsis;
     width: calc(min(50rem, 60vw) / 2);
-    flex-flow: wrap;
 }

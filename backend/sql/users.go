@@ -103,7 +103,7 @@ func (user *User) CountTopics() int {
 func (user *User) GetFollowers() []User {
 	followers, err := GetFollowers(user.Id)
 	if err != nil {
-		return nil
+		utils.RouteError(err)
 	}
 
 	return followers
@@ -112,7 +112,7 @@ func (user *User) GetFollowers() []User {
 func (user *User) GetFollowing() []User {
 	following, err := GetFollowing(user.Id)
 	if err != nil {
-		return nil
+		utils.RouteError(err)
 	}
 
 	return following
@@ -233,40 +233,20 @@ func EditUser(idUser int64, newUser User) (bool, error) {
 
 // GetFollowers returns the followers of the user with the given id
 func GetFollowers(idUser int64) ([]User, error) {
-	var users []User
-	rows, err := DB.Query("SELECT id_user_follower FROM follow WHERE id_user_followed = ?", idUser)
+	rows, err := DB.Query("SELECT * from users where id_user in (select id_user_follower from follow where id_user_followed = ?)", idUser)
 	if err != nil {
 		return nil, fmt.Errorf("GetFollowers error: %v", err)
 	}
-	for rows.Next() {
-		user := &User{}
-		err = rows.Scan(&user.Id)
-		if err != nil {
-			return nil, fmt.Errorf("GetFollowers error: %v", err)
-		}
-		users = append(users, *user)
-	}
-
-	return users, nil
+	return GetUsers(rows)
 }
 
 // GetFollowing returns the users followed by the user with the given id
 func GetFollowing(idUser int64) ([]User, error) {
-	var users []User
-	rows, err := DB.Query("SELECT id_user_followed FROM follow WHERE id_user_follower = ?", idUser)
+	rows, err := DB.Query("SELECT * from users where id_user in (select id_user_followed from follow where id_user_follower = ?)", idUser)
 	if err != nil {
 		return nil, fmt.Errorf("GetFollowing error: %v", err)
 	}
-	for rows.Next() {
-		user := &User{}
-		err = rows.Scan(&user.Id)
-		if err != nil {
-			return nil, fmt.Errorf("GetFollowing error: %v", err)
-		}
-		users = append(users, *user)
-	}
-
-	return users, nil
+	return GetUsers(rows)
 }
 
 func GetSessionId(r *http.Request) (string, error) {
@@ -365,6 +345,23 @@ func GetUserHasCookiesEnabled(id int64) (sql.NullBool, error) {
 	return enabled, nil
 }
 
+// GetUsers get all users from the database
+func GetUsers(rows *sql.Rows) ([]User, error) {
+	var users []User
+	for rows.Next() {
+		var profilePicture []byte
+		user := &User{}
+		err := rows.Scan(&user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description, &user.CreationDate, &user.Role, &user.Color, &user.CookiesEnabled)
+		if err != nil {
+			return nil, fmt.Errorf("GetUsers error: %v", err)
+		}
+		user.ProfilePic.String = string(profilePicture)
+		users = append(users, *user)
+	}
+
+	return users, nil
+}
+
 // GetUsersStatus returns an array of users with their status
 func GetUsersStatus(users []string) ([]*User, error) {
 	var usersOnline []*User
@@ -455,7 +452,7 @@ func LoginByIdentifiants(username, password string) (bool, error) {
 
 // SaveUser saves a user in the database
 func SaveUser(user User) (bool, error) {
-	_, err := DB.Exec("INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", user.Id, user.Username, user.IsOnline, user.Password, user.Email, user.Locale, user.ProfilePic, user.Description.String, user.CreationDate, user.Role, user.Color)
+	_, err := DB.Exec("INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", user.Id, user.Username, user.IsOnline, user.Password, user.Email, user.Locale, user.ProfilePic, user.Description, user.CreationDate, user.Role, user.Color, user.CookiesEnabled)
 	if err != nil {
 		return false, fmt.Errorf("SaveUser error: %v", err)
 	}
@@ -530,6 +527,14 @@ func BanUser(idUser int64) error {
 	_, err = DB.Exec("UPDATE users SET profile_pic = '', description = '' WHERE id_user = ?", idUser)
 	if err != nil {
 		return fmt.Errorf("BanUser error: %v", err)
+	}
+	return nil
+}
+
+func UnbanUser(idUser int64) error {
+	_, err := DB.Exec("UPDATE users SET role_type = 'user' WHERE id_user = ?", idUser)
+	if err != nil {
+		return fmt.Errorf("Unban error: %v", err)
 	}
 	return nil
 }
