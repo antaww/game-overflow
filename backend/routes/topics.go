@@ -223,7 +223,6 @@ func FeedRoute(w http.ResponseWriter, r *http.Request) {
 		queries := r.URL.Query()
 
 		if queries.Has("category") {
-
 			category := queries.Get("category")
 
 			topics, err := sql.GetTopicsByCategory(category)
@@ -244,6 +243,24 @@ func FeedRoute(w http.ResponseWriter, r *http.Request) {
 			}
 
 			templateData.ShownTopics = topics
+
+			if queries.Has("s") {
+				sortTypes := sql.GetFeedSortingTypes()
+				sortType := queries.Get("s")
+
+				var isValid bool
+				for _, sortType := range sortTypes {
+					if sortType == sortType {
+						isValid = true
+						break
+					}
+				}
+
+				if isValid {
+					templateData.FeedSort = sql.FeedSortType(sortType)
+					templateData.ShownTopics.SortBy(templateData.FeedSort)
+				}
+			}
 
 			err = utils.CallTemplate("feed", templateData, w)
 			if err != nil {

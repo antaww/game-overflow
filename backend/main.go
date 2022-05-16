@@ -28,60 +28,33 @@ func main() {
 	http.Handle("/scripts/", http.StripPrefix("/scripts/", scripts))
 
 	http.HandleFunc("/", IndexRoute)
-
 	http.HandleFunc("/admin/edit-username", AdminEditUsernameRoute)
-
-	http.HandleFunc("/cookies", CookieRoute)
-
-	http.HandleFunc("/confirm-password", ConfirmPasswordRoute)
-
-	http.HandleFunc("/create-topic", CreateTopicRoute)
-
-	http.HandleFunc("/delete-topic", DeleteTopicRoute)
-
-	http.HandleFunc("/delete-message", DeleteMessageRoute)
-
-	http.HandleFunc("/dislike", DislikeRoute)
-
-	http.HandleFunc("/edit-message", EditMessageRoute)
-
-	http.HandleFunc("/feed", FeedRoute)
-
-	http.HandleFunc("/is-active", IsActiveRoute)
-
-	http.HandleFunc("/like", LikeRoute)
-
-	http.HandleFunc("/login", LoginRoute)
-
-	http.HandleFunc("/logout", LogoutRoute)
-
-	http.HandleFunc("/post-message", PostMessageRoute)
-
-	http.HandleFunc("/profile", ProfileRoute)
-
-	http.HandleFunc("/settings", SettingsRoute)
-
-	http.HandleFunc("/sign-up", SignUpRoute)
-
-	http.HandleFunc("/topic", TopicRoute)
-
-	http.HandleFunc("/users-active", UsersActive)
-
-	http.HandleFunc("/posts", UserPostsRoute)
-
-	http.HandleFunc("/likes", UserLikesRoute)
-
-	http.HandleFunc("/close-topic", CloseTopicRoute)
-
-	http.HandleFunc("/open-topic", OpenTopicRoute)
-
 	http.HandleFunc("/change-category", ChangeCategoryRoute)
-
+	http.HandleFunc("/close-topic", CloseTopicRoute)
+	http.HandleFunc("/confirm-password", ConfirmPasswordRoute)
+	http.HandleFunc("/cookies", CookieRoute)
+	http.HandleFunc("/create-topic", CreateTopicRoute)
+	http.HandleFunc("/delete-message", DeleteMessageRoute)
+	http.HandleFunc("/delete-topic", DeleteTopicRoute)
+	http.HandleFunc("/dislike", DislikeRoute)
+	http.HandleFunc("/edit-message", EditMessageRoute)
+	http.HandleFunc("/feed", FeedRoute)
 	http.HandleFunc("/follow", FollowUserRoute)
-
-	http.HandleFunc("/unfollow", UnfollowUserRoute)
-
+	http.HandleFunc("/is-active", IsActiveRoute)
+	http.HandleFunc("/like", LikeRoute)
+	http.HandleFunc("/likes", UserLikesRoute)
+	http.HandleFunc("/login", LoginRoute)
+	http.HandleFunc("/logout", LogoutRoute)
+	http.HandleFunc("/open-topic", OpenTopicRoute)
+	http.HandleFunc("/post-message", PostMessageRoute)
+	http.HandleFunc("/posts", UserPostsRoute)
+	http.HandleFunc("/profile", ProfileRoute)
 	http.HandleFunc("/search", SearchRoute)
+	http.HandleFunc("/settings", SettingsRoute)
+	http.HandleFunc("/sign-up", SignUpRoute)
+	http.HandleFunc("/topic", TopicRoute)
+	http.HandleFunc("/unfollow", UnfollowUserRoute)
+	http.HandleFunc("/users-active", UsersActive)
 
 	// Capture connection properties.
 	DatabaseConfig := mysql.Config{

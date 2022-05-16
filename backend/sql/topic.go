@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"main/utils"
 	"net/http"
+	"sort"
+	"time"
 )
 
 type Topic struct {
@@ -18,8 +20,35 @@ type Topic struct {
 	Tags           []string
 }
 
+type Topics []Topic
+
+func (t Topics) SortBy(sortBy FeedSortType) {
+	switch sortBy {
+	case FeedSortNewest:
+		sort.Slice(t, func(i, j int) bool {
+			return t[i].GetDate().After(*t[j].GetDate())
+		})
+	case FeedSortOldest:
+		sort.Slice(t, func(i, j int) bool {
+			return t[i].GetDate().Before(*t[j].GetDate())
+		})
+	case FeedSortPopular:
+		sort.Slice(t, func(i, j int) bool {
+			return t[i].Views > t[j].Views
+		})
+	}
+}
+
 type Tags struct {
 	Name string `db:"tag_name"`
+}
+
+func (topic Topic) GetDate() *time.Time {
+	message, err := topic.GetFirstMessage()
+	if err != nil {
+		return nil
+	}
+	return &message.CreatedAt
 }
 
 // GetAnswersNumber returns the number of answers for a topic
@@ -129,13 +158,6 @@ func GetShownTopic(r *http.Request) (*Topic, error) {
 	return topic, nil
 }
 
-/*// GetShownTopics returns the actual shown topics on the URL
-func GetShownTopics(r *http.Request) ([]Topic, error) {
-	queries := r.URL.Query()
-	category := queries.Get("category")
-}
-*/
-
 // OpenTopic opens topic from user
 func OpenTopic(topicId int64, userId int64) (bool, error) {
 	editedLines, err := DB.Exec("UPDATE topics SET is_closed = 0 WHERE id_topic = ? AND id_first_message in (SELECT id_message FROM messages WHERE id_user = ?)", topicId, userId)
@@ -189,16 +211,12 @@ func GetTopic(id int64) (*Topic, error) {
 	return post, nil
 }
 
-// GetTopicsByCategory returns topics by category
-func GetTopicsByCategory(category string) ([]Topic, error) {
-	rows, err := DB.Query("SELECT * FROM topics WHERE category_name = ?", category)
-	if err != nil {
-		return nil, err
-	}
+// GetTopics returns topics from request
+func GetTopics(rows *sql.Rows) ([]Topic, error) {
 	var topics []Topic
 	for rows.Next() {
 		var topic Topic
-		err = rows.Scan(&topic.Id, &topic.Title, &topic.IsClosed, &topic.Views, &topic.Category, &topic.IdFirstMessage)
+		err := rows.Scan(&topic.Id, &topic.Title, &topic.IsClosed, &topic.Views, &topic.Category, &topic.IdFirstMessage)
 		if err != nil {
 			return nil, err
 		}
@@ -211,30 +229,33 @@ func GetTopicsByCategory(category string) ([]Topic, error) {
 	return topics, nil
 }
 
+// GetTopicsByCategory returns topics by category
+func GetTopicsByCategory(category string) ([]Topic, error) {
+	rows, err := DB.Query("SELECT * FROM topics WHERE category_name = ?", category)
+	if err != nil {
+		return nil, err
+	}
+
+	return GetTopics(rows)
+}
+
+func GetRecentTopics(length int) ([]Topic, error) {
+	rows, err := DB.Query("SELECT * FROM topics ORDER BY id_topic DESC LIMIT ?", length)
+	if err != nil {
+		return nil, err
+	}
+
+	return GetTopics(rows)
+}
+
 // GetTopicsByTag returns topics by tag
 func GetTopicsByTag(tag string) ([]Topic, error) {
 	rows, err := DB.Query("SELECT * FROM topics WHERE id_topic IN (SELECT id_topic FROM have WHERE tag_name = ?)", tag)
 	if err != nil {
 		return nil, err
 	}
-	var topics []Topic
-	for rows.Next() {
-		var topic Topic
-		err = rows.Scan(&topic.Id, &topic.Title, &topic.IsClosed, &topic.Views, &topic.Category, &topic.IdFirstMessage)
-		if err != nil {
-			return nil, err
-		}
 
-		err := topic.FetchTags()
-		if err != nil {
-			return nil, err
-		}
-		topics = append(topics, topic)
-	}
-
-	HandleSQLErrors(rows)
-
-	return topics, nil
+	return GetTopics(rows)
 }
 
 func ChangeCategory(id int64, category string) error {

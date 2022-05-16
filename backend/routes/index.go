@@ -12,12 +12,13 @@ import (
 
 type TemplatesDataType struct {
 	ConnectedUser *sql.User
+	FeedSort      sql.FeedSortType
+	GetAllTags    []string
 	Locales       map[string]string
-	ShownTopics   []sql.Topic
 	ShownTopic    *sql.Topic
+	ShownTopics   sql.Topics
 	ShownMessages []sql.Message
 	ShownUser     *sql.User
-	GetAllTags    []string
 }
 
 // GetCategories returns all categories
@@ -29,6 +30,12 @@ func (t TemplatesDataType) GetCategories() []sql.Category {
 	return categories
 }
 
+// GetFeedSortingTypes returns all feed sorting types
+func (t TemplatesDataType) GetFeedSortingTypes() []sql.FeedSortType {
+	return []sql.FeedSortType{sql.FeedSortNewest, sql.FeedSortOldest, sql.FeedSortPopular}
+}
+
+// GetLocales returns all locales
 func (t TemplatesDataType) GetLocales() map[string]string {
 	locales, err := sql.GetLocales()
 	if err != nil {
@@ -36,6 +43,16 @@ func (t TemplatesDataType) GetLocales() map[string]string {
 	}
 
 	return locales
+}
+
+// GetTags returns all tags
+func (t TemplatesDataType) GetTags() []sql.Tags {
+	tags, err := sql.GetAllTags()
+	if err != nil {
+		log.Println(err)
+	}
+	fmt.Println("tags:", tags)
+	return tags
 }
 
 // IndexRoute is the route for the home page
@@ -81,13 +98,4 @@ func LogHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.DefaultServeMux.ServeHTTP(w, r)
-}
-
-func (t TemplatesDataType) GetTags() []sql.Tags {
-	tags, err := sql.GetAllTags()
-	if err != nil {
-		log.Println(err)
-	}
-	fmt.Println("tags:", tags)
-	return tags
 }
