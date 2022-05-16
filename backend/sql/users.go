@@ -454,7 +454,7 @@ func LoginByIdentifiants(username, password string) (bool, error) {
 
 // SaveUser saves a user in the database
 func SaveUser(user User) (bool, error) {
-	_, err := DB.Exec("INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", user.Id, user.Username, user.IsOnline, user.Password, user.Email, user.Locale, user.ProfilePic, user.Description, user.CreationDate, user.Role, user.Color)
+	_, err := DB.Exec("INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", user.Id, user.Username, user.IsOnline, user.Password, user.Email, user.Locale, user.ProfilePic, user.Description, user.CreationDate, user.Role, user.Color, user.CookiesEnabled)
 	if err != nil {
 		return false, fmt.Errorf("SaveUser error: %v", err)
 	}
