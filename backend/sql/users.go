@@ -234,13 +234,13 @@ func EditUser(idUser int64, newUser User) (bool, error) {
 // GetFollowers returns the followers of the user with the given id
 func GetFollowers(idUser int64) ([]User, error) {
 	var users []User
-	rows, err := DB.Query("SELECT * FROM users WHERE id_user IN (SELECT id_user_follower FROM follow WHERE id_user_followed = ?)", idUser)
+	rows, err := DB.Query("SELECT id_user_follower FROM follow WHERE id_user_followed = ?", idUser)
 	if err != nil {
 		return nil, fmt.Errorf("GetFollowers error: %v", err)
 	}
 	for rows.Next() {
 		user := &User{}
-		err = rows.Scan(&user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &user.ProfilePic, &user.Description, &user.CreationDate, &user.Role, &user.Color)
+		err = rows.Scan(&user.Id)
 		if err != nil {
 			return nil, fmt.Errorf("GetFollowers error: %v", err)
 		}
@@ -253,13 +253,13 @@ func GetFollowers(idUser int64) ([]User, error) {
 // GetFollowing returns the users followed by the user with the given id
 func GetFollowing(idUser int64) ([]User, error) {
 	var users []User
-	rows, err := DB.Query("SELECT * FROM users WHERE id_user IN (SELECT id_user_followed FROM follow WHERE id_user_follower = ?)", idUser)
+	rows, err := DB.Query("SELECT id_user_followed FROM follow WHERE id_user_follower = ?", idUser)
 	if err != nil {
 		return nil, fmt.Errorf("GetFollowing error: %v", err)
 	}
 	for rows.Next() {
 		user := &User{}
-		err = rows.Scan(&user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &user.ProfilePic, &user.Description, &user.CreationDate, &user.Role, &user.Color)
+		err = rows.Scan(&user.Id)
 		if err != nil {
 			return nil, fmt.Errorf("GetFollowing error: %v", err)
 		}
