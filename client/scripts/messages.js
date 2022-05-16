@@ -3,6 +3,11 @@ function handleLikes() {
     const dislikeButtons = document.querySelectorAll('.dislike-btn');
     likeButtons.forEach(button => {
         button.addEventListener('click', event => {
+            event.target.classList.toggle('like-color');
+            console.log(event.target.closest('.fa-angle-down'));
+            if (event.target.closest('.topic-likes').querySelector('.fa-angle-down').classList.contains('dislike-color')) {
+                event.target.closest('.topic-likes').querySelector('.fa-angle-down').classList.remove('dislike-color');
+            }
             const postId = event.target.closest('.post').getAttribute('data-post-id');
             const url = `/like?id=${postId}`;
             fetch(url, {
@@ -17,6 +22,10 @@ function handleLikes() {
 
     dislikeButtons.forEach(button => {
         button.addEventListener('click', event => {
+            event.target.classList.toggle('dislike-color');
+            if (event.target.closest('.topic-likes').querySelector('.fa-angle-up').classList.contains('like-color')) {
+                event.target.closest('.topic-likes').querySelector('.fa-angle-up').classList.remove('like-color');
+            }
             const postId = event.target.closest('.post').getAttribute('data-post-id');
             const url = `/dislike?id=${postId}`;
             fetch(url, {

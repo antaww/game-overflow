@@ -259,3 +259,28 @@ func GetAllTags() ([]Tags, error) {
 	HandleSQLErrors(rows)
 	return tags, nil
 }
+
+func (message *Message) IsLiked(userId int64) (bool, error) {
+	fmt.Println("isLiked")
+	like, err := MessageGetLikeFrom(message.Id, userId)
+	if err != nil {
+		return false, err
+	}
+	if like != nil {
+		return like.IsLike, nil
+	}
+	return false, nil
+}
+
+func (message *Message) IsDisliked(userId int64) (bool, error) {
+	fmt.Println("isDisLiked")
+	like, err := MessageGetLikeFrom(message.Id, userId)
+	if err != nil {
+		return false, err
+	}
+	if like != nil {
+		return !like.IsLike, nil
+	}
+	return false, nil
+}
+

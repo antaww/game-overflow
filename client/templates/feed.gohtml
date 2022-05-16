@@ -9,10 +9,6 @@
             {{range .ShownTopics}}
                 {{template "feed-topic" .}}
             {{end}}
-
-            {{range $message := .ShownMessages}}
-                {{template "message" $message.WithConnectedUser .ConnectedUser}}
-            {{end}}
         </div>
         <div class="trends"></div>
 
