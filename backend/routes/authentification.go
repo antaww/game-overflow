@@ -2,6 +2,8 @@ package routes
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
 	"io"
 	"main/sql"
 	"main/utils"
@@ -78,7 +80,18 @@ func LoginRoute(w http.ResponseWriter, r *http.Request) {
 		}
 
 		username := r.FormValue("username")
-		exists, err := sql.LoginByIdentifiants(username, r.FormValue("password"))
+		password := r.FormValue("password")
+		userStruct, err := sql.GetUserByUsername(username)
+		if err != nil {
+			utils.RouteError(err)
+		}
+		match := utils.CheckPasswordHash(password, userStruct.Password)
+		if !match {
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			return
+		}
+
+		exists, err := sql.LoginByIdentifiants(username, userStruct.Password)
 		if err != nil {
 			utils.RouteError(err)
 		}
@@ -149,9 +162,19 @@ func SignUpRoute(w http.ResponseWriter, r *http.Request) {
 			utils.RouteError(err)
 		}
 
+		HashedPassword, err := utils.HashPassword(r.FormValue("password"))
+		if err != nil {
+			utils.RouteError(err)
+		}
+		match := utils.CheckPasswordHash(r.FormValue("password"), HashedPassword)
+		if !match {
+			utils.RouteError(errors.New("Password does not match"))
+		}
+
+		fmt.Println(HashedPassword)
 		valid, err := sql.SaveUser(sql.CreateUser(
 			r.FormValue("username"),
-			r.FormValue("password"),
+			HashedPassword,
 			r.FormValue("email"),
 		))
 
