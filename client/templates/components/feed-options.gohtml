@@ -1,0 +1,13 @@
+{{define "feed-options"}}
+    <div class="options">
+        <div class="sorting">
+            <label for="feed-sorting">Sorts posts by: </label>
+            <select name="sorting" id="feed-sorting">
+                {{$feedSortingType := .FeedSort}}
+                {{range .GetFeedSortingTypes}}
+                    <option value="{{.}}" {{if eq . $feedSortingType}}selected{{end}}>{{.}}</option>
+                {{end}}
+            </select>
+        </div>
+    </div>
+{{end}}

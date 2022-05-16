@@ -1,16 +1,13 @@
 {{define "content"}}
-    <script defer src="/scripts/review.js"></script>
-    <script defer src="/scripts/modal.js"></script>
-    <script defer src="/scripts/connection_dot.js"></script>
-    <script defer src="/scripts/messages.js"></script>
     {{template "navbar" .}}
     <div class="feed-content">
         <div class="feed">
+            {{template "feed-options" .}}
+
             {{range .ShownTopics}}
                 {{template "feed-topic" .}}
             {{end}}
         </div>
-        <div class="trends"></div>
 
         {{if and (.ConnectedUser) (ne .ConnectedUser.Role "banned")}}
             <a href="create-topic" class="create-topic">

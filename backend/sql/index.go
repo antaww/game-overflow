@@ -52,3 +52,16 @@ func DeleteSessionCookie(sessionId string, w http.ResponseWriter) error {
 	_, err := DB.Exec("DELETE FROM sessions WHERE sessions.id_session = ?", sessionId)
 	return err
 }
+
+type FeedSortType string
+
+const (
+	FeedSortNewest  FeedSortType = "newest"
+	FeedSortOldest  FeedSortType = "oldest"
+	FeedSortPopular FeedSortType = "popular"
+)
+
+// GetFeedSortingTypes returns all feed sorting types
+func GetFeedSortingTypes() []FeedSortType {
+	return []FeedSortType{FeedSortNewest, FeedSortOldest, FeedSortPopular}
+}

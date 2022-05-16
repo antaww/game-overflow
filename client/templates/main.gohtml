@@ -1,37 +1,23 @@
-{{define "main"}}
-    <!DOCTYPE html>
-    <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <title>Game overflow</title>
-            <link rel="icon" href="/resources/Logo.png">
-            <link rel="stylesheet" href="/static/index.css">
-            <script src="https://kit.fontawesome.com/74fed0e2b5.js" crossorigin="anonymous"></script>
-        </head>
-        <body>
-            {{block "content" .}}
-                {{template "navbar" .}}
-                    {{if .ConnectedUser}}
-                    {{if ne .ConnectedUser.Role "banned"}}
-                        {{range .ShownTopics}}
-                            {{template "feed-topic" .}}
-                        {{end}}
+{{define "content"}}
+    {{template "navbar" .}}
 
-                        <a href="create-topic" class="create-topic">
-                            <div class="post-question">Post a question<i class="fa-solid fa-arrow-right"></i></div>
-                        </a>
-                    {{end}}
-                    {{end}}
+    <div class="feed-content">
+        <div class="feed">
+            {{template "feed-options" .}}
+
+            {{range .ShownTopics}}
+                {{template "feed-topic" .}}
             {{end}}
 
-            {{if .ConnectedUser}}
-                {{if not .ConnectedUser.GetHasCookieEnabled.Valid}}
-                    <div class="cookies">
-                        <script defer src="/scripts/cookies.js"></script>
-                        {{template "cookies-banner" .}}
-                    </div>
-                {{end}}
-            {{end}}
-        </body>
-    </html>
+            <div class="trends">
+                <h2 class="trends">Trending Tags</h2>
+            </div>
+        </div>
+
+        {{if and (.ConnectedUser) (ne .ConnectedUser.Role "banned")}}
+            <a href="create-topic" class="create-topic">
+                <div class="post-question">Post a question<i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+        {{end}}
+    </div>
 {{end}}

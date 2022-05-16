@@ -23,6 +23,7 @@ func GetTemplatesDataFromRoute(w http.ResponseWriter, r *http.Request) (*Templat
 
 	return &TemplatesDataType{
 		ConnectedUser: connectedUser,
+		FeedSort:      sql.FeedSortNewest,
 		Locales:       locales,
 		ShownTopics:   nil,
 		ShownTopic:    shownTopic,

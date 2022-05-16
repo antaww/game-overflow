@@ -2,6 +2,8 @@
 
 .feed-content {
     display: flex;
+    align-items: center;
+    flex-direction: column;
     justify-content: center;
 }
 
@@ -206,4 +208,20 @@
     overflow: hidden;
     text-overflow: ellipsis;
     width: calc(min(50rem, 60vw) / 2);
+}
+
+.options {
+    margin: 1.5rem 1rem 2rem;
+}
+
+.options select {
+    background-color: #1f1f23;
+    border-radius: 10px;
+    border: none;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+}
+
+.options option {
+    border: none;
 }

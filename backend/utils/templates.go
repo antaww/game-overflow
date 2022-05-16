@@ -50,16 +50,17 @@ var TemplateMap = template.FuncMap{
 
 func CallTemplate(templateName string, data interface{}, w http.ResponseWriter) error {
 	templates := template.New("").Funcs(TemplateMap)
-	templates, err := templates.ParseFiles("../client/templates/main.gohtml", "../client/templates/"+templateName+".gohtml")
+	templates, err := templates.ParseFiles("../client/templates/base.gohtml", "../client/templates/"+templateName+".gohtml")
 	if err != nil {
 		return err
 	}
+
 	templates, err = templates.ParseGlob("../client/templates/components/*.gohtml")
 	if err != nil {
 		return err
 	}
 
-	err = templates.ExecuteTemplate(w, "main", data)
+	err = templates.ExecuteTemplate(w, "base", data)
 	if err != nil {
 		return err
 	}

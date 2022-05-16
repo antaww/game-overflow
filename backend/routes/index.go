@@ -12,12 +12,13 @@ import (
 
 type TemplatesDataType struct {
 	ConnectedUser *sql.User
+	FeedSort      sql.FeedSortType
+	GetAllTags    []string
 	Locales       map[string]string
-	ShownTopics   []sql.Topic
 	ShownTopic    *sql.Topic
+	ShownTopics   sql.Topics
 	ShownMessages []sql.Message
 	ShownUser     *sql.User
-	GetAllTags    []string
 }
 
 // GetCategories returns all categories
@@ -29,6 +30,12 @@ func (t TemplatesDataType) GetCategories() []sql.Category {
 	return categories
 }
 
+// GetFeedSortingTypes returns all feed sorting types
+func (t TemplatesDataType) GetFeedSortingTypes() []sql.FeedSortType {
+	return []sql.FeedSortType{sql.FeedSortNewest, sql.FeedSortOldest, sql.FeedSortPopular}
+}
+
+// GetLocales returns all locales
 func (t TemplatesDataType) GetLocales() map[string]string {
 	locales, err := sql.GetLocales()
 	if err != nil {
@@ -36,6 +43,47 @@ func (t TemplatesDataType) GetLocales() map[string]string {
 	}
 
 	return locales
+}
+
+// GetTags returns all tags
+func (t TemplatesDataType) GetTags() []sql.Tags {
+	tags, err := sql.GetAllTags()
+	if err != nil {
+		utils.RouteError(err)
+	}
+	fmt.Println("tags:", tags)
+	return tags
+}
+
+// GetTopicsDependingSort returns all topics depending on the sort type, limited by limit
+func (t TemplatesDataType) GetTopicsDependingSort(sortType sql.FeedSortType, limit int) ([]sql.Topic, error) {
+	switch sortType {
+	case sql.FeedSortNewest:
+		return sql.GetNewestTopics(limit)
+	case sql.FeedSortOldest:
+		return sql.GetOldestTopics(limit)
+	case sql.FeedSortPopular:
+		return sql.GetPopularTopics(limit)
+	}
+
+	return nil, nil
+}
+
+func (t TemplatesDataType) SortTopics(sortType string) {
+	sortTypes := sql.GetFeedSortingTypes()
+
+	var isValid bool
+	for _, sortType := range sortTypes {
+		if sortType == sortType {
+			isValid = true
+			break
+		}
+	}
+
+	if isValid {
+		t.FeedSort = sql.FeedSortType(sortType)
+		t.ShownTopics.SortBy(t.FeedSort)
+	}
 }
 
 // IndexRoute is the route for the home page
@@ -46,6 +94,21 @@ func IndexRoute(w http.ResponseWriter, r *http.Request) {
 		templateData, err := GetTemplatesDataFromRoute(w, r)
 		if err != nil {
 			utils.RouteError(err)
+		}
+
+		topics, err := templateData.GetTopicsDependingSort(templateData.FeedSort, 20)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		templateData.ShownTopics = topics
+
+		queries := r.URL.Query()
+
+		if queries.Has("s") {
+			sortType := queries.Get("s")
+
+			templateData.SortTopics(sortType)
 		}
 
 		err = utils.CallTemplate("main", templateData, w)
@@ -81,13 +144,4 @@ func LogHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.DefaultServeMux.ServeHTTP(w, r)
-}
-
-func (t TemplatesDataType) GetTags() []sql.Tags {
-	tags, err := sql.GetAllTags()
-	if err != nil {
-		log.Println(err)
-	}
-	fmt.Println("tags:", tags)
-	return tags
 }
