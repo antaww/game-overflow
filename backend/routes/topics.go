@@ -49,7 +49,6 @@ func CreateTopicRoute(w http.ResponseWriter, r *http.Request) {
 		content := r.Form["content"][0]
 		tags := r.Form["tags"][0]
 		replace := strings.ReplaceAll(tags, ",", " ")
-		replace = strings.ReplaceAll(replace, ";", " ")
 		fields := strings.Fields(replace)
 
 		user, err := sql.GetUserByRequest(r)
