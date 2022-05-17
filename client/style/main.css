@@ -57,3 +57,20 @@
         flex-wrap: wrap;
     }
 }
+
+.notice {
+    margin: 27vh 7vh;
+}
+
+.notice-span {
+    background-color: #2b333d;
+    padding: 3vh;
+}
+
+.privacy-policy-title {
+    position: fixed;
+    background-color: #1e2529;
+    width: 100%;
+    top: 10vh;
+    padding-left: 7vh;
+}

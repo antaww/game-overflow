@@ -42,6 +42,7 @@ func main() {
 	http.HandleFunc("/feed", FeedRoute)
 	http.HandleFunc("/follow", FollowUserRoute)
 	http.HandleFunc("/is-active", IsActiveRoute)
+	http.HandleFunc("/legal-notice", LegalNoticeRoute)
 	http.HandleFunc("/like", LikeRoute)
 	http.HandleFunc("/likes", UserLikesRoute)
 	http.HandleFunc("/login", LoginRoute)
