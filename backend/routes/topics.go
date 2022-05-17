@@ -232,7 +232,7 @@ func FeedRoute(w http.ResponseWriter, r *http.Request) {
 			}
 
 			for i := 0; i < len(topics); i++ {
-				topics[i].Tags, err = sql.GetTags(topics[i].Id)
+				err = topics[i].FetchTags()
 				if err != nil {
 					utils.RouteError(err)
 				}

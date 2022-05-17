@@ -55,6 +55,16 @@ func (t TemplatesDataType) GetTags() []sql.Tags {
 	return tags
 }
 
+// GetTrendingTags returns the trending tags, limited by the limit
+func (t TemplatesDataType) GetTrendingTags(limit int) []sql.TagListItem {
+	tags, err := sql.GetTrendingTags(limit)
+	if err != nil {
+		utils.RouteError(err)
+	}
+
+	return tags
+}
+
 // GetTopicsDependingSort returns all topics depending on the sort type, limited by limit
 func (t TemplatesDataType) GetTopicsDependingSort(sortType sql.FeedSortType, limit int) ([]sql.Topic, error) {
 	switch sortType {
@@ -99,6 +109,13 @@ func IndexRoute(w http.ResponseWriter, r *http.Request) {
 		topics, err := templateData.GetTopicsDependingSort(templateData.FeedSort, 20)
 		if err != nil {
 			utils.RouteError(err)
+		}
+
+		for i := 0; i < len(topics); i++ {
+			err = topics[i].FetchTags()
+			if err != nil {
+				utils.RouteError(err)
+			}
 		}
 
 		templateData.ShownTopics = topics

@@ -1,18 +1,33 @@
 {{define "content"}}
     {{template "navbar" .}}
 
+    <link rel="stylesheet" href="/static/main.css">
     <div class="feed-content">
+        <div class="trends">
+            <h2 class="trends-title">
+                Trends <i class="fa fa-fire"></i>
+            </h2>
+            <ul>
+                {{range .GetTrendingTags 5}}
+                    <li>
+                        <p></p>
+                        <a class="topic-tags" href="/feed?tag={{.Name}}">
+                            <span class="tags-count">{{.Count}}</span> {{.Name}}
+                        </a>
+                    </li>
+                {{end}}
+            </ul>
+        </div>
+
         <div class="feed">
             {{template "feed-options" .}}
 
             {{range .ShownTopics}}
                 {{template "feed-topic" .}}
             {{end}}
-
-            <div class="trends">
-                <h2 class="trends">Trending Tags</h2>
-            </div>
         </div>
+
+
 
         {{if and (.ConnectedUser) (ne .ConnectedUser.Role "banned")}}
             <a href="create-topic" class="create-topic">
