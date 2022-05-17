@@ -48,6 +48,11 @@ body {
     font-size: 2.5rem;
     display: flex;
     margin-top: 0.3em;
+    align-items: center;
+}
+
+.profile-username i {
+    margin-right: 0.3em;
 }
 
 .user-id {
@@ -138,7 +143,7 @@ li .user:hover {
 }
 
 .dots-clicked {
-    color: #626262!important;
+    color: #626262 !important;
 }
 
 .ban-options {
