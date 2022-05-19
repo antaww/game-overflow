@@ -32,7 +32,7 @@ func (t TemplatesDataType) GetCategories() []sql.Category {
 
 // GetFeedSortingTypes returns all feed sorting types
 func (t TemplatesDataType) GetFeedSortingTypes() []sql.FeedSortType {
-	return []sql.FeedSortType{sql.FeedSortNewest, sql.FeedSortOldest, sql.FeedSortPopular}
+	return []sql.FeedSortType{sql.FeedSortNewest, sql.FeedSortOldest, sql.FeedSortPopular, sql.FeedSortFollow}
 }
 
 // GetLocales returns all locales
@@ -74,6 +74,8 @@ func (t TemplatesDataType) GetTopicsDependingSort(sortType sql.FeedSortType, lim
 		return sql.GetOldestTopics(limit)
 	case sql.FeedSortPopular:
 		return sql.GetPopularTopics(limit)
+		//case sql.FeedSortFollow:
+		//	return sql.GetFollowedTopics(t.ConnectedUser.Id, limit)
 	}
 
 	return nil, nil

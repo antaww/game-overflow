@@ -269,6 +269,18 @@ func GetPopularTopics(limit int) ([]Topic, error) {
 	return GetTopics(rows)
 }
 
+func GetFollowedTopics(userId int64, limit int) ([]Topic, error) {
+	//from follow, select id_user_followed where id_user_follower = userId
+	//from messages, select id_message where id_user = id_user_followed and id_topic in (select id_topic from topics where id_first_message in (select id_message from messages where id_user = id_user_followed))
+	rows, err := DB.Query("SELECT * FROM topics WHERE id_topic in (SELECT id_topic FROM messages WHERE id_user in (SELECT id_user_followed FROM follow WHERE id_user_follower = ?)) ORDER BY id_topic DESC LIMIT ?", userId, limit)
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println(rows)
+	fmt.Println(GetTopics(rows))
+	return GetTopics(rows)
+}
+
 // GetTopicsByTag returns topics by tag
 func GetTopicsByTag(tag string) ([]Topic, error) {
 	rows, err := DB.Query("SELECT * FROM topics WHERE id_topic IN (SELECT id_topic FROM have WHERE tag_name = ?)", tag)

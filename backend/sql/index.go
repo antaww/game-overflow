@@ -59,9 +59,10 @@ const (
 	FeedSortNewest  FeedSortType = "newest"
 	FeedSortOldest  FeedSortType = "oldest"
 	FeedSortPopular FeedSortType = "popular"
+	FeedSortFollow  FeedSortType = "follow"
 )
 
 // GetFeedSortingTypes returns all feed sorting types
 func GetFeedSortingTypes() []FeedSortType {
-	return []FeedSortType{FeedSortNewest, FeedSortOldest, FeedSortPopular}
+	return []FeedSortType{FeedSortNewest, FeedSortOldest, FeedSortPopular, FeedSortFollow}
 }
