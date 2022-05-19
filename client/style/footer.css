@@ -1,0 +1,126 @@
+footer {
+    position: relative;
+    z-index: 5000;
+    background-color: #171a1d;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    flex-direction: column;
+    bottom: 0;
+    margin: 0;
+    height: 15vw;
+    left: 0;
+    margin-top: 5vh;
+}
+
+.top {
+    left: 0;
+    position: absolute;
+    top: 0;
+    padding: 0.5vw 8vw 0.5vw 2vw;
+    width: 75%;
+}
+
+.underlineFooter {
+    content: "";
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    left: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(130deg, #6b6b6b, #111111 70%);
+}
+
+.top img {
+    height: 2vw;
+    padding: 0 0.5vw;
+    opacity: 0.5;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.top img:hover {
+    opacity: 1;
+}
+
+.bot {
+    display: flex;
+    position: absolute;
+    left: 0;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 7vh;
+}
+
+.logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45%;
+    top: 5vw;
+}
+
+.logos a:first-child img {
+    width: 6vw;
+}
+
+.logos a img {
+    width: 10vw;
+    padding: 0 1vw 0 0;
+}
+
+.logos a:nth-child(2) {
+    border-left: 0.1vw solid;
+    border-color: white;
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    width: 50%;
+    top: 5vw;
+    color: #7d7d7d;
+    font-size: 1vw;
+}
+
+.githubLinks {
+    opacity: 0.5;
+    transition: all 0.3s;
+}
+
+.githubLinks:hover {
+    opacity: 1;
+}
+
+.links a {
+    text-decoration: none;
+    color: #7d7d7d;
+    border-color: white !important;
+    border-left: 0.1vw solid;
+    padding: 0 1vw;
+}
+
+.links a:last-child {
+    border-right: 0.1vw solid;
+}
+
+.links p {
+    max-width: 80%;
+    margin: 2vw 0;
+}
+
+.fa.fa-github {
+    font-size: 5vh;
+}
+
+a.bot-logo {
+    border-right: solid 2px #a9a9a982;
+}
+
+.links > div:first-child {
+    width: 75%;
+}
