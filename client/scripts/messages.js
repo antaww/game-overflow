@@ -3,7 +3,7 @@ function handleLikes() {
     const dislikeButtons = document.querySelectorAll('.dislike-btn');
     likeButtons.forEach(button => {
         button.addEventListener('click', event => {
-            if(event.target.classList.contains('like-color')) {
+            if (event.target.classList.contains('like-color')) {
                 event.target.classList.remove('like-color');
                 event.target.closest('.topic-likes').querySelector('.fa-angle-down').classList.remove('dislike-color');
             } else {
@@ -24,7 +24,7 @@ function handleLikes() {
 
     dislikeButtons.forEach(button => {
         button.addEventListener('click', event => {
-            if(event.target.classList.contains('dislike-color')) {
+            if (event.target.classList.contains('dislike-color')) {
                 event.target.classList.remove('dislike-color');
                 event.target.closest('.topic-likes').querySelector('.fa-angle-up').classList.remove('like-color');
             } else {
@@ -55,6 +55,10 @@ function editMessage() {
             const text = id.querySelector("p.posts-content");
             text.setAttribute("contenteditable", "true");
             clickedParent.querySelector('.send-edited-form').querySelector('.send-edited-comment').classList.toggle('no-display');
+            //if .send-edited-comment has not the class .no-display, change background color of text
+            if (!clickedParent.querySelector('.send-edited-comment').classList.contains('no-display')) {
+                text.style.backgroundColor = 'rgba(245, 245, 245, 0.35)';
+            }
             clicked.classList.toggle('no-display');
         });
     });
@@ -66,6 +70,7 @@ function editMessage() {
             const id = clicked.closest('.sub-post');
             const text = id.querySelector("p.posts-content");
             text.setAttribute("contenteditable", "false");
+            text.style.backgroundColor = 'transparent';
             clickedParent.querySelector('.edit-comment').querySelector('.fa-solid').classList.toggle('no-display');
             clicked.classList.toggle('no-display');
             const messageId = e.target.closest('.send-edited-form').getAttribute('IdMessage');

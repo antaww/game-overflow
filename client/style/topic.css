@@ -172,3 +172,7 @@
 .like-color {
     color: #1a66a5;
 }
+
+.send-edited-comment:hover {
+    cursor: pointer;
+}
