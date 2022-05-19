@@ -1,15 +1,12 @@
 function handleLikes() {
     const likeButtons = document.querySelectorAll('.like-btn');
     const dislikeButtons = document.querySelectorAll('.dislike-btn');
+
     likeButtons.forEach(button => {
         button.addEventListener('click', event => {
-            if (event.target.classList.contains('like-color')) {
-                event.target.classList.remove('like-color');
-                event.target.closest('.topic-likes').querySelector('.fa-angle-down').classList.remove('dislike-color');
-            } else {
-                event.target.classList.add('like-color');
-                event.target.closest('.topic-likes').querySelector('.fa-angle-down').classList.remove('dislike-color');
-            }
+            button.classList.toggle('like-color');
+            event.target.closest('.topic-likes').querySelector('.fa-angle-down').classList.remove('dislike-color');
+
             const postId = event.target.closest('.post').getAttribute('data-post-id');
             const url = `/like?id=${postId}`;
             fetch(url, {
@@ -24,13 +21,9 @@ function handleLikes() {
 
     dislikeButtons.forEach(button => {
         button.addEventListener('click', event => {
-            if (event.target.classList.contains('dislike-color')) {
-                event.target.classList.remove('dislike-color');
-                event.target.closest('.topic-likes').querySelector('.fa-angle-up').classList.remove('like-color');
-            } else {
-                event.target.classList.add('dislike-color');
-                event.target.closest('.topic-likes').querySelector('.fa-angle-up').classList.remove('like-color');
-            }
+            button.classList.toggle('dislike-color');
+            event.target.closest('.topic-likes').querySelector('.fa-angle-up').classList.remove('like-color');
+
             const postId = event.target.closest('.post').getAttribute('data-post-id');
             const url = `/dislike?id=${postId}`;
             fetch(url, {
@@ -52,10 +45,9 @@ function editMessage() {
             let clicked = e.target;
             const clickedParent = clicked.parentElement.parentElement;
             const id = clicked.closest('.sub-post');
-            const text = id.querySelector("p.posts-content");
-            text.setAttribute("contenteditable", "true");
+            const text = id.querySelector('p.posts-content');
+            text.setAttribute('contenteditable', 'true');
             clickedParent.querySelector('.send-edited-form').querySelector('.send-edited-comment').classList.toggle('no-display');
-            //if .send-edited-comment has not the class .no-display, change background color of text
             if (!clickedParent.querySelector('.send-edited-comment').classList.contains('no-display')) {
                 text.style.backgroundColor = 'rgba(245, 245, 245, 0.35)';
             }
@@ -68,8 +60,8 @@ function editMessage() {
             let clicked = e.target;
             const clickedParent = clicked.parentElement.parentElement;
             const id = clicked.closest('.sub-post');
-            const text = id.querySelector("p.posts-content");
-            text.setAttribute("contenteditable", "false");
+            const text = id.querySelector('p.posts-content');
+            text.setAttribute('contenteditable', 'false');
             text.style.backgroundColor = 'transparent';
             clickedParent.querySelector('.edit-comment').querySelector('.fa-solid').classList.toggle('no-display');
             clicked.classList.toggle('no-display');

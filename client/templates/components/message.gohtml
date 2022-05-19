@@ -20,13 +20,9 @@
                 </div>
                 {{if ne .Message.Content "Message deleted"}}
                     <div class="topic-likes">
-                        <a href="#" class="like-btn">
-                            <i class="fa-solid fa-angle-up {{if .Message.IsLiked .ConnectedUser.Id}}like-color{{end}}"></i>
-                        </a>
+                        <i class="fa-solid fa-angle-up like-btn {{if .Message.IsLiked .ConnectedUser.Id}}like-color{{end}}"></i>
                         <p class="points">{{.Message.CalculatePoints}}</p>
-                        <a href="#" class="dislike-btn">
-                            <i class="fa-solid fa-angle-down {{if .Message.IsDisliked .ConnectedUser.Id}}dislike-color{{end}}"></i>
-                        </a>
+                        <i class="fa-solid fa-angle-down dislike-btn {{if .Message.IsDisliked .ConnectedUser.Id}}dislike-color{{end}}"></i>
                     </div>
                 {{end}}
             </div>

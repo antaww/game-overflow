@@ -14,17 +14,12 @@
                 <div class="topic-header-left">
                     <div class="sub-title">
                         <div class="topic-category">{{.Category}}</div>
-                        {{if eq .IsClosed false}}
+                        {{if not .IsClosed}}
                             <div class="topic-open">Opened<i class="fa-solid fa-lock-open topic-open"></i></div>
                         {{else}}
                             <div class="topic-closed">Closed<i class="fa-solid fa-lock topic-closed"></i></div>
                         {{end}}
-                        {{if le .GetAnswersNumber 1}}
-                            <div class="topic-answers feed-topic-tag">{{.GetAnswersNumber}} answer</div>
-                        {{else}}
-                            <div class="topic-answers feed-topic-tag">{{.GetAnswersNumber}} answers
-                            </div>
-                        {{end}}
+                        <div class="topic-answers feed-topic-tag">{{.GetAnswersNumber}} answer{{pluralInt .GetAnswersNumber}}</div>
                     </div>
                     <div class="sub-title">
                         <p class="topic-title">{{.Title}}</p>
@@ -42,13 +37,7 @@
 
             <div class="topic-header">
                 <div class="views-tags">
-                    {{if le .Views 1}}
-                        <div class="topic-views sub-title">{{.Views}} view
-                        </div>
-                    {{else}}
-                        <div class="topic-views sub-title">{{.Views}} views
-                        </div>
-                    {{end}}
+                    <div class="topic-views sub-title">{{.Views}} view{{pluralInt .Views}}</div>
                     <div class="topic-tags-box">
                         {{range .Tags}}
                             <div class="topic-tags feed-topic-tag">{{.}}</div>

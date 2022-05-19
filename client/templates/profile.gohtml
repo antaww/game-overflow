@@ -20,19 +20,10 @@
                 </span>
             </p>
             <a class="posts-count" href="#posts">
-                {{if lt (len $topics) 2}}
-                    {{len $topics}} post
-                {{else}}
-                    {{len $topics}} posts
-                {{end}}
-
+                {{len $topics}} post{{plural $topics}}
             </a>
             <a class="followers-count" href="#followers">
-                {{if lt (len $followers) 2}}
-                    {{len $followers}} follower
-                {{else}}
-                    {{len $followers}} followers
-                {{end}}
+                {{len $followers}} follower{{plural $followers}}
             </a>
             <a class="following-count" href="#following">
                 {{len $following}} following
@@ -99,11 +90,7 @@
                 {{if eq (len $followers) 0}}
                     {{$user.Username}} doesn't have any follower.
                 {{else}}
-                    {{if lt (len $followers) 2}}
-                        Follower ({{len $followers}})
-                    {{else}}
-                        Followers ({{len $followers}})
-                    {{end}}
+                    Follower{{plural $followers}} ({{len $followers}})
                 {{end}}
             </h2>
             {{if gt (len $followers) 0}}

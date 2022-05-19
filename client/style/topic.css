@@ -165,6 +165,10 @@
     background: #171a1d;
 }
 
+.topic-likes i {
+    cursor: pointer;
+}
+
 .dislike-color {
     color: #ff7373;
 }
