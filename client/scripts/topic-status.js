@@ -1,6 +1,6 @@
 const topicStatus = document.querySelector('.topic-status');
 
-topicStatus?.addEventListener('click', function (e) {
+topicStatus?.addEventListener('click', e => {
     e.preventDefault();
     const confirmMessage = confirm('Are you sure you want to close this topic?');
     if (confirmMessage) {
@@ -12,7 +12,7 @@ topicStatus?.addEventListener('click', function (e) {
 
 const topicStatusClosed = document.querySelector('.topic-status-closed');
 
-topicStatusClosed?.addEventListener('click', function (e) {
+topicStatusClosed?.addEventListener('click', e => {
     e.preventDefault();
     const confirmMessage = confirm('Are you sure you want to open this topic?');
     if (confirmMessage) {

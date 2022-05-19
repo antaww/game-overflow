@@ -20,6 +20,18 @@ var TemplateMap = template.FuncMap{
 	"formatDateLong": func(t time.Time) string {
 		return t.Format("Monday, January 2, 2006 at 3:04pm")
 	},
+	"plural": func(items []interface{}) string {
+		if len(items) > 1 {
+			return "s"
+		}
+		return ""
+	},
+	"pluralInt": func(items int) string {
+		if items > 1 {
+			return "s"
+		}
+		return ""
+	},
 	"formatRelativeDate": func(t time.Time) string {
 		now := time.Now()
 		diff := now.Sub(t)
