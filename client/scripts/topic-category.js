@@ -10,7 +10,7 @@ options.forEach(option => {
     }
 });
 
-select?.addEventListener('change', function (e) {
+select?.addEventListener('change', e => {
     if (e.target.value !== "") {
         e.preventDefault();
         const confirmMessage = confirm(`Are you sure you want to change the category to ${e.target.value}?`);
@@ -20,5 +20,4 @@ select?.addEventListener('change', function (e) {
             window.location.href = `/change-category?id=${topicId}&category=${e.target.value}`;
         }
     }
-
 });

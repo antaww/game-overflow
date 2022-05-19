@@ -5,57 +5,63 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     {{if and (.ConnectedUser) (ne .ConnectedUser.Role "banned")}}
-    <div class="feed-content">
-        <div class="new-topic">
-            <h1>New topic</h1>
+        <div class="feed-content">
+            <div class="new-topic">
+                <h1>New topic</h1>
 
-            <form action="/create-topic" id="topic-form" method="POST">
-                <div class="create-topic-title create-topic-options">
-                    <label class="required-input" for="title">Title</label>
-                    <input class="create-topic-input" id="title" maxlength="50" minlength="1" name="title"
-                           placeholder="Title" required type="text">
-                </div>
-                <div class="create-topic-options">
-                    <p class="required-input">Choose a category:</p>
-                    <div class="create-topic-category">
-                        {{range .GetCategories}}
-                            <input checked class="create-topic-input" id="{{.Name}}" name="category"
-                                   {{if eq .Name "pc"}}required{{end}} type="radio" value="{{.Name}}">
-                            <span class="create-topic-input-radio"></span>
-                            <label for="{{.Name}}">{{.Name}}</label>
-                        {{end}}
+                <form action="/create-topic" id="topic-form" method="POST">
+                    <div class="create-topic-title create-topic-options">
+                        <label class="required-input" for="title">Title</label>
+                        <input class="create-topic-input" id="title" maxlength="50" minlength="1" name="title"
+                               placeholder="Title" required type="text">
                     </div>
-                </div>
-
-                <div class="create-topic-content create-topic-options">
-                    <label class="required-input" for="content">Content</label>
-                    {{template "message-toolbar" .}}
-                    <textarea class="create-topic-input" cols="30" id="content" maxlength="4000" minlength="1"
-                              name="content" placeholder="Content" required rows="5"></textarea>
-                </div>
-
-                <div class="create-topic-options">
-                    <label for="tags">Tags</label>
-                    <div class="create-topic-input create-topic-tags">
-                        <span class="tag-list"></span>
-                        <input autocomplete="off" class="create-topic-input create-topic-tags-input" id="tags" list="tags-data" maxlength="32" minlength="2"
-                               name="tags" placeholder="Tags" type="text">
-                        <datalist id="tags-data">
-                            {{range .GetTags}}
-                                <option value="{{.Name}}"></option>
+                    <div class="create-topic-options">
+                        <p class="required-input">Choose a category:</p>
+                        <div class="create-topic-category">
+                            {{range .GetCategories}}
+                                <input checked class="create-topic-input" id="{{.Name}}" name="category"
+                                       {{if eq .Name "pc"}}required{{end}} type="radio" value="{{.Name}}">
+                                <span class="create-topic-input-radio"></span>
+                                <label for="{{.Name}}">{{.Name}}</label>
                             {{end}}
-                        </datalist>
+                        </div>
                     </div>
-                </div>
 
-                <button class="btn confirm" id="btn-submit" name="submit" type="submit" value="Post">
-                    Create<i class="fa-solid fa-check"></i>
-                </button>
-            </form>
+                    <div class="create-topic-content create-topic-options">
+                        <label class="required-input" for="content">Content</label>
+                        {{template "message-toolbar" .}}
+                        <textarea class="create-topic-input"
+                                  cols="30"
+                                  id="content"
+                                  maxlength="4000"
+                                  minlength="1"
+                                  name="content"
+                                  placeholder="Content"
+                                  required
+                                  rows="5"></textarea>
+                    </div>
 
+                    <div class="create-topic-options">
+                        <label for="tags">Tags</label>
+                        <div class="create-topic-input create-topic-tags">
+                            <span class="tag-list"></span>
+                            <input autocomplete="off" class="create-topic-input create-topic-tags-input" id="tags" list="tags-data" maxlength="32" minlength="2"
+                                   name="tags" placeholder="Tags" type="text">
+                            <datalist id="tags-data">
+                                {{range .GetTags}}
+                                    <option value="{{.Name}}"></option>
+                                {{end}}
+                            </datalist>
+                        </div>
+                    </div>
+
+                    <button class="btn confirm" id="btn-submit" name="submit" type="submit" value="Post">
+                        Create<i class="fa-solid fa-check"></i>
+                    </button>
+                </form>
+            </div>
         </div>
-    </div>
+    {{end}}
 
-{{end}}
 {{template "footer"}}
 {{end}}

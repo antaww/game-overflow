@@ -3,7 +3,7 @@ const dropdown = document.querySelector('.dropdown');
 const categories = document.querySelector('.categories');
 const dropdownCategories = document.querySelector('.dropdown-categories');
 const dropdownArrow = document.querySelector('.dropdown-arrow');
-let timeout = 300; //temps en ms (doit être identique à la valeur de l'animation css)
+let timeout = 300;
 
 username?.addEventListener('click', event => {
     if (dropdown.classList.contains('block')) {
@@ -17,7 +17,7 @@ username?.addEventListener('click', event => {
     }
 });
 
-function categories_checker() {
+function categoriesChecker() {
     if (dropdownArrow.classList.contains("rotate")) {
         dropdownArrow.classList.remove("rotate")
         dropdownArrow.classList.add("rotate-reverse")
@@ -38,7 +38,7 @@ function categories_checker() {
 }
 
 categories.addEventListener('click', event => {
-    categories_checker();
+    categoriesChecker();
 });
 
 document.addEventListener('click', event => {

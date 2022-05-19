@@ -165,10 +165,18 @@
     background: #171a1d;
 }
 
+.topic-likes i {
+    cursor: pointer;
+}
+
 .dislike-color {
     color: #ff7373;
 }
 
 .like-color {
     color: #1a66a5;
+}
+
+.send-edited-comment:hover {
+    cursor: pointer;
 }
