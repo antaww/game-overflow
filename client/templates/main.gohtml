@@ -8,6 +8,7 @@
                 Trends <i class="fa fa-fire"></i>
             </h2>
             <ul>
+                <a href="/legal-notice">Legal Notice</a>
                 {{range .GetTrendingTags 5}}
                     <li>
                         <p></p>
@@ -27,12 +28,12 @@
             {{end}}
         </div>
 
-
-
-        {{if and (.ConnectedUser) (ne .ConnectedUser.Role "banned")}}
-            <a href="create-topic" class="create-topic">
-                <div class="post-question">Post a question<i class="fa-solid fa-arrow-right"></i></div>
-            </a>
+        {{if .ConnectedUser}}
+            {{if ne .ConnectedUser.Role "banned"}}
+                <a href="create-topic" class="create-topic">
+                    <div class="post-question">Post a question<i class="fa-solid fa-arrow-right"></i></div>
+                </a>
+            {{end}}
         {{end}}
     </div>
 {{end}}

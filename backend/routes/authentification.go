@@ -214,3 +214,15 @@ func CookieRoute(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
+func LegalNoticeRoute(w http.ResponseWriter, r *http.Request) {
+	templateData, err := GetTemplatesDataFromRoute(w, r)
+	if err != nil {
+		utils.RouteError(err)
+	}
+
+	err = utils.CallTemplate("legal-notice", templateData, w)
+	if err != nil {
+		utils.RouteError(err)
+	}
+}

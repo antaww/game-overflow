@@ -2,7 +2,7 @@
     {{$author := .GetFirstMessage.GetUser}}
     <a href="/topic?id={{.Id}}" class="topic">
         <div class="user-wrapper">
-            <div class="circle {{if $author.IsOnline}}dis{{end}}connected avatar-wrapper">
+            <div class="circle {{if $author.IsOnline}}connected {{else}} disconnected{{end}} avatar-wrapper">
                 <img alt="" class="avatar" src="{{template "avatar" $author.ProfilePic.String}}">
             </div>
             <p class="username">
