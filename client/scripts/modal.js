@@ -16,14 +16,6 @@ function preventDefaultForScrollKeys(e) {
 }
 
 let supportsPassive = false;
-try {
-    window.addEventListener("test", null, Object.defineProperty({}, 'passive', {
-        get: () => {
-            supportsPassive = true;
-        }
-    }));
-} catch (e) {
-}
 
 const wheelOpt = supportsPassive ? {passive: false} : false;
 const wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
@@ -98,8 +90,7 @@ followBtn.forEach(element => {
                 body: JSON.stringify({id: id})
             }).then(res => {
                 if (res.status === 200) {
-                    clicked.innerHTML = '<i\n' +
-                        '                                                class="fa-solid fa-xmark"></i> Unfollow';
+                    clicked.innerHTML = '<i class="fa-solid fa-xmark"></i> Unfollow';
                     clicked.classList.add('unfollow-btn');
                     clicked.classList.remove('follow-btn');
                 }

@@ -4,7 +4,12 @@ function handleLikes() {
 
 	likeButtons.forEach(button => {
 		button.addEventListener('click', event => {
-			button.classList.toggle('like-color');
+			if (event.target.classList.contains('like-color')) {
+				event.target.classList.remove('like-color');
+			} else {
+				event.target.classList.add('like-color');
+			}
+
 			event.target.closest('.topic-likes').querySelector('.fa-angle-down').classList.remove('dislike-color');
 
 			const postId = event.target.closest('.post').getAttribute('data-post-id');
@@ -21,7 +26,12 @@ function handleLikes() {
 
 	dislikeButtons.forEach(button => {
 		button.addEventListener('click', event => {
-			button.classList.toggle('dislike-color');
+			if (event.target.classList.contains('dislike-color')) {
+				event.target.classList.remove('dislike-color');
+			} else {
+				event.target.classList.add('dislike-color');
+			}
+
 			event.target.closest('.topic-likes').querySelector('.fa-angle-up').classList.remove('like-color');
 
 			const postId = event.target.closest('.post').getAttribute('data-post-id');
@@ -73,24 +83,22 @@ function editMessage() {
 	});
 }
 
-const deleteMessage = document.querySelectorAll('.delete-comment');
-
-deleteMessage.forEach(element => {
-	element.addEventListener('click', e => {
-		let clicked = e.target;
-		e.preventDefault();
-		const confirmMessage = confirm('Are you sure you want to delete this message ?');
-		if (confirmMessage) {
-			const url = new URL(window.location.href);
-			const idMessage = clicked.parentElement.parentElement.getAttribute('idMessage');
-			console.log(idMessage);
-			window.location.href = `/delete-message?idMessage=${idMessage}&id=${url.searchParams.get('id')}`;
-		}
-	});
-});
-
-
 window.onload = () => {
 	handleLikes();
 	editMessage();
+
+	const deleteMessage = document.querySelectorAll('.delete-comment');
+
+	deleteMessage.forEach(element => {
+		element.addEventListener('click', e => {
+			let clicked = e.target;
+			e.preventDefault();
+			const confirmMessage = confirm('Are you sure you want to delete this message ?');
+			if (confirmMessage) {
+				const url = new URL(window.location.href);
+				const idMessage = clicked.parentElement.parentElement.getAttribute('idMessage');
+				window.location.href = `/delete-message?idMessage=${idMessage}&id=${url.searchParams.get('id')}`;
+			}
+		});
+	});
 };
