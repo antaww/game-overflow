@@ -7,7 +7,7 @@ footer {
     justify-content: center;
     left: 0;
 	margin: 1rem 0 0;
-    position: sticky;
+    position: fixed;
     width: 100%;
     z-index: 5000;
 }
