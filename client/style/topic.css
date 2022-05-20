@@ -1,7 +1,15 @@
-.topic-feed {
-    align-content: flex-end;
+@import url('./topic-infos.css');
+
+.topic-page-wrapper {
+    align-items: center;
     display: flex;
-    width: 60%;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 8rem;
+}
+
+.topic-page {
+    width: 50%;
 }
 
 .topic {
@@ -10,7 +18,7 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 5vh;
-    padding: 4vh;
+    padding: 2rem 1.5rem;
 }
 
 .topic-top {
@@ -34,7 +42,8 @@
 .topic-general-info {
     display: flex;
     font-size: 90%;
-    justify-content: space-around;
+    justify-content: space-between;
+    width: 90%;
 }
 
 .topic-user-wrapper > a > img {
@@ -43,8 +52,12 @@
     width: 9vh;
 }
 
-.topic-content, .topic-user, .topic-views {
+.topic-user, .topic-views {
     font-size: smaller;
+}
+
+.topic-content {
+    font-size: 1em;
 }
 
 .topic-content em {
@@ -157,8 +170,8 @@
     cursor: pointer;
 }
 
-.message-deleted {
-    color: #8080807a;
+.message-deleted p {
+    color: #808080;
 }
 
 /* OPTIONS TOPIC CATEGORY */

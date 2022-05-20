@@ -1,7 +1,8 @@
 {{define "content"}}
     {{template "navbar" .}}
-    <link rel="stylesheet" href="/static/profile.css">
     <script defer src="/scripts/ban.js"></script>
+    <link rel="stylesheet" href="/static/profile.css">
+
     {{$user := .ShownUser}}
     <div class="color" style="background-color: {{decimalToHex $user.Color}};">
         <div class="avatar-circle">
@@ -20,10 +21,10 @@
                 </span>
             </p>
             <a class="posts-count" href="#posts">
-                {{len $topics}} post{{plural len $topics}}
+                {{len $topics}} post{{plural (len $topics)}}
             </a>
             <a class="followers-count" href="#followers">
-                {{len $followers}} follower{{plural len $followers}}
+                {{len $followers}} follower{{plural (len $followers)}}
             </a>
             <a class="following-count" href="#following">
                 {{len $following}} following
@@ -90,7 +91,7 @@
                 {{if eq (len $followers) 0}}
                     {{$user.Username}} doesn't have any follower.
                 {{else}}
-                    Follower{{plural $followers}} ({{len $followers}})
+                    Follower{{plural (len $followers)}} ({{len $followers}})
                 {{end}}
             </h2>
             {{if gt (len $followers) 0}}

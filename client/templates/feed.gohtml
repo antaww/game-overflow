@@ -1,5 +1,8 @@
 {{define "content"}}
     {{template "navbar" .}}
+
+    <link rel="stylesheet" href="/static/feed.css">
+
     <div class="feed-content">
         <div class="feed">
             {{template "feed-options" .}}
@@ -11,7 +14,7 @@
 
         {{if .ConnectedUser}}
             {{if ne .ConnectedUser.Role "banned"}}
-                <a href="create-topic" class="create-topic">
+                <a href="/create-topic" class="create-topic">
                     <div class="post-question">Post a question<i class="fa-solid fa-arrow-right"></i></div>
                 </a>
             {{end}}

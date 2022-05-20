@@ -1,6 +1,6 @@
 {{define "feed-topic"}}
     {{$author := .GetFirstMessage.GetUser}}
-    <a href="/topic?id={{.Id}}" class="topic">
+    <a href="/topic?id={{.Id}}" class="feed-topic">
         <div class="user-wrapper">
             <div class="circle {{if $author.IsOnline}}connected {{else}} disconnected{{end}} avatar-wrapper">
                 <img alt="" class="avatar" src="{{template "avatar" $author.ProfilePic.String}}">

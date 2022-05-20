@@ -1,7 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;0,800;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600;1,700&display=swap');
 @import url("./login.css");
-@import url("./feed.css");
-@import url("./topic.css");
 @import url("./modal.css");
 @import url("./cookies.css");
 
@@ -18,9 +16,15 @@
     outline: none;
 }
 
+html {
+    min-height: 100%;
+    padding-bottom: 12rem;
+    position: relative;
+}
+
 body {
     background-color: #1E2529;
-    height: 100vh;
+    height: 100%;
     margin: 0;
 }
 
@@ -356,12 +360,6 @@ body {
     padding: 12px;
     transition: all .1s;
 }
-
-.topic:hover {
-    background: #232b2f;
-    border: 2px #ffffff5e solid;
-}
-
 
 .points-letters {
     font-size: 80%;

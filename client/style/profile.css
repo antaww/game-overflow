@@ -1,3 +1,5 @@
+@import url('./feed.css');
+
 :root {
     --color-height: 15rem;
     --avatar-inset-height: 3rem;
@@ -45,10 +47,10 @@ body {
 }
 
 .profile-username {
-    font-size: 2.5rem;
-    display: flex;
-    margin-top: 0.3em;
     align-items: center;
+    display: flex;
+    font-size: 2.5rem;
+    margin-top: 0.3em;
 }
 
 .profile-username i {
@@ -137,9 +139,9 @@ li .user:hover {
 
 .fa-ellipsis-vertical {
     color: #838383;
+    margin: 0 2vh;
     position: relative;
     top: 1.5vh;
-    margin: 0 2vh;
 }
 
 .dots-clicked {
@@ -147,18 +149,18 @@ li .user:hover {
 }
 
 .ban-options {
+    align-items: center;
     background-color: #273136;
     display: flex;
-    align-items: center;
 }
 
 .ban-option, .unban-option {
+    background-color: #273136;
+    cursor: pointer;
     display: flex;
     font-size: 2.5vh;
-    cursor: pointer;
-    width: fit-content;
-    background-color: #273136;
     padding: 1vh;
+    width: fit-content;
 }
 
 .user-status {
@@ -166,8 +168,8 @@ li .user:hover {
 }
 
 .ban-icon, .unban-icon {
-    display: flex;
     align-items: center;
+    display: flex;
     margin-right: 1vh;
 }
 

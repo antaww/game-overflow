@@ -1,3 +1,5 @@
+@import url('./feed.css');
+
 .trends {
     align-items: center;
     background-color: #2b333d;
@@ -68,9 +70,9 @@
 }
 
 .privacy-policy-title {
-    position: fixed;
     background-color: #1e2529;
-    width: 100%;
-    top: 10vh;
     padding-left: 7vh;
+    position: fixed;
+    top: 10vh;
+    width: 100%;
 }
