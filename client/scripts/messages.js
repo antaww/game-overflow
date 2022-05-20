@@ -1,11 +1,3 @@
-function displayMarkdown() {
-	const textArea = document.querySelector('textarea');
-	const markdown = document.querySelector('#markdown');
-	textArea.addEventListener('input', () => {
-		markdown.innerHTML = window.marked(textArea.value);
-	});
-}
-
 function handleLikes() {
 	const likeButtons = document.querySelectorAll('.like-btn');
 	const dislikeButtons = document.querySelectorAll('.dislike-btn');
@@ -20,7 +12,7 @@ function handleLikes() {
 
 			event.target.closest('.topic-likes').querySelector('.fa-angle-down').classList.remove('dislike-color');
 
-			const postId = event.target.closest('.post').getAttribute('data-post-id');
+			const postId = event.target.closest('.topic').getAttribute('data-post-id');
 			const url = `/like?id=${postId}`;
 			fetch(url, {
 				method: 'PUT',
@@ -42,7 +34,7 @@ function handleLikes() {
 
 			event.target.closest('.topic-likes').querySelector('.fa-angle-up').classList.remove('like-color');
 
-			const postId = event.target.closest('.post').getAttribute('data-post-id');
+			const postId = event.target.closest('.topic').getAttribute('data-post-id');
 			const url = `/dislike?id=${postId}`;
 			fetch(url, {
 				method: 'PUT',
@@ -63,7 +55,7 @@ function editMessage() {
 			let clicked = e.target;
 			const clickedParent = clicked.parentElement.parentElement;
 			const id = clicked.closest('.sub-post');
-			const text = id.querySelector('p.posts-content');
+			const text = id.querySelector('md-block.topic-content');
 			text.setAttribute('contenteditable', 'true');
 			clickedParent.querySelector('.send-edited-form').querySelector('.send-edited-comment').classList.toggle('no-display');
 			if (!clickedParent.querySelector('.send-edited-comment').classList.contains('no-display')) {
@@ -78,13 +70,14 @@ function editMessage() {
 			let clicked = e.target;
 			const clickedParent = clicked.parentElement.parentElement;
 			const id = clicked.closest('.sub-post');
-			const text = id.querySelector('p.posts-content');
+			const text = id.querySelector('md-block.topic-content');
 			text.setAttribute('contenteditable', 'false');
 			text.style.backgroundColor = 'transparent';
 			clickedParent.querySelector('.edit-comment').querySelector('.fa-solid').classList.toggle('no-display');
 			clicked.classList.toggle('no-display');
-			const messageId = e.target.closest('.send-edited-form').getAttribute('IdMessage');
-			const topicId = e.target.closest('.send-edited-form').getAttribute('IdTopic');
+
+			const messageId = e.target.closest('.send-edited-form').dataset.messageId;
+			const topicId = e.target.closest('.send-edited-form').dataset.topicId;
 			const url = `/edit-message?idMessage=${messageId}&id=${topicId}`;
 			fetch(url, {
 				method: 'POST',
@@ -95,7 +88,7 @@ function editMessage() {
 	});
 }
 
-window.onload = () => {
+window.addEventListener('load', () => {
 	handleLikes();
 	editMessage();
 
@@ -103,14 +96,13 @@ window.onload = () => {
 
 	deleteMessage.forEach(element => {
 		element.addEventListener('click', e => {
-			let clicked = e.target;
 			e.preventDefault();
 			const confirmMessage = confirm('Are you sure you want to delete this message ?');
 			if (confirmMessage) {
 				const url = new URL(window.location.href);
-				const idMessage = clicked.parentElement.parentElement.getAttribute('idMessage');
-				window.location.href = `/delete-message?idMessage=${idMessage}&id=${url.searchParams.get('id')}`;
+				const messageId = element.parentElement.parentElement.dataset.messageId;
+				window.location.href = `/delete-message?idMessage=${messageId}&id=${url.searchParams.get('id')}`;
 			}
 		});
 	});
-};
+});

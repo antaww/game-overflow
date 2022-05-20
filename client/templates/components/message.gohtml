@@ -1,7 +1,7 @@
 {{define "message"}}
-    <div class="post sub-post" data-post-id="{{.Id}}">
-        <div>
-            <div>
+    <div class="topic sub-post" data-post-id="{{.Id}}">
+        <div class="sub-post-top">
+            <div class="sub-post-user-wrapper">
                 <a>
                     <div class="circle {{if .Message.GetUser.IsOnline}} connected {{else}} disconnected {{end}}">
                         <img alt="" class="avatar modalProfileBtn"
@@ -14,11 +14,14 @@
                 </a>
             </div>
             <div class="topic-content-likes">
-                <div>
-                    <p {{if eq .Message.Content "Message deleted"}}class="posts-content message-deleted" {{else}} class="posts-content" {{end}}>{{.Message.Content}}</p>
+                {{$mesageDeleted := eq .Message.Content "Message deleted"}}
+                <div class="sub-post-content">
+                    <md-block {{if $mesageDeleted}}class="topic-content message-deleted" {{else}} class="topic-content" {{end}}>
+                        {{.Message.Content}}
+                    </md-block>
                     <label class="edit-message" for="edit-text"></label>
                 </div>
-                {{if ne .Message.Content "Message deleted"}}
+                {{if not $mesageDeleted}}
                     <div class="topic-likes">
                         <i class="fa-solid fa-angle-up like-btn {{if .Message.IsLiked .ConnectedUser.Id}}like-color{{end}}"></i>
                         <p class="points">{{.Message.CalculatePoints}}</p>
@@ -38,7 +41,7 @@
                     <div class="topic-general-info">
                         <div class="topic-date">{{formatDate .CreatedAt}}</div>
                         <div class="edit-delete-comment">
-                            <div idMessage="{{.Message.Id}}" idTopic="{{.Message.IdTopic}}">
+                            <div data-id-message="{{.Message.Id}}">
                                 <div class="delete-comment">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </div>
@@ -47,7 +50,7 @@
                                 <div class="edit-comment">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </div>
-                                <div IdMessage="{{.Message.Id}}" IdTopic="{{.Message.IdTopic}}"
+                                <div data-message-id="{{.Message.Id}}" data-topic-id="{{.Message.IdTopic}}"
                                      class="send-edited-form">
                                     <div class="send-edited-comment no-display">
                                         Confirm
