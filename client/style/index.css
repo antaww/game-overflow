@@ -365,18 +365,6 @@ body {
     font-size: 80%;
 }
 
-.post-question:hover i {
-    opacity: 1;
-    padding-left: 8px;
-    width: 10px;
-}
-
-.post-question i {
-    opacity: 0;
-    transition: all 0.20s, opacity 0.10s ease-in;
-    width: 0;
-}
-
 .tooltip:hover::after {
     background-color: var(--tooltip-color);
     border-radius: 5px;

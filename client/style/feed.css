@@ -7,14 +7,13 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /*margin-bottom: 12rem;*/
 }
 
 .feed {
     display: flex;
     flex-direction: column;
     margin-top: 12vh;
-    width: min(50rem, 60vw);
+    width: min(50rem, 55vw);
 }
 
 .feed-topic {
@@ -121,7 +120,7 @@
     padding: .5rem;
     position: fixed;
     text-decoration: none;
-    transition: all .3s;
+    transition: all .3s, bottom .0s;
     white-space: nowrap;
 }
 
@@ -152,4 +151,16 @@
 
 .options option {
     border: none;
+}
+
+.create-topic:hover i {
+    opacity: 1;
+    padding-left: 8px;
+    width: 10px;
+}
+
+.create-topic i {
+    opacity: 0;
+    transition: all 0.20s, opacity 0.10s ease-in;
+    width: 0;
 }

@@ -1,0 +1,89 @@
+.topic-title, .topic-likes, .feed-likes {
+    color: #ffffff;
+    font-size: 2.5vh;
+    font-weight: 700;
+    margin: 0;
+}
+
+.topic-category-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.topic-category-changer {
+    display: flex;
+    flex-direction: row;
+}
+
+.topic-category-link {
+    width: min-content;
+}
+
+.topic-category {
+    background: #5b37a8;
+    border-radius: 9px;
+    color: #bfbeff;
+    font-weight: 800;
+    padding: 0 1vh;
+    text-transform: uppercase;
+    width: fit-content;
+}
+
+.topic-date {
+    color: #6d808f;
+    font-style: italic;
+    font-weight: 400;
+}
+
+.topic-likes {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.topic-likes p {
+    margin: 0;
+}
+
+.topic-tags {
+    background: #383359;
+    border-radius: 6px;
+    color: #9b9dd6;
+    font-weight: 700;
+    margin-left: 1vh;
+    margin-top: 2px;
+    padding: 0 1vh;
+    text-decoration: none;
+    transition: all .2s;
+    width: fit-content;
+}
+
+.topic-tags:hover {
+    background: #282633;
+}
+
+.topic-open {
+    color: #4eee40;
+    margin-left: 1vw;
+    white-space: nowrap;
+}
+
+.topic-closed {
+    color: #ff7373;
+    margin-left: 1vw;
+    white-space: nowrap;
+}
+
+.topic-answers {
+    color: #2975b2;
+    font-weight: 500;
+    margin-left: 1vw;
+}
+
+.topic-views {
+    color: #435564;
+    font-weight: 600;
+    mix-blend-mode: normal;
+}
