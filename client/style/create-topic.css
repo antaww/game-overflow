@@ -20,11 +20,13 @@
 }
 
 .create-topic-category {
+    align-items: center;
     display: flex;
+    flex-direction: row;
 }
 
-.create-topic-category > label {
-    margin-right: 1vh;
+.category {
+    margin-right: 1rem;
 }
 
 .create-topic-input, .create-topic-category {
@@ -36,12 +38,6 @@
     margin-top: 1vh;
     padding: 1vh;
     position: relative;
-}
-
-textarea.create-topic-input {
-    max-height: 100em;
-    min-height: 8em;
-    resize: vertical;
 }
 
 #topic-form label {
@@ -201,4 +197,8 @@ textarea.create-topic-input {
 
 .ck-content blockquote {
     padding-left: 10px;
+}
+
+.ck-content i {
+    font-style: italic !important;
 }

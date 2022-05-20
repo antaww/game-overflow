@@ -1,3 +1,11 @@
+function displayMarkdown() {
+	const textArea = document.querySelector('textarea');
+	const markdown = document.querySelector('#markdown');
+	textArea.addEventListener('input', () => {
+		markdown.innerHTML = window.marked(textArea.value);
+	});
+}
+
 function handleLikes() {
 	const likeButtons = document.querySelectorAll('.like-btn');
 	const dislikeButtons = document.querySelectorAll('.dislike-btn');

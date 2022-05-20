@@ -21,10 +21,11 @@
                         <p class="required-input">Choose a category:</p>
                         <div class="create-topic-category">
                             {{range .GetCategories}}
-                                <input checked class="create-topic-input" id="{{.Name}}" name="category"
-                                       {{if eq .Name "pc"}}required{{end}} type="radio" value="{{.Name}}">
-                                <span class="create-topic-input-radio"></span>
-                                <label for="{{.Name}}">{{.Name}}</label>
+                                <div class="category">
+                                    <input checked class="create-topic-input" id="{{.Name}}" name="category"
+                                           {{if eq .Name "pc"}}required{{end}} type="radio" value="{{.Name}}">
+                                    <label for="{{.Name}}">{{.Name}}</label>
+                                </div>
                             {{end}}
                         </div>
                     </div>

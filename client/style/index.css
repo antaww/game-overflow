@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800;1,400;1,700&display=swap');
 @import url("./login.css");
 @import url("./feed.css");
 @import url("./topic.css");
@@ -12,15 +12,15 @@
 }
 
 * {
-    font-family: "Poppins", sans-serif;
-    outline: none;
-    font-style: normal;
     color: #FFF;
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+    outline: none;
 }
 
 body {
-    margin: 0;
     background-color: #1E2529;
+    margin: 0;
 }
 
 /* MENU BAR */
@@ -28,21 +28,21 @@ body {
 .menu {
     background-color: #2E3944;
     display: flex;
+    font-weight: 800;
+    height: 10vh;
     justify-content: space-between;
-    width: 100%;
     position: fixed;
     top: 0;
-    height: 10vh;
-    font-weight: 800;
+    width: 100%;
     z-index: 100000000;
 }
 
 .logo {
+    align-items: center;
+    cursor: pointer;
     display: flex;
     height: 100%;
-    align-items: center;
     padding-left: 1vw;
-    cursor: pointer;
 }
 
 .logo img {
@@ -50,45 +50,45 @@ body {
 }
 
 .logo-name {
-    display: flex;
     align-items: center;
+    display: flex;
 }
 
 .logo > img {
-    width: auto;
     height: 82%;
+    width: auto;
 }
 
 .categories {
-    display: flex;
-    justify-content: center;
     align-items: center;
     color: #FFF;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
 }
 
 .search-bar {
-    display: flex;
     align-items: center;
+    display: flex;
 }
 
 #search-input {
     background: #1F1F23;
-    border-radius: 11px;
-    width: 30vw;
-    height: 4vh;
     border: none;
+    border-radius: 11px;
     color: white;
+    height: 4vh;
     padding: 0 3%;
+    width: 30vw;
 }
 
 .search-btn {
     background: #1F1F23;
-    border-radius: 11px;
     border: none;
-    height: 4vh;
-    cursor: pointer;
+    border-radius: 11px;
     color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    height: 4vh;
 }
 
 #search-input:placeholder-shown ~ .search-btn {
@@ -96,10 +96,10 @@ body {
 }
 
 .account-options {
-    padding-right: 1.5vw;
-    display: flex;
     align-items: center;
+    display: flex;
     height: 100%;
+    padding-right: 1.5vw;
 }
 
 .actions {
@@ -107,14 +107,14 @@ body {
 }
 
 .actions > a > button, .actions .btn, .actions > button {
-    font-weight: 700;
-    border-radius: 11px;
-    padding: 5px 25px;
-    cursor: pointer;
     border: 2px solid #17629E;
+    border-radius: 11px;
     color: #FFF;
-    width: fit-content;
+    cursor: pointer;
+    font-weight: 700;
     margin-right: 1vh;
+    padding: 5px 25px;
+    width: fit-content;
 }
 
 .log-in {
@@ -133,8 +133,8 @@ body {
 }
 
 .block {
-    display: block !important;
     animation: rotateX 300ms ease-in-out forwards;
+    display: block !important;
     transform-origin: top center;
 }
 
@@ -148,13 +148,13 @@ body {
 }
 
 .dropdown-categories .dropdown-options i {
-    width: 25px;
     margin-left: -8px;
+    width: 25px;
 }
 
 .username a {
-    display: flex;
     align-items: center;
+    display: flex;
     justify-content: center;
     text-decoration: none;
 }
@@ -170,11 +170,11 @@ body {
 }
 
 .dropdown-categories {
-    top: 10vh;
     background-color: #263137;
     border-radius: 15px;
     display: flex;
     flex-direction: column;
+    top: 10vh;
 }
 
 .dropdown-options {
@@ -182,8 +182,8 @@ body {
     border: none;
     color: #FFF;
     cursor: pointer;
-    font-weight: 600;
     font-size: 1rem;
+    font-weight: 600;
     padding: 10px 15px;
     text-align: left;
     transition: all .3s;
@@ -199,9 +199,9 @@ body {
 }
 
 .actions.username .dropdown-options {
+    min-width: 120%;
     padding-left: 20px;
     padding-right: 50px;
-    min-width: 120%;
 }
 
 .actions.username .dropdown-options i {
@@ -247,41 +247,41 @@ body {
 }
 
 .avatar {
-    width: 50px;
-    height: 50px;
     border-radius: 50%;
     display: block;
     filter: drop-shadow(0 0 0.35rem #222);
+    height: 50px;
     object-fit: scale-down;
     transition: all .3s;
+    width: 50px;
 }
 
 .avatar-navbar {
-    width: 50px;
-    height: 50px;
     border-radius: 50%;
     display: block;
     filter: drop-shadow(0 0 0.35rem #222);
+    height: 50px;
     object-fit: scale-down;
-    transition: all .2s;
     padding: 4px;
+    transition: all .2s;
+    width: 50px;
 }
 
 .avatar-navbar:hover {
-    cursor: pointer;
-    border-radius: 10%;
     background-color: rgba(232, 234, 237, .08);
+    border-radius: 10%;
+    cursor: pointer;
 }
 
 .circle::after {
-    content: "";
-    width: 12px;
-    height: 12px;
     border-radius: 50%;
-    position: absolute;
+    content: "";
     display: block;
-    top: 0;
+    height: 12px;
+    position: absolute;
     right: 0;
+    top: 0;
+    width: 12px;
 }
 
 .circle.connected::after {
@@ -298,12 +298,12 @@ body {
 }
 
 .message-area {
+    color: black;
     height: 165px;
-    width: 323px;
+    left: 40%;
     position: absolute;
     top: 50%;
-    color: black;
-    left: 40%;
+    width: 323px;
 }
 
 .rotate {
@@ -344,16 +344,16 @@ body {
 
 .close:hover,
 .close:focus {
-    color: #fff;
-    text-decoration: none;
-    cursor: pointer;
     animation: pulse 2s infinite;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
 }
 
 .topic {
-    transition: all .1s;
     box-sizing: content-box;
     padding: 12px;
+    transition: all .1s;
 }
 
 .topic:hover {
@@ -379,25 +379,25 @@ body {
 }
 
 .tooltip:hover::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    top: var(--tooltip-offset);
-    left: calc(-50% + 2 * var(--tooltip-padding));
     background-color: var(--tooltip-color);
     border-radius: 5px;
+    content: attr(data-tooltip);
+    left: calc(-50% + 2 * var(--tooltip-padding));
     padding: var(--tooltip-padding);
+    position: absolute;
+    top: var(--tooltip-offset);
     white-space: nowrap;
 }
 
 .tooltip:hover::before {
+    border-color: var(--tooltip-color) transparent transparent transparent;
+    border-style: solid;
+    border-width: 5px;
     content: " ";
-    position: absolute;
-    top: calc(var(--tooltip-offset) * 0.15);
     left: calc(50% + var(--tooltip-padding));
     margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: var(--tooltip-color) transparent transparent transparent;
+    position: absolute;
+    top: calc(var(--tooltip-offset) * 0.15);
 }
 
 .none {

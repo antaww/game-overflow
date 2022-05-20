@@ -1,11 +1,3 @@
-function displayMarkdown() {
-	const textArea = document.querySelector('textarea');
-	const markdown = document.querySelector('#markdown');
-	textArea.addEventListener('input', () => {
-		markdown.innerHTML = marked(textArea.value);
-	});
-}
-
 function checkFields() {
 	const title = document.querySelector('#title');
 	const content = document.querySelector('.ck-content');
@@ -28,28 +20,6 @@ function checkFields() {
 	saveBeforeUnload();
 }
 
-window.onload = () => {
-	window.ClassicEditor.create(document.querySelector('#editor'), {
-		toolbar: ['heading', '|', 'bold', 'strikethrough', 'italic', 'underline', 'code', '|', 'link', 'blockQuote', 'horizontalLine', '|', 'bulletedList', 'numberedList', '|', 'undo', 'redo'],
-	}).then(editor => {
-		const content = window.localStorage.getItem('editor') || '';
-		if (content) editor.setData(content);
-
-		window.addEventListener('beforeunload', () => {
-			window.localStorage.setItem('editor', editor.getData());
-		});
-	}).catch(error => {
-		console.error(error);
-	});
-
-	retrieveData();
-
-	splitTags();
-	document.addEventListener('input', checkFields);
-	document.addEventListener('beforeunload', () => saveBeforeUnload());
-
-};
-
 function saveBeforeUnload() {
 	window.localStorage.setItem('title', document.querySelector('#title').value);
 	window.localStorage.setItem('category', document.querySelector('input[type="radio"]:checked').value);
@@ -68,6 +38,27 @@ function retrieveData() {
 	}
 }
 
+window.onload = () => {
+	window.ClassicEditor.create(document.querySelector('#editor'), {
+		toolbar: ['heading', '|', 'bold', 'strikethrough', 'italic', 'underline', 'code', '|', 'link', 'blockQuote', 'horizontalLine', '|', 'bulletedList', 'numberedList', '|', 'undo', 'redo'],
+	}).then(editor => {
+		const content = window.localStorage.getItem('editor') || '';
+		if (content) editor.setData(content);
+
+		window.addEventListener('beforeunload', () => {
+			window.localStorage.setItem('editor', editor.getData());
+		});
+	}).catch(error => {
+		console.error(error);
+	});
+
+	retrieveData();
+	splitTags();
+	document.addEventListener('input', checkFields);
+	document.addEventListener('beforeunload', () => saveBeforeUnload());
+
+};
+
 const tags = [...document.querySelectorAll('.tag')].map(tag => tag.innerText);
 
 function splitTags() {
@@ -85,8 +76,9 @@ function splitTags() {
 		}
 
 		if (tags.length >= 8) {
-			// TODO : Add error message
+			input.setCustomValidity('You can only have 8 tags');
 			input.value = '';
+			input.form.reportValidity();
 			return;
 		}
 
@@ -95,6 +87,13 @@ function splitTags() {
 	}
 
 	input.addEventListener('keypress', e => {
+		if (tags.length >= 8) {
+			input.setCustomValidity('You can only have 8 tags');
+			input.form.reportValidity();
+			input.value = '';
+			return;
+		}
+
 		if (splitRegex.test(e.key)) updateTags();
 	});
 	input.addEventListener('change', (e) => updateTags());
