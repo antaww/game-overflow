@@ -1,3 +1,7 @@
+:root {
+    --confirm-color: #17629e;
+}
+
 .new-topic {
     display: flex;
     flex-direction: column;
@@ -57,8 +61,8 @@
 }
 
 #btn-submit {
-    background-color: #17629e;
-    border: none;
+    background-color: var(--confirm-color);
+    border: #00000000 solid 1px;
     border-radius: 15px;
     color: #ffffff;
     cursor: pointer;
@@ -66,9 +70,8 @@
     font-weight: 700;
     margin: 2rem 0;
     padding: 1vh 2vh 1vh 1vh;
-    transition: background-color 0.5s ease-in-out;
+    transition: all 0.3s ease-in-out;
     white-space: nowrap;
-
     width: fit-content;
 }
 
@@ -78,8 +81,14 @@
 
 #btn-submit:disabled {
     background-color: #ff7373;
+    cursor: not-allowed;
     filter: brightness(0.8);
     user-select: none;
+}
+
+#btn-submit:enabled:hover {
+    background-color: #1f1f23;
+    border: var(--confirm-color) solid 1px;
 }
 
 .message-toolbar {

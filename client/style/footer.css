@@ -1,42 +1,42 @@
 footer {
-    position: relative;
-    z-index: 5000;
-    background-color: #171a1d;
-    display: flex;
-    justify-content: center;
     align-items: end;
-    flex-direction: column;
+    background-color: #171a1d;
     bottom: 0;
-    margin: 0;
-    height: 15vw;
+    display: flex;
+    flex-direction: column;
+    height: 12rem;
+    justify-content: center;
     left: 0;
-    margin-top: 5vh;
+	margin: 5vh 0 0;
+    position: fixed;
+    width: 100%;
+    z-index: 5000;
 }
 
 .top {
     left: 0;
+    padding: 0.5vw 8vw 0.5vw 2vw;
     position: absolute;
     top: 0;
-    padding: 0.5vw 8vw 0.5vw 2vw;
     width: 75%;
 }
 
 .underlineFooter {
-    content: "";
+    background: linear-gradient(130deg, #6b6b6b, #111111 70%);
+    border-radius: 2px;
+    content: '';
+    height: 2px;
+    left: 0;
     position: absolute;
     top: 100%;
     width: 100%;
-    left: 0;
-    height: 2px;
-    border-radius: 2px;
-    background: linear-gradient(130deg, #6b6b6b, #111111 70%);
 }
 
 .top img {
-    height: 2vw;
-    padding: 0 0.5vw;
-    opacity: 0.5;
     cursor: pointer;
+    height: 2vw;
+    opacity: 0.5;
+    padding: 0 0.5vw;
     transition: all 0.3s;
 }
 
@@ -45,63 +45,63 @@ footer {
 }
 
 .bot {
-    display: flex;
-    position: absolute;
-    left: 0;
     align-items: center;
+    display: flex;
     justify-content: space-between;
-    width: 100%;
+    left: 0;
     margin-top: 7vh;
+    position: absolute;
+    width: 100%;
 }
 
 .logos {
+    align-items: center;
     display: flex;
     justify-content: center;
-    align-items: center;
-    width: 45%;
     top: 5vw;
+    width: 45%;
 }
 
 .logos a:first-child img {
-    width: 6vw;
+    width: 6rem;
 }
 
 .logos a img {
-    width: 10vw;
     padding: 0 1vw 0 0;
+    width: 10vw;
 }
 
 .logos a:nth-child(2) {
-    border-left: 0.1vw solid;
     border-color: white;
+    border-left: 0.1vw solid;
 }
 
 .links {
+    align-items: start;
+    color: #7d7d7d;
     display: flex;
     flex-direction: column;
+    font-size: 1rem;
     justify-content: center;
-    align-items: start;
-    width: 50%;
-    top: 5vw;
-    color: #7d7d7d;
-    font-size: 1vw;
+    top: 2rem;
+    width: 80%;
 }
 
-.githubLinks {
+.github-links {
     opacity: 0.5;
     transition: all 0.3s;
 }
 
-.githubLinks:hover {
+.github-links:hover {
     opacity: 1;
 }
 
 .links a {
-    text-decoration: none;
-    color: #7d7d7d;
     border-color: white !important;
     border-left: 0.1vw solid;
+    color: #7d7d7d;
     padding: 0 1vw;
+    text-decoration: none;
 }
 
 .links a:last-child {
@@ -109,12 +109,12 @@ footer {
 }
 
 .links p {
+    margin: 1rem 0;
     max-width: 80%;
-    margin: 2vw 0;
 }
 
 .fa.fa-github {
-    font-size: 5vh;
+    font-size: 2.5rem;
 }
 
 a.bot-logo {

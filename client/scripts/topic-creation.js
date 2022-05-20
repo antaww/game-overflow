@@ -48,12 +48,15 @@ window.onload = () => {
 		window.addEventListener('beforeunload', () => {
 			window.localStorage.setItem('editor', editor.getData());
 		});
+		editor.updateSourceElement();
+		editor.on('change:sate', () => editor.updateSourceElement());
 	}).catch(error => {
 		console.error(error);
 	});
 
 	retrieveData();
 	splitTags();
+	checkFields();
 	document.addEventListener('input', checkFields);
 	document.addEventListener('beforeunload', () => saveBeforeUnload());
 
@@ -109,6 +112,7 @@ function createTag(text) {
 
 document.querySelector('#btn-submit').addEventListener('click', () => {
 	const input = document.querySelector('#tags');
+	input.style.visibility = 'hidden';
 	input.value = tags.join(',');
 });
 
