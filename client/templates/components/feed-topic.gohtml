@@ -19,7 +19,7 @@
                         {{else}}
                             <div class="topic-closed">Closed<i class="fa-solid fa-lock topic-closed"></i></div>
                         {{end}}
-                        <div class="topic-answers feed-topic-tag">{{.GetAnswersNumber}} answer{{pluralInt .GetAnswersNumber}}</div>
+                        <div class="topic-answers feed-topic-tag">{{.GetAnswersNumber}} answer{{plural .GetAnswersNumber}}</div>
                     </div>
                     <div class="sub-title">
                         <p class="topic-title">{{.Title}}</p>
@@ -37,7 +37,7 @@
 
             <div class="topic-header">
                 <div class="views-tags">
-                    <div class="topic-views sub-title">{{.Views}} view{{pluralInt .Views}}</div>
+                    <div class="topic-views sub-title">{{.Views}} view{{plural .Views}}</div>
                     <div class="topic-tags-box">
                         {{range .Tags}}
                             <div class="topic-tags feed-topic-tag">{{.}}</div>

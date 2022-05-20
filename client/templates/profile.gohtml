@@ -20,10 +20,10 @@
                 </span>
             </p>
             <a class="posts-count" href="#posts">
-                {{len $topics}} post{{plural $topics}}
+                {{len $topics}} post{{plural len $topics}}
             </a>
             <a class="followers-count" href="#followers">
-                {{len $followers}} follower{{plural $followers}}
+                {{len $followers}} follower{{plural len $followers}}
             </a>
             <a class="following-count" href="#following">
                 {{len $following}} following

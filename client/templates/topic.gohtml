@@ -75,7 +75,7 @@
                             {{end}}
                             <p class="topic-title">{{.ShownTopic.Title}}</p>
                             <div class="topic-views">{{.ShownTopic.Views}}
-                                view{{pluralInt .ShownTopic.Views}}</div>
+                                view{{plural .ShownTopic.Views}}</div>
                             <md-block class="topic-content">{{$firstMessage.Content}}</md-block>
                         </div>
                         <div class="topic-likes">
@@ -87,7 +87,7 @@
                 </div>
                 <div class="topic-general-info">
                     <div class="topic-answers">{{.ShownTopic.GetAnswersNumber}}
-                        answer{{pluralInt .ShownTopic.GetAnswersNumber}}</div>
+                        answer{{plural .ShownTopic.GetAnswersNumber}}</div>
                     <div class="tag-list">
                         {{range .ShownTopic.Tags}}
                             <a href="/feed?tag={{.}}" class="topic-tags">{{.}}</a>
