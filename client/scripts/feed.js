@@ -14,7 +14,6 @@ window.addEventListener('load', () => {
     window.addEventListener('scroll', (e) => {
 		const limit = document.documentElement.scrollHeight - document.documentElement.clientHeight;
 		const scrollPosition = window.scrollY;
-		console.log(limit, scrollPosition);
 
         if (scrollPosition >= limit - 150) {
             createTopic.style.bottom = `${230 + (scrollPosition - limit)}px`;

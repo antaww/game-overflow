@@ -2,6 +2,13 @@
     --confirm-color: #17629e;
 }
 
+.form {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .new-topic {
     display: flex;
     flex-direction: column;
@@ -188,6 +195,10 @@
     --ck-color-ui-dark: #1f1f23;
     --ck-color-ui-foreground: #ffffff;
     --ck-spacing-large: 1rem;
+}
+
+.ck-content {
+    max-width: 80vw;
 }
 
 .ck-content p {

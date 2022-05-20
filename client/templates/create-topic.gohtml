@@ -1,12 +1,12 @@
 {{define "content"}}
     {{template "navbar" .}}
-    <link rel="stylesheet" href="/static/create-topic.css">
-    <script src="/scripts/topic-creation.js" defer></script>
-    <script src="/scripts/ckeditor.js"></script>
+    <script src="/scripts/topics/create-topic.js" defer></script>
+    <script src="/scripts/topics/ckeditor.js"></script>
 
+    <link rel="stylesheet" href="/static/create-topic.css">
 
     {{if and (.ConnectedUser) (ne .ConnectedUser.Role "banned")}}
-        <div class="feed-content">
+        <div class="form">
             <div class="new-topic">
                 <h1>New topic</h1>
 

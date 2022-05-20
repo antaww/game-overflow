@@ -58,6 +58,9 @@
 
 .topic-content {
     font-size: 1em;
+    max-width: 50rem;
+    word-break: break-all;
+    word-wrap: break-word;
 }
 
 .topic-content em {

@@ -1,6 +1,6 @@
 function checkFields() {
 	const title = document.querySelector('#title');
-	const content = document.querySelector('.ck-content');
+	const content = document.querySelector('#editor');
 	const category = document.querySelectorAll('input[type="radio"]');
 	const submit = document.querySelector('#btn-submit');
 
@@ -17,10 +17,17 @@ function checkFields() {
 
 	submit.disabled = !valid;
 	submit.querySelector('i').className = valid ? 'fas fa-check' : 'fas fa-times';
-	saveBeforeUnload();
+	saveFields();
 }
 
-function saveBeforeUnload() {
+function deleteFields() {
+	window.localStorage.removeItem('title');
+	window.localStorage.removeItem('category');
+	window.localStorage.removeItem('tags');
+	window.localStorage.removeItem('editor');
+}
+
+function saveFields() {
 	window.localStorage.setItem('title', document.querySelector('#title').value);
 	window.localStorage.setItem('category', document.querySelector('input[type="radio"]:checked').value);
 	window.localStorage.setItem('tags', tags.join(' '));
@@ -54,12 +61,14 @@ window.onload = () => {
 		console.error(error);
 	});
 
+	// on submit
+	document.querySelector('#btn-submit').addEventListener('click', () => deleteFields());
+
 	retrieveData();
 	splitTags();
 	checkFields();
 	document.addEventListener('input', checkFields);
-	document.addEventListener('beforeunload', () => saveBeforeUnload());
-
+	document.addEventListener('beforeunload', () => saveFields());
 };
 
 const tags = [...document.querySelectorAll('.tag')].map(tag => tag.innerText);
