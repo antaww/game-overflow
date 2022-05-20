@@ -65,8 +65,8 @@ func (t TemplatesDataType) GetTrendingTags(limit int) []sql.TagListItem {
 	return tags
 }
 
-// GetTopicsDependingSort returns all topics depending on the sort type, limited by limit
-func (t TemplatesDataType) GetTopicsDependingSort(sortType sql.FeedSortType, limit int) ([]sql.Topic, error) {
+// GetTopicsSortedBy returns all topics depending on the sort type, limited by limit
+func (t TemplatesDataType) GetTopicsSortedBy(sortType sql.FeedSortType, limit int) ([]sql.Topic, error) {
 	switch sortType {
 	case sql.FeedSortNewest:
 		return sql.GetNewestTopics(limit)
@@ -81,21 +81,8 @@ func (t TemplatesDataType) GetTopicsDependingSort(sortType sql.FeedSortType, lim
 	return nil, nil
 }
 
-func (t TemplatesDataType) SortTopics(sortType string) {
-	sortTypes := sql.GetFeedSortingTypes()
-
-	var isValid bool
-	for _, sortType := range sortTypes {
-		if sortType == sortType {
-			isValid = true
-			break
-		}
-	}
-
-	if isValid {
-		t.FeedSort = sql.FeedSortType(sortType)
-		t.ShownTopics.SortBy(t.FeedSort)
-	}
+func (t TemplatesDataType) SortTopics() {
+	t.ShownTopics.SortBy(t.FeedSort)
 }
 
 // IndexRoute is the route for the home page
@@ -108,7 +95,7 @@ func IndexRoute(w http.ResponseWriter, r *http.Request) {
 			utils.RouteError(err)
 		}
 
-		topics, err := templateData.GetTopicsDependingSort(templateData.FeedSort, 20)
+		topics, err := templateData.GetTopicsSortedBy(templateData.FeedSort, 20)
 		if err != nil {
 			utils.RouteError(err)
 		}
@@ -121,14 +108,6 @@ func IndexRoute(w http.ResponseWriter, r *http.Request) {
 		}
 
 		templateData.ShownTopics = topics
-
-		queries := r.URL.Query()
-
-		if queries.Has("s") {
-			sortType := queries.Get("s")
-
-			templateData.SortTopics(sortType)
-		}
 
 		err = utils.CallTemplate("main", templateData, w)
 		if err != nil {

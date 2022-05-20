@@ -21,9 +21,30 @@ func GetTemplatesDataFromRoute(w http.ResponseWriter, r *http.Request) (*Templat
 		return nil, err
 	}
 
+	queries := r.URL.Query()
+
+	feedSort := sql.FeedSortNewest
+	if queries.Has("s") {
+		sortType := queries.Get("s")
+
+		sortTypes := sql.GetFeedSortingTypes()
+
+		var isValid bool
+		for _, sortType := range sortTypes {
+			if sortType == sortType {
+				isValid = true
+				break
+			}
+		}
+
+		if isValid {
+			feedSort = sql.FeedSortType(sortType)
+		}
+	}
+
 	return &TemplatesDataType{
 		ConnectedUser: connectedUser,
-		FeedSort:      sql.FeedSortNewest,
+		FeedSort:      feedSort,
 		Locales:       locales,
 		ShownTopics:   nil,
 		ShownTopic:    shownTopic,
