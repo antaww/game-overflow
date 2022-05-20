@@ -388,6 +388,7 @@ func FollowUserRoute(w http.ResponseWriter, r *http.Request) {
 		err = sql2.FollowUser(idUserFollowed, templateData.ConnectedUser.Id)
 		if err != nil {
 			w.WriteHeader(http.StatusForbidden)
+			utils.RouteError(err)
 			return
 		}
 	}

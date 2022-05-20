@@ -11,11 +11,11 @@ func MainError(err error) {
 }
 
 func RouteError(err error) {
-	debug.Stack()
+	debug.PrintStack()
 	log.Fatal(err)
 }
 
 func SQLError(err error) {
-	debug.Stack()
+	debug.PrintStack()
 	log.Fatal(err)
 }
