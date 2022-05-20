@@ -157,3 +157,48 @@ textarea.create-topic-input {
 .tag-cross {
     margin-left: .3em;
 }
+
+/* CKeditor */
+
+:root {
+    --ck-border-radius: 0.5rem;
+    --ck-color-base-background: #1f1f23;
+    --ck-color-base-border: #7d8080;
+    --ck-color-base-foreground: #ffffff;
+    --ck-color-base-text: #ffffff;
+    --ck-color-button-default-active-background: var(--ck-color-button-on-active-background);
+    --ck-color-button-default-active-shadow: hsl(240, 4%, 35%);
+    --ck-color-button-default-hover-background: hsl(240, 4%, 35%);
+    --ck-color-button-on-active-background: hsl(240, 10%, 40%);
+    --ck-color-button-on-active-shadow: var(--ck-color-button-default-active-shadow);
+    --ck-color-button-on-background: hsl(240, 6%, 30%);
+    --ck-color-button-on-hover-background: var(--ck-color-button-on-background);
+    --ck-color-link-default: #57d9ff;
+    --ck-color-text: #ffffff;
+    --ck-color-toolbar-background: #1f1f23;
+    --ck-color-toolbar-border: #7d8080;
+    --ck-color-toolbar-foreground: #ffffff;
+    --ck-color-tooltip-background: #303034;
+    --ck-color-tooltip-text: #ffffff;
+    --ck-color-ui-dark: #1f1f23;
+    --ck-color-ui-foreground: #ffffff;
+    --ck-spacing-large: 1rem;
+}
+
+.ck-content p {
+    margin: 10px;
+}
+
+.ck-content a {
+    color: var(--ck-color-link-default);
+}
+
+.ck-content code {
+    background-color: #151719 !important;
+    border-radius: 4px;
+    font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+.ck-content blockquote {
+    padding-left: 10px;
+}

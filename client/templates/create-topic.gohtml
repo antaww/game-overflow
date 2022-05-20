@@ -2,7 +2,9 @@
     {{template "navbar" .}}
     <link rel="stylesheet" href="/static/create-topic.css">
     <script src="/scripts/topic-creation.js" defer></script>
+    <script src="/scripts/ckeditor.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
 
     {{if and (.ConnectedUser) (ne .ConnectedUser.Role "banned")}}
         <div class="feed-content">
@@ -28,17 +30,8 @@
                     </div>
 
                     <div class="create-topic-content create-topic-options">
-                        <label class="required-input" for="content">Content</label>
-                        {{template "message-toolbar" .}}
-                        <textarea class="create-topic-input"
-                                  cols="30"
-                                  id="content"
-                                  maxlength="4000"
-                                  minlength="1"
-                                  name="content"
-                                  placeholder="Content"
-                                  required
-                                  rows="5"></textarea>
+                        <label class="required-input" for="editor">Content</label>
+                        <textarea id="editor" name="content" required minlength="1" maxlength="4000"></textarea>
                     </div>
 
                     <div class="create-topic-options">
@@ -63,5 +56,5 @@
         </div>
     {{end}}
 
-{{template "footer"}}
+    {{template "footer"}}
 {{end}}
