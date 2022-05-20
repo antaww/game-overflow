@@ -20,10 +20,10 @@
                         {{if .ConnectedUser}}
                             <div class="follow-button">
                                 {{if .ConnectedUser.IsFollowingUser .User.Id}}
-                                    <a data-id="{{.User.Id}}" class="modal-topics unfollow-btn"><i
+                                    <a data-id="{{.User.Id}}" class="user-follow unfollow-btn"><i
                                                 class="fa-solid fa-xmark"></i> Unfollow</a>
                                 {{else}}
-                                    <a data-id="{{.User.Id}}" class="modal-topics follow-btn">Follow</a>
+                                    <a data-id="{{.User.Id}}" class="user-follow follow-btn">Follow</a>
                                 {{end}}
                             </div>
                         {{end}}
@@ -37,7 +37,7 @@
                         <p class="modal-description">{{.User.Description.String}}</p>
                     {{end}}
                     {{if ne .CountTopics 0}}
-                        <a href="/posts?id={{.User.Id}}" class="modal-topics">{{.User.Username}}'s topics</a>
+                        <a href="/posts?id={{.User.Id}}" class="user-follow">{{.User.Username}}'s topics</a>
                     {{end}}
                 </div>
             </div>

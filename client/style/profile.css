@@ -181,3 +181,14 @@ li .user:hover {
     color: #7FFF7F;
 }
 
+.user-follow {
+    background-color: #8080802e;
+    border-radius: .5em;
+    padding: .2em;
+    text-decoration: none;
+    transition: all .3s;
+}
+
+.user-follow:hover {
+    background-color: #2b333d;
+}

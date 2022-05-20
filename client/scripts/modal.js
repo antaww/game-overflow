@@ -1,3 +1,5 @@
+import {follow} from "./follow.js";
+
 const modals = document.querySelectorAll('.myModal');
 const btn = document.querySelectorAll('.modalProfileBtn');
 const span = document.querySelectorAll('.close');
@@ -78,39 +80,7 @@ document.addEventListener('keydown', e => {
 
 const followBtn = document.querySelectorAll('.follow-button');
 followBtn.forEach(element => {
-    element.addEventListener('click', e => {
-        let clicked = e.target;
-        const id = clicked.getAttribute('data-id');
-        if (clicked.classList.contains('follow-btn')) {
-            fetch('/follow', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({id: id})
-            }).then(res => {
-                if (res.status === 200) {
-                    clicked.innerHTML = '<i class="fa-solid fa-xmark"></i> Unfollow';
-                    clicked.classList.add('unfollow-btn');
-                    clicked.classList.remove('follow-btn');
-                }
-            });
-        } else if (clicked.classList.contains('unfollow-btn')) {
-            fetch('/unfollow', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({id: id})
-            }).then(res => {
-                if (res.status === 200) {
-                    clicked.innerText = 'Follow';
-                    clicked.classList.add('follow-btn');
-                    clicked.classList.remove('unfollow-btn');
-                }
-            });
-        }
-    });
+    follow(element);
 });
 
 

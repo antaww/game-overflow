@@ -79,8 +79,8 @@
 .modal-top-box {
     display: flex;
     margin-left: 5em;
-    text-decoration: none;
     position: relative;
+    text-decoration: none;
     top: -1.2em;
 }
 
@@ -94,7 +94,7 @@
     padding: 20px;
 }
 
-.modal-topics {
+.user-follow {
     background-color: #8080802e;
     border-radius: .5em;
     padding: .2em;
@@ -103,9 +103,9 @@
 }
 
 .follow-box {
+    align-items: end;
     display: flex;
     flex-direction: column;
-    align-items: end;
 }
 
 .modal-bubble {
@@ -116,7 +116,7 @@
     width: fit-content;
 }
 
-.modal-topics:hover {
+.user-follow:hover {
     background-color: #2b333d;
 }
 
@@ -125,10 +125,10 @@
     border: #2e3944 3px solid;
     border-radius: 50%;
     filter: drop-shadow(0px -4px 0.2rem #222222) !important;
-    position: relative;
-    width: inherit;
     height: inherit;
     object-fit: scale-down;
+    position: relative;
+    width: inherit;
 }
 
 .modal-href-avatar {
@@ -148,22 +148,3 @@ a {
     text-decoration: none;
 }
 
-.follow-button:hover {
-    cursor: pointer;
-}
-
-.modal-topics.unfollow-btn:hover {
-    background-color: #7c222270;
-}
-
-.modal-topics.unfollow-btn:hover i {
-    opacity: 1;
-    padding-left: 3px;
-    width: 10px;
-}
-
-.modal-topics.unfollow-btn i {
-    opacity: 0;
-    transition: all .3s, opacity .15s ease-in;
-    width: 0;
-}

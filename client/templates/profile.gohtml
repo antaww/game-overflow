@@ -1,6 +1,7 @@
 {{define "content"}}
     {{template "navbar" .}}
     <script defer src="/scripts/ban.js"></script>
+    <script defer type="module" src="/scripts/profile.js"></script>
     <link rel="stylesheet" href="/static/profile.css">
 
     {{$user := .ShownUser}}
@@ -32,6 +33,17 @@
             <p class="user-id">
                 Id: {{$user.Id}}
             </p>
+
+            {{if ne .ConnectedUser.Id $user.Id}}
+                <div class="user-actions">
+                    {{if .ConnectedUser.IsFollowingUser $user.Id}}
+                        <a data-id="{{$user.Id}}" class="user-follow unfollow-btn"><i
+                                    class="fa-solid fa-xmark"></i> Unfollow</a>
+                    {{else}}
+                        <a data-id="{{$user.Id}}" class="user-follow follow-btn">Follow</a>
+                    {{end}}
+                </div>
+            {{end}}
         </section>
         <section class="content">
             <h1 class="profile-username">

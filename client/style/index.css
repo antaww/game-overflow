@@ -387,6 +387,27 @@ body {
     top: calc(var(--tooltip-offset) * 0.15);
 }
 
+
+.user-follow.unfollow-btn:hover {
+    background-color: #7c222270;
+}
+
+.user-follow.unfollow-btn:hover i {
+    opacity: 1;
+    padding-left: 3px;
+    width: 10px;
+}
+
+.user-follow.unfollow-btn i {
+    opacity: 0;
+    transition: all .3s, opacity .15s ease-in;
+    width: 0;
+}
+
+.user-follow {
+    cursor: pointer;
+}
+
 .none {
     display: none;
 }
