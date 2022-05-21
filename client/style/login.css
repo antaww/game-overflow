@@ -1,18 +1,18 @@
 .fit-page {
-    display: flex;
-    justify-content: center;
     align-items: center;
-    width: 100%;
+    display: flex;
     height: 100vh;
+    justify-content: center;
+    width: 100%;
 }
 
 .container {
-    display: flex;
     background: #30373C;
-    justify-content: space-around;
-    flex-direction: column;
     border-radius: 37px;
+    display: flex;
+    flex-direction: column;
     height: 60vh;
+    justify-content: space-around;
     width: 40vh;
 }
 
@@ -21,29 +21,30 @@
 }
 
 .header img {
-    width: 26%;
     height: auto;
+    width: 26%;
 }
 
-.input_area {
+.input-area {
+    align-content: center;
     display: flex;
     flex-direction: column;
     justify-content: stretch;
-    align-content: center;
-    text-align: center;
     margin-bottom: 9%;
+    text-align: center;
 }
 
-.input_area input {
-    margin: 10px 0;
+.input-area input {
+    background: #FFFFFF;
     border: 1px grey solid;
-    font-size: 12px;
-    outline: none;
+    border-radius: 11px;
     color: grey;
     font-family: "Poppins", sans-serif;
-    background: #FFFFFF;
-    border-radius: 11px;
+    font-size: 12px;
+    margin: 10px 0;
+    outline: none;
     padding: 2% 3%;
+    -webkit-text-fill-color: grey !important;
 }
 
 .log-in-input {
@@ -51,23 +52,23 @@
 }
 
 .actions > a > button, .actions > button {
-    font-size: 12px;
-    outline: none;
+    background-color: #17629E;
+    border-radius: 11px;
     color: grey;
     font-family: "Poppins", sans-serif;
-    border-radius: 11px;
-    background-color: #17629E;
-    width: 57%;
+    font-size: 12px;
     height: 10%;
+    outline: none;
+    width: 57%;
 }
 
 .actions p {
-    font-size: 74%;
     color: #FFF;
+    font-size: 74%;
 }
 
-.Sign_up_link {
-    font-weight: 500;
+.already-or-create {
     color: #1a66a5;
+    font-weight: 500;
     text-decoration: none;
 }

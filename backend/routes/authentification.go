@@ -99,11 +99,11 @@ func LoginRoute(w http.ResponseWriter, r *http.Request) {
 		if exists {
 			user, err := sql.GetUserByUsername(username)
 			if err != nil {
-				return
+				utils.RouteError(err)
 			}
 			err = sql.AddSessionCookie(*user, w)
 			if err != nil {
-				return
+				utils.RouteError(err)
 			}
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 		} else {

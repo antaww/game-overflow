@@ -19,7 +19,7 @@ footer {
     width: 75%;
 }
 
-.underlineFooter {
+.underline-footer {
     background: linear-gradient(130deg, #6b6b6b, #111111 70%);
     border-radius: 2px;
     content: '';
@@ -113,7 +113,7 @@ footer {
     font-size: 2.5rem;
 }
 
-a.bot-logo {
+a.website-logo {
     border-right: solid 2px #a9a9a982;
 }
 

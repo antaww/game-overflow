@@ -150,7 +150,7 @@ input:-webkit-autofill:active {
 
 input:-webkit-autofill{
     font-family: 'Poppins', sans-serif;
-    -webkit-text-fill-color: white !important;
+    -webkit-text-fill-color: white;
 }
 
 /* Markdown */

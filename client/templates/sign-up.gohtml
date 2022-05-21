@@ -1,12 +1,12 @@
 {{define "content"}}
-<script defer src="/scripts/sign-up.js"></script>
+    <script defer src="/scripts/sign-up.js"></script>
     <div class="fit-page">
         <div class="container">
             <div class="header">
                 <img src="/resources/Logo.png" alt="logo">
             </div>
             <form method="POST">
-                <div class="input_area">
+                <div class="input-area">
                     <label>
                         <input autocomplete="username"
                                autofocus
@@ -48,11 +48,11 @@
                     <button type="submit" name="submit" value="Sign-up">Sign up</button>
                     <p>
                         Already have an account ?
-                        <a href="/login" class="Sign_up_link">Log in</a>
+                        <a href="/login" class="already-or-create">Log in</a>
                     </p>
                 </div>
             </form>
         </div>
     </div>
-{{template "footer"}}
+    {{template "footer"}}
 {{end}}

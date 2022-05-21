@@ -16,22 +16,22 @@ const (
 	RoleAdmin     Role = "admin"
 	RoleModerator Role = "moderator"
 	RoleUser      Role = "user"
-	RoleBan Role = "banned"
+	RoleBan       Role = "banned"
 )
 
 type User struct {
-	Id             int64        `db:"id_user" json:"id,omitempty"`
-	Username       string       `db:"username" json:"username"`
-	IsOnline       bool         `db:"is_online" json:"isOnline"`
-	Password       string       `db:"password" json:"password,omitempty"`
-	Email          string       `db:"email" json:"email,omitempty"`
-	Locale         string       `db:"locale" json:"locale,omitempty"`
-	ProfilePic     sql.NullString       `db:"profile_pic" json:"profilePic,omitempty"`
-	Description    sql.NullString       `db:"description" json:"description,omitempty"`
-	CreationDate   time.Time    `db:"created_at" json:"creationDate"`  //todo
-	Role           Role         `db:"role_type" json:"role,omitempty"` //todo
-	Color          int          `db:"color" json:"color,omitempty"`
-	CookiesEnabled sql.NullBool `db:"cookies_enabled" json:"cookiesEnabled"`
+	Id             int64          `db:"id_user" json:"id,omitempty"`
+	Username       string         `db:"username" json:"username"`
+	IsOnline       bool           `db:"is_online" json:"isOnline"`
+	Password       string         `db:"password" json:"password,omitempty"`
+	Email          string         `db:"email" json:"email,omitempty"`
+	Locale         string         `db:"locale" json:"locale,omitempty"`
+	ProfilePic     sql.NullString `db:"profile_pic" json:"profilePic,omitempty"`
+	Description    sql.NullString `db:"description" json:"description,omitempty"`
+	CreationDate   time.Time      `db:"created_at" json:"creationDate"`  //todo
+	Role           Role           `db:"role_type" json:"role,omitempty"` //todo
+	Color          int            `db:"color" json:"color,omitempty"`
+	CookiesEnabled sql.NullBool   `db:"cookies_enabled" json:"cookiesEnabled"`
 	DefaultColor   int
 }
 
@@ -267,7 +267,7 @@ func GetUserById(id int64) (*User, error) {
 	var profilePicture []byte
 
 	user := &User{}
-	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description.String, &user.CreationDate, &user.Role, &user.Color, &user.CookiesEnabled)
+	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description, &user.CreationDate, &user.Role, &user.Color, &user.CookiesEnabled)
 	if err != nil {
 		return nil, fmt.Errorf("GetUserById error: %v", err)
 	}
@@ -318,7 +318,7 @@ func GetUserByUsername(username string) (*User, error) {
 	var profilePicture []byte
 
 	user := &User{}
-	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description.String, &user.CreationDate, &user.Role, &user.Color, &user.CookiesEnabled)
+	err = Results(result, &user.Id, &user.Username, &user.IsOnline, &user.Password, &user.Email, &user.Locale, &profilePicture, &user.Description, &user.CreationDate, &user.Role, &user.Color, &user.CookiesEnabled)
 	if err != nil {
 		return nil, fmt.Errorf("GetUserByUsername error: %v", err)
 	}

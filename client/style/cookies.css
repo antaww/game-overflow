@@ -1,19 +1,21 @@
 .cookies-banner {
+    align-items: center;
     background-color: #0d0d10;
-    color: white;
-    position: fixed;
     bottom: 0;
+    color: white;
     display: flex;
     justify-content: center;
-    align-items: center;
+    position: fixed;
     width: 100vw;
+    z-index: 100;
 }
 
 .cookie-btn {
-    padding: 8px;
-    margin: 12px 15px;
-    width: 8rem;
     border-radius: 3px;
+    margin: 12px 15px;
+    padding: 8px;
+    transition: all 0.3s;
+    width: 8rem;
 }
 
 .cookie-btn:hover {
@@ -25,10 +27,21 @@
 }
 
 .accept-cookies {
-    background-color: #2b7cb9;
+    background-color: #1a7cb7;
+    border: 1px solid #1a7cb7;
+}
+
+.accept-cookies:hover {
+    background-color: #1b1b20;
 }
 
 .decline-cookies {
     background-color: #1f1f23;
     border: 1px solid white;
+}
+
+.decline-cookies:hover {
+    background-color: #1a1a1a;
+    border-color: grey;
+    color: grey;
 }
