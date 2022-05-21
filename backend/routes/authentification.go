@@ -73,18 +73,35 @@ func LoginRoute(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if r.Method == "POST" {
-		err := r.ParseForm()
+	if r.Method == "PUT" {
+		var response struct {
+			Success bool   `json:"success"`
+			Session string `json:"session"`
+		}
+
+		var data struct {
+			Username string `json:"username"`
+			Password string `json:"password"`
+		}
+
+		bytesRead, err := io.ReadAll(r.Body)
 		if err != nil {
 			utils.RouteError(err)
 		}
 
-		username := r.FormValue("username")
-		password := r.FormValue("password")
+		err = json.Unmarshal(bytesRead, &data)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		username := data.Username
+		password := data.Password
+
 		userStruct, err := sql.GetUserByUsername(username)
 		if err != nil {
 			utils.RouteError(err)
 		}
+
 		match := utils.CheckPasswordHash(password, userStruct.Password)
 		if !match {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
@@ -101,13 +118,31 @@ func LoginRoute(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				utils.RouteError(err)
 			}
-			err = sql.AddSessionCookie(*user, w)
+
+			if user.GetHasCookieEnabled().Bool {
+				err = sql.AddSessionCookie(user, w)
+				if err != nil {
+					utils.RouteError(err)
+				}
+			}
+
+			session, err := sql.AddSession(user)
 			if err != nil {
 				utils.RouteError(err)
 			}
-			http.Redirect(w, r, "/", http.StatusSeeOther)
+
+			response.Success = true
+			response.Session = session
 		} else {
-			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			response.Success = false
+		}
+
+		ip := r.Header.Get("X-Forwarded-For")
+		utils.ConnectedUsersWithoutCookies[ip] = response.Session
+
+		err = utils.SendResponse(w, response)
+		if err != nil {
+			utils.RouteError(err)
 		}
 	}
 }
@@ -125,6 +160,11 @@ func LogoutRoute(w http.ResponseWriter, r *http.Request) {
 
 	sessionId, err := sql.GetSessionId(r)
 	if err != nil {
+		if err == http.ErrNoCookie {
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			return
+		}
+
 		utils.RouteError(err)
 	}
 

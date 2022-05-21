@@ -55,3 +55,6 @@ func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
 }
+
+// ConnectedUsersWithoutCookies is a map of connected users without cookies with ip as key session as value
+var ConnectedUsersWithoutCookies = make(map[string]string)

@@ -1,27 +1,28 @@
 {{define "base"}}
     <!DOCTYPE html>
     <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <title>Game overflow</title>
-            <link rel="icon" href="/resources/Logo.png">
-            <link rel="stylesheet" href="/static/index.css">
-            <script src="https://kit.fontawesome.com/74fed0e2b5.js" crossorigin="anonymous"></script>
-            <script defer type="module" src="/scripts/modal.js"></script>
-            <script defer src="/scripts/status.js"></script>
-            <script defer src="/scripts/feed.js"></script>
-        </head>
-        <body>
-            {{template "content" .}}
+    <head>
+        <meta charset="UTF-8">
+        <title>Game overflow</title>
+        <link rel="icon" href="/resources/Logo.png">
+        <link rel="stylesheet" href="/static/index.css">
+        <script src="https://kit.fontawesome.com/74fed0e2b5.js" crossorigin="anonymous"></script>
+        <script defer type="module" src="/scripts/modal.js"></script>
+        <script defer src="/scripts/status.js"></script>
+        <script defer src="/scripts/feed.js"></script>
+    </head>
+    <body>
+    {{template "content" .}}
 
-            {{if .ConnectedUser}}
-                {{if not .ConnectedUser.GetHasCookieEnabled.Valid}}
-                    <div class="cookies">
-                        <script defer src="/scripts/cookies.js"></script>
-                        {{template "cookies-banner" .}}
-                    </div>
-                {{end}}
-            {{end}}
-        </body>
+    {{if .ConnectedUser}}
+        {{if not .ConnectedUser.GetHasCookieEnabled.Valid}}
+            <div class="cookies">
+                <script defer src="/scripts/cookies.js"></script>
+
+                {{template "cookies-banner" .}}
+            </div>
+        {{end}}
+    {{end}}
+    </body>
     </html>
 {{end}}

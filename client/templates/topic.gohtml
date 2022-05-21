@@ -11,12 +11,13 @@
     <div class="topic-page-wrapper">
         <div class="topic-page">
             {{$firstMessage := (index .ShownTopic.Messages 0)}}
+            {{$topicAuthor := $firstMessage.GetUser}}
             <div class="topic" data-post-id="{{$firstMessage.Id}}">
                 <div class="topic-top">
                     <div class="topic-user-wrapper">
                         {{if not .ShownTopic.IsClosed}}
                             {{if .ConnectedUser}}
-                                {{if or (eq $firstMessage.GetUser.Id .ConnectedUser.Id) (eq .ConnectedUser.Role "admin") (eq .ConnectedUser.Role "moderator")}}
+                                {{if or (eq $topicAuthor.Id .ConnectedUser.Id) (eq .ConnectedUser.Role "admin") (eq .ConnectedUser.Role "moderator")}}
                                     <a class="topic-status">
                                         <div class="topic-open">Opened<i class="fa-solid fa-lock-open topic-open"></i>
                                         </div>
@@ -42,15 +43,15 @@
                             {{end}}
                         {{end}}
                         <a>
-                            <div class="circle {{if $firstMessage.GetUser.IsOnline}} connected {{else}} disconnected {{end}}">
+                            <div class="circle {{if $topicAuthor.IsOnline}} connected {{else}} disconnected {{end}}" data-user-id="{{$topicAuthor.Id}}">
                                 <img alt="" class="avatar modal-profile-btn"
-                                     src="{{template "avatar" $firstMessage.GetUser.ProfilePic.String}}">
-                                {{template "modal" $firstMessage.GetUser.WithConnectedUser .ConnectedUser}}
+                                     src="{{template "avatar" $topicAuthor.ProfilePic.String}}">
+                                {{template "modal" $topicAuthor.WithConnectedUser .ConnectedUser}}
                             </div>
                         </a>
                         <a class="topic-user">
                             <p>
-                                {{safeHTML $firstMessage.GetUser.DisplayRole}} {{$firstMessage.GetUser.Username}}
+                                {{safeHTML $topicAuthor.DisplayRole}} {{$topicAuthor.Username}}
                             </p>
                         </a>
                     </div>
@@ -85,9 +86,7 @@
                             <p class="topic-content markdown">{{$firstMessage.Content}}</p>
                         </div>
                         <div class="topic-likes">
-                            <i class="fa-solid fa-angle-up like-btn {{if $firstMessage.IsLiked .ConnectedUser.Id}}like-color{{end}}"></i>
-                            <p class="points">{{$firstMessage.CalculatePoints}}</p>
-                            <i class="fa-solid fa-angle-down dislike-btn {{if $firstMessage.IsDisliked .ConnectedUser.Id}}dislike-color{{end}}"></i>
+                            {{template "message-likes" $firstMessage.WithConnectedUser .ConnectedUser}}
                         </div>
                     </div>
                 </div>
@@ -101,7 +100,7 @@
                     </div>
                     <div class="topic-date">{{formatDate $firstMessage.CreatedAt}}</div>
                     {{if .ConnectedUser}}
-                        {{if or (eq $firstMessage.GetUser.Id .ConnectedUser.Id) (eq .ConnectedUser.Role "admin") (eq .ConnectedUser.Role "moderator")}}
+                        {{if or (eq $topicAuthor.Id .ConnectedUser.Id) (eq .ConnectedUser.Role "admin") (eq .ConnectedUser.Role "moderator")}}
                             <div class="edit-delete-comment">
                                 <div id="{{.ShownTopic.Id}}">
                                     <div class="delete-topic">
@@ -122,17 +121,19 @@
                 {{end}}
             </div>
 
-            {{if and (.ConnectedUser) (not .ShownTopic.IsClosed) (ne .ConnectedUser.Role "banned")}}
-                <div class="write-message">
-                    <form action="/post-message?id={{.ShownTopic.Id}}" method="POST">
-                        <label>
+            {{if .ConnectedUser}}
+                {{if and (not .ShownTopic.IsClosed) (ne .ConnectedUser.Role "banned")}}
+                    <div class="write-message">
+                        <form action="/post-message?id={{.ShownTopic.Id}}" method="POST">
+                            <label>
                             <textarea name="post-text" placeholder="Type something..." class="text-area" rows="8"
                                       required></textarea>
-                        </label>
-                        <button type="submit" class="post-message-button"><i
-                                    class="fa-solid fa-location-arrow submit-plane"></i></button>
-                    </form>
-                </div>
+                            </label>
+                            <button type="submit" class="post-message-button"><i
+                                        class="fa-solid fa-location-arrow submit-plane"></i></button>
+                        </form>
+                    </div>
+                {{end}}
             {{end}}
         </div>
     </div>

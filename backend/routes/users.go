@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"context"
 	"database/sql"
 	"encoding/base64"
 	"encoding/json"
@@ -89,8 +90,8 @@ func FollowUserRoute(w http.ResponseWriter, r *http.Request) {
 func IsActiveRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		var response struct {
-			IsOnline  bool   `json:"isOnline"`
-			SessionId string `json:"sessionId"`
+			IsOnline bool   `json:"isOnline"`
+			Session  string `json:"session"`
 		}
 		err := json.NewDecoder(r.Body).Decode(&response)
 		if err != nil {
@@ -99,8 +100,8 @@ func IsActiveRoute(w http.ResponseWriter, r *http.Request) {
 
 		var user *sql2.User
 
-		if response.SessionId != "" {
-			user, err = sql2.GetUserBySession(response.SessionId)
+		if response.Session != "" {
+			user, err = sql2.GetUserBySession(response.Session)
 			if err != nil {
 				return
 			}
@@ -114,6 +115,9 @@ func IsActiveRoute(w http.ResponseWriter, r *http.Request) {
 		if user == nil {
 			return
 		}
+
+		ctx := context.WithValue(r.Context(), "user", user)
+		r = r.WithContext(ctx)
 
 		err = sql2.SetUserOnline(user.Id, response.IsOnline)
 		if err != nil {

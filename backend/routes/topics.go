@@ -370,46 +370,48 @@ func PostMessageRoute(w http.ResponseWriter, r *http.Request) {
 
 // TopicRoute is the route for showing a topic
 func TopicRoute(w http.ResponseWriter, r *http.Request) {
-	queries := r.URL.Query()
+	if r.Method == "GET" {
+		queries := r.URL.Query()
 
-	if queries.Has("id") {
-		id := queries.Get("id")
+		if queries.Has("id") {
+			id := queries.Get("id")
 
-		Id, err := strconv.ParseInt(id, 10, 64)
-		if err != nil {
-			utils.RouteError(err)
-		}
+			Id, err := strconv.ParseInt(id, 10, 64)
+			if err != nil {
+				utils.RouteError(err)
+			}
 
-		topic, err := sql.GetTopic(Id)
-		if err != nil {
-			utils.RouteError(err)
-		}
+			topic, err := sql.GetTopic(Id)
+			if err != nil {
+				utils.RouteError(err)
+			}
 
-		err = sql.AddViews(Id)
-		if err != nil {
-			utils.RouteError(err)
-		}
+			err = sql.AddViews(Id)
+			if err != nil {
+				utils.RouteError(err)
+			}
 
-		err = topic.FetchMessages()
-		if err != nil {
-			utils.RouteError(err)
-		}
+			err = topic.FetchMessages()
+			if err != nil {
+				utils.RouteError(err)
+			}
 
-		topic.Tags, err = sql.GetTags(Id)
-		if err != nil {
-			utils.RouteError(err)
-		}
+			topic.Tags, err = sql.GetTags(Id)
+			if err != nil {
+				utils.RouteError(err)
+			}
 
-		templateData, err := GetTemplatesDataFromRoute(w, r)
-		if err != nil {
-			utils.RouteError(err)
-		}
+			templateData, err := GetTemplatesDataFromRoute(w, r)
+			if err != nil {
+				utils.RouteError(err)
+			}
 
-		templateData.ShownTopic = topic
+			templateData.ShownTopic = topic
 
-		err = utils.CallTemplate("topic", templateData, w)
-		if err != nil {
-			utils.RouteError(err)
+			err = utils.CallTemplate("topic", templateData, w)
+			if err != nil {
+				utils.RouteError(err)
+			}
 		}
 	}
 }

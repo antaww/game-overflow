@@ -23,9 +23,7 @@
                 </div>
                 {{if not $mesageDeleted}}
                     <div class="topic-likes">
-                        <i class="fa-solid fa-angle-up like-btn {{if .Message.IsLiked .ConnectedUser.Id}}like-color{{end}}"></i>
-                        <p class="points">{{.Message.CalculatePoints}}</p>
-                        <i class="fa-solid fa-angle-down dislike-btn {{if .Message.IsDisliked .ConnectedUser.Id}}dislike-color{{end}}"></i>
+                        {{template "message-likes" .}}
                     </div>
                 {{end}}
             </div>
@@ -71,4 +69,20 @@
             {{end}}
         {{end}}
     </div>
+{{end}}
+
+{{define "message-likes"}}
+    {{if .ConnectedUser}}
+        <i class="fa-solid fa-angle-up like-btn {{if .Message.IsLiked .ConnectedUser.Id}}like-color{{end}}"></i>
+    {{else}}
+        <i class="fa-solid fa-angle-up"></i>
+    {{end}}
+
+    <p class="points">{{.Message.CalculatePoints}}</p>
+
+    {{if .ConnectedUser}}
+        <i class="fa-solid fa-angle-down dislike-btn {{if .Message.IsDisliked .ConnectedUser.Id}}dislike-color{{end}}"></i>
+    {{else}}
+        <i class="fa-solid fa-angle-down"></i>
+    {{end}}
 {{end}}

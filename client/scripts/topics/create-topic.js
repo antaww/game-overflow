@@ -8,9 +8,8 @@ function checkFields() {
 	if (title.value.length < 1) valid = false;
 	if (content.innerText.length < 1) valid = false;
 
-	let checked = false;
-	for (let i = 0; i < category.length; i++) {
-		if (category[i].checked) checked = true;
+	if (![...category].some(item => item.checked)) {
+		valid = false;
 	}
 
 	if (!checked) valid = false;
@@ -45,37 +44,12 @@ function retrieveData() {
 	}
 }
 
-window.onload = () => {
-	window.ClassicEditor.create(document.querySelector('#editor'), {
-		toolbar: ['heading', '|', 'bold', 'strikethrough', 'italic', 'underline', 'code', '|', 'link', 'blockQuote', 'horizontalLine', '|', 'bulletedList', 'numberedList', '|', 'undo', 'redo'],
-	}).then(editor => {
-		const content = window.localStorage.getItem('editor') || '';
-		if (content) editor.setData(content);
-
-		window.addEventListener('beforeunload', () => {
-			window.localStorage.setItem('editor', editor.getData());
-		});
-		editor.updateSourceElement();
-		editor.on('change:sate', () => editor.updateSourceElement());
-	}).catch(console.error);
-
-	// on submit
-	document.querySelector('#btn-submit').addEventListener('click', () => deleteFields());
-
-	retrieveData();
-	splitTags();
-	checkFields();
-	document.addEventListener('input', checkFields);
-	document.addEventListener('beforeunload', () => saveFields());
-};
-
 const tags = [...document.querySelectorAll('.tag')].map(tag => tag.innerText);
 
 function splitTags() {
 	const input = document.querySelector('#tags');
 	const inputBox = document.querySelector('.create-topic-tags');
 	const splitRegex = /[\s,]+/g;
-
 	inputBox.addEventListener('click', () => input.focus());
 
 	function updateTags() {
@@ -106,6 +80,7 @@ function splitTags() {
 
 		if (splitRegex.test(e.key)) updateTags();
 	});
+
 	input.addEventListener('change', (e) => updateTags());
 }
 
@@ -128,4 +103,28 @@ document.addEventListener('click', e => {
 		e.target.parentElement.remove();
 		tags.splice(tags.indexOf(e.target.parentElement.innerText.replace(/<\/?[^>]+(>|$)/g, '')), 1);
 	}
+});
+
+window.addEventListener('load', () => {
+	window.ClassicEditor.create(document.querySelector('#editor'), {
+		toolbar: ['heading', '|', 'bold', 'strikethrough', 'italic', 'underline', 'code', '|', 'link', 'blockQuote', 'horizontalLine', '|', 'bulletedList', 'numberedList', '|', 'undo', 'redo'],
+	}).then(editor => {
+		const content = window.localStorage.getItem('editor') || '';
+		if (content) editor.setData(content);
+
+		window.addEventListener('beforeunload', () => {
+			window.localStorage.setItem('editor', editor.getData());
+		});
+
+		editor.updateSourceElement();
+		editor.on('change:sate', () => editor.updateSourceElement());
+	}).catch(console.error);
+
+	document.querySelector('#btn-submit').addEventListener('click', () => deleteFields());
+
+	retrieveData();
+	splitTags();
+	checkFields();
+	document.addEventListener('input', checkFields);
+	document.addEventListener('beforeunload', () => saveFields());
 });

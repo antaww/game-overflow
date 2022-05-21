@@ -1,4 +1,6 @@
 {{define "content"}}
+    <script src="/scripts/login.js"></script>
+
     <div class="fit-page">
         <div class="container">
             <div class="header">
@@ -7,10 +9,10 @@
             <form method="POST">
                 <div class="input-area log-in-input">
                     <label>
-                        <input type="text" placeholder="Username" name="username"/>
+                        <input autocomplete="username" id="username" name="username" placeholder="Username" type="text"/>
                     </label>
                     <label>
-                        <input type="password" placeholder="Password" name="password"/>
+                        <input autocomplete="current-password" id="password" name="password" placeholder="Password" type="password"/>
                     </label>
                 </div>
                 <div class="actions">

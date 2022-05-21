@@ -280,10 +280,18 @@ func GetUserById(id int64) (*User, error) {
 // GetUserByRequest gets a user by request, returns nil if not found
 func GetUserByRequest(r *http.Request) (*User, error) {
 	cookie, err := r.Cookie("session")
-	if err != nil {
-		if err == http.ErrNoCookie {
-			return nil, nil
+
+	if err == http.ErrNoCookie {
+		ip := r.Header.Get("X-Forwarded-For")
+		connectedSessionWithoutCookie := utils.ConnectedUsersWithoutCookies[ip]
+		if connectedSessionWithoutCookie != "" {
+			return GetUserBySession(connectedSessionWithoutCookie)
 		}
+
+		return nil, nil
+	}
+
+	if err != nil {
 		return nil, fmt.Errorf("GetUserByRequest error: %v", err)
 	}
 
@@ -441,13 +449,10 @@ func LoginByIdentifiants(username, password string) (bool, error) {
 		return false, fmt.Errorf("LoginByIdentifiants error: %v", err)
 	}
 
-	if result.Next() {
-		HandleSQLErrors(result)
-		return true, nil
-	} else {
-		HandleSQLErrors(result)
-		return false, nil
-	}
+	valid := result.Next()
+	HandleSQLErrors(result)
+
+	return valid, nil
 }
 
 // SaveUser saves a user in the database

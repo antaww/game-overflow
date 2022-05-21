@@ -2,10 +2,10 @@ package sql
 
 import (
 	"database/sql"
-	"fmt"
 	"main/utils"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 type LoginSession struct {
@@ -20,31 +20,40 @@ func AdminEditUsername(oldUsername string, newUsername string) error {
 	return err
 }
 
-func AddSessionCookie(user User, w http.ResponseWriter) error {
-	SessionID := utils.RandomString(32)
-	fmt.Println("session id:", SessionID)
-
+func AddSession(user *User) (string, error) {
+	sessionId := utils.RandomString(32)
 	session := LoginSession{
-		IdSession: SessionID,
+		IdSession: sessionId,
 		IdUser:    strconv.FormatInt(user.Id, 10),
 	}
+
+	_, err := DB.Exec("INSERT INTO sessions VALUES (?, ?)", session.IdSession, session.IdUser)
+	return sessionId, err
+}
+
+func AddSessionCookie(user *User, w http.ResponseWriter) error {
+	sessionId, err := AddSession(user)
+	if err != nil {
+		return err
+	}
+
 	cookie := &http.Cookie{
 		HttpOnly: false,
 		Name:     "session",
-		Value:    session.IdSession,
+		Value:    sessionId,
 		MaxAge:   7 * 24 * 60 * 60,
 	}
 	http.SetCookie(w, cookie)
 
-	_, err := DB.Exec("INSERT INTO sessions VALUES (?, ?)", session.IdSession, session.IdUser)
 	return err
 }
 
 func DeleteSessionCookie(sessionId string, w http.ResponseWriter) error {
 	cookie := &http.Cookie{
-		HttpOnly: false,
+		HttpOnly: true,
 		Name:     "session",
 		Value:    "",
+		Expires:  time.Unix(0, 0),
 		MaxAge:   -1,
 	}
 	http.SetCookie(w, cookie)

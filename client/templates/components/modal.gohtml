@@ -1,7 +1,7 @@
 {{define "modal"}}
     <div class="modal-background myModal">
         <div class="modal-content">
-            <div class="modal-banner" style="background-color: {{decimalToHex .Color}}">
+            <div class="modal-banner" style="background-color: {{decimalToHex .User.Color}}">
                 <span class="close">&times;</span>
                 <a class="avatar modal-href-avatar" href="/profile?id={{.Id}}">
                     <img class="modal-avatar" src="{{template "avatar" .User.ProfilePic.String}}" alt="">

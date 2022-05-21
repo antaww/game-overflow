@@ -1,18 +1,7 @@
+const isActiveCheckerDelay = 5 * 1000;
+const mouseInactiveTime = 30 * 1000;
 let mouseMove = false;
-
-function setSelfOnline() {
-	const element = document.querySelector('.circle');
-
-	if (mouseMove) {
-		element.classList.add('connected');
-		element.classList.remove('disconnected');
-	} else {
-		element.classList.add('disconnected');
-		element.classList.remove('connected');
-	}
-
-	sendUserStatus(mouseMove);
-}
+let inactiveTimeout;
 
 function sendUserStatus(status) {
 	fetch('http://localhost:8091/is-active', {
@@ -23,9 +12,27 @@ function sendUserStatus(status) {
 		mode: 'cors',
 		body: JSON.stringify({
 			isOnline: status,
+			session: localStorage.getItem('session'),
 		}),
-	})
-		.catch(error => console.error('Error:', error));
+	}).catch(console.error);
+}
+
+function setSelfOnline() {
+	sendUserStatus(mouseMove);
+
+	const id = document.querySelector('#user-id').getAttribute('data-user-id');
+
+	const elements = [...document.querySelectorAll('.circle')].filter(element => element.getAttribute('data-user-id') === id);
+
+	elements.forEach((item) => {
+		if (mouseMove) {
+			item.classList.add('connected');
+			item.classList.remove('disconnected');
+		} else {
+			item.classList.add('disconnected');
+			item.classList.remove('connected');
+		}
+	});
 }
 
 function setUsersOnline() {
@@ -65,25 +72,22 @@ function setUsersOnline() {
 }
 
 document.addEventListener('mousemove', () => {
-	clearTimeout(timeout);
+	clearTimeout(inactiveTimeout);
 	mouseMove = true;
-	let mouseInactiveTime = 30 * 1000; //in seconds
-	timeout = setTimeout(() => {
-		mouseMove = false;
-	}, mouseInactiveTime);
+
+	inactiveTimeout = setTimeout(() => mouseMove = false, mouseInactiveTime);
 });
 
 window.addEventListener('beforeunload', () => {
 	const session = document.cookie.match(new RegExp('(^| )' + 'session' + '=([^;]+)'));
 	const body = {
 		isOnline: false,
-		sessionId: session[2],
+		session: session[2],
 	};
 	navigator.sendBeacon('http://localhost:8091/is-active', JSON.stringify(body));
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-	const isActiveCheckerDelay = 5 * 1000; //in seconds
+window.addEventListener('load', () => {
 	sendUserStatus(true);
 	setUsersOnline();
 
