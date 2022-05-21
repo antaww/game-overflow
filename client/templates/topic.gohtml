@@ -43,7 +43,7 @@
                         {{end}}
                         <a>
                             <div class="circle {{if $firstMessage.GetUser.IsOnline}} connected {{else}} disconnected {{end}}">
-                                <img alt="" class="avatar modalProfileBtn"
+                                <img alt="" class="avatar modal-profile-btn"
                                      src="{{template "avatar" $firstMessage.GetUser.ProfilePic.String}}">
                                 {{template "modal" $firstMessage.GetUser.WithConnectedUser .ConnectedUser}}
                             </div>

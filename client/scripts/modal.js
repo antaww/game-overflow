@@ -1,7 +1,7 @@
 import {follow} from "./follow.js";
 
 const modals = document.querySelectorAll('.myModal');
-const btn = document.querySelectorAll('.modalProfileBtn');
+const btn = document.querySelectorAll('.modal-profile-btn');
 const span = document.querySelectorAll('.close');
 
 const keys = {37: 1, 38: 1, 39: 1, 40: 1};

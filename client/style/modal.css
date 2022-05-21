@@ -1,9 +1,9 @@
 
-.modalProfileBtn:hover {
+.modal-profile-btn:hover {
     cursor: pointer;
 }
 
-.modal {
+.modal-background {
     background-color: rgba(0, 0, 0, 0.4);
     display: none;
     height: 0;
@@ -17,12 +17,12 @@
 }
 
 .modal-content {
-    animation: modalSlide .2s ease-out forwards;
+    animation: modal-slide .2s ease-out forwards;
     background-color: #2e3944;
     border-radius: 2vw;
     margin: auto;
     min-height: 30vw;
-    min-width: 18vw;
+    min-width: 30vw;
     overflow: hidden;
     width: fit-content;
 }
@@ -40,7 +40,7 @@
     width: 100% !important;
 }
 
-@keyframes modalSlide {
+@keyframes modal-slide {
     from {
         transform: translateX(10%);
         opacity: 0;

@@ -1,5 +1,5 @@
 {{define "modal"}}
-    <div class="modal myModal">
+    <div class="modal-background myModal">
         <div class="modal-content">
             <div class="modal-banner" style="background-color: {{decimalToHex .Color}}">
                 <span class="close">&times;</span>
@@ -34,7 +34,7 @@
                     <p class="modal-about">About me</p>
                     <p class="modal-role modal-bubble">{{.User.Role}}</p>
                     {{if ne .User.Description.String ""}}
-                        <p class="modal-description">{{.User.Description.String}}</p>
+                        <p class="modal-description markdown">{{.User.Description.String}}</p>
                     {{end}}
                     {{if ne .CountTopics 0}}
                         <a href="/posts?id={{.User.Id}}" class="user-follow">{{.User.Username}}'s topics</a>
