@@ -211,10 +211,11 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 			Description: sql.NullString{Valid: true, String: r.FormValue("description")},
 			Locale:      r.FormValue("locale"),
 			Color:       int(color),
+			CookiesEnabled: sql.NullBool{
+				Valid: true,
+				Bool:  r.FormValue("use-cookies") == "on",
+			},
 		}
-
-		/*newUser.Description.String = strings.ReplaceAll(newUser.Description.String, "&lt;", "<")
-		newUser.Description.String = strings.ReplaceAll(newUser.Description.String, "&gt;", ">")*/
 
 		var profilePicture string
 		file, header, err := r.FormFile("profile-picture")

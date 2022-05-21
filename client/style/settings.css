@@ -32,8 +32,8 @@
     padding: 8px 12px;
 }
 
-.form-group input:not(.color), .form-group textarea {
-    width: 20vw;
+.form-group input:not(.color, .checkbox), .form-group textarea {
+    min-width: 15rem;
 }
 
 .form-group textarea {
@@ -155,4 +155,28 @@
 
 .ck-editor {
     max-width: 70vw;
+}
+
+.cookies-wrapper {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    margin: 0.5rem 0 2rem;
+}
+
+.cookies-wrapper * {
+    color: salmon;
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
+}
+
+input[type=checkbox] {
+    height: 1.2rem;
+    margin: 0 1rem 0 0 !important;
+    width: 1.2rem;
+}
+
+.hidden {
+    display: none;
 }

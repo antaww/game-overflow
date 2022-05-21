@@ -212,11 +212,15 @@ func EditUser(idUser int64, newUser User) (bool, error) {
 		requestEdits = append(requestEdits, "color = ?")
 		arguments = append(arguments, newUser.Color)
 	}
+	if newUser.CookiesEnabled.Valid {
+		requestEdits = append(requestEdits, "cookies_enabled = ?")
+		arguments = append(arguments, newUser.CookiesEnabled.Bool)
+	}
 
 	if requestEdits == nil {
 		return false, nil
 	}
-	request += strings.Join(requestEdits, ",") + " WHERE id_user = ?"
+	request += strings.Join(requestEdits, ", ") + " WHERE id_user = ?"
 	arguments = append(arguments, idUser)
 
 	r, err := DB.Exec(request, arguments...)
@@ -249,13 +253,14 @@ func GetFollowing(idUser int64) ([]User, error) {
 	return GetUsers(rows)
 }
 
+// GetSessionId returns the session id of the user with the given id
 func GetSessionId(r *http.Request) (string, error) {
 	sessionId, err := r.Cookie("session")
-	if err != nil {
-		return "", fmt.Errorf("GetSessionId error: %v", err)
+	if err == http.ErrNoCookie {
+		return "", nil
 	}
 
-	return sessionId.Value, nil
+	return sessionId.Value, err
 }
 
 // GetUserById finds a user by id, returns nil if not found
@@ -288,7 +293,7 @@ func GetUserByRequest(r *http.Request) (*User, error) {
 			return GetUserBySession(connectedSessionWithoutCookie)
 		}
 
-		return nil, nil
+		return nil, err
 	}
 
 	if err != nil {

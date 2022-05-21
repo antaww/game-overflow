@@ -149,22 +149,18 @@ func LoginRoute(w http.ResponseWriter, r *http.Request) {
 
 // LogoutRoute is the route to log out the user
 func LogoutRoute(w http.ResponseWriter, r *http.Request) {
-	connectedUser, err := sql.GetUserByRequest(r)
+	sessionId, err := sql.GetSessionId(r)
+	if err == http.ErrNoCookie || sessionId == "" {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
 	if err != nil {
-		if err == http.ErrNoCookie {
-			http.Redirect(w, r, "/login", http.StatusSeeOther)
-			return
-		}
 		utils.RouteError(err)
 	}
 
-	sessionId, err := sql.GetSessionId(r)
+	connectedUser, err := sql.GetUserBySession(sessionId)
 	if err != nil {
-		if err == http.ErrNoCookie {
-			http.Redirect(w, r, "/login", http.StatusSeeOther)
-			return
-		}
-
 		utils.RouteError(err)
 	}
 

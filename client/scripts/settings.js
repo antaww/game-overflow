@@ -21,6 +21,14 @@ function checkPassword() {
 	});
 }
 
+function addWarningChangingCookies() {
+	const cookiesInput = document.querySelector('.cookies');
+
+	cookiesInput.addEventListener('change', () => {
+		cookiesInput.parentElement.querySelector('.warning').classList.remove('hidden');
+	});
+}
+
 function selectDefaultColor() {
 	const color = document.querySelector('.color-wrapper.customisable');
 	const defaultColor = document.querySelector('.color-wrapper.default');
@@ -56,6 +64,7 @@ function updateAvatarPreview() {
 }
 
 window.addEventListener('load', () => {
+	addWarningChangingCookies();
 	setPasswordConfirmation();
 	selectDefaultColor();
 	updateAvatarPreview();

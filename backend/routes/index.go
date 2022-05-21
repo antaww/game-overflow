@@ -54,7 +54,10 @@ func LogHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		user, err := sql.GetUserByRequest(r)
 		if err != nil {
-			utils.RouteError(err)
+			if err != http.ErrNoCookie {
+				utils.RouteError(err)
+			}
+
 		}
 
 		if user != nil {

@@ -77,7 +77,9 @@ func (t TemplatesDataType) SortTopics() {
 func GetTemplatesDataFromRoute(w http.ResponseWriter, r *http.Request) (*TemplatesDataType, error) {
 	connectedUser, err := sql.GetUserByRequest(r)
 	if err != nil {
-		return nil, err
+		if err != http.ErrNoCookie {
+			return nil, err
+		}
 	}
 
 	locales, err := sql.GetLocales()

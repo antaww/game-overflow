@@ -50,20 +50,35 @@
                 {{if ne .ConnectedUser.Role "banned"}}
                     <label for="description">Description</label>
                     <textarea class="form-control" id="description"
-                              name="description" minlength="1" maxlength="4000">{{.ConnectedUser.Description.String}}</textarea>
+                              name="description" minlength="1"
+                              maxlength="4000">{{.ConnectedUser.Description.String}}</textarea>
                 {{end}}
             </div>
+
+            {{$userLocale := .ConnectedUser.Locale}}
             <div class="form-group">
                 <label for="locale">Locale</label>
                 <select id="locale" name="locale">
                     {{range $key, $value := .Locales}}
-                        <option value="{{$key}}" {{if eq $key .}}selected{{end}}>{{$value}}</option>
+                        <option value="{{$key}}" {{if eq $key $userLocale}}selected{{end}}>{{$value}}</option>
                     {{end}}
                 </select>
             </div>
 
+            <div class="form-group">
+                <label for="use-cookies">Use cookies</label>
+                <div class="cookies-wrapper">
+                    <input class="checkbox" id="use-cookies" name="use-cookies" type="checkbox"
+                           {{if .ConnectedUser.CookiesEnabled.Bool}}checked{{end}}>
+                    <p class="warning hidden">
+                        <i class="fa-solid fa-warning"></i>
+                        You will need to re-login to change this setting.
+                    </p>
+                </div>
+            </div>
+
             <div class="form-group confirm">
-                <label for="re-confirm-input">Confirm Password</label>
+                <label for="re-confirm-input">Confirm Password *</label>
                 <input autocomplete="password"
                        id="re-confirm-input"
                        maxlength="40"
@@ -72,6 +87,7 @@
                        required
                        type="password">
             </div>
+
             <button class="btn confirm" id="btn-submit" name="submit" type="submit">
                 Save <i class="fa-solid fa-save"></i>
             </button>
