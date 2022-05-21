@@ -192,3 +192,16 @@ li .user:hover {
 .user-follow:hover {
     background-color: #2b333d;
 }
+
+#posts {
+    margin: 0;
+    transition: all .3s;
+}
+
+.posts-link:hover h2 {
+    color: #80c7ff;
+}
+
+.posts-link {
+    margin: 1.5rem 0;
+}

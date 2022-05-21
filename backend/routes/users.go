@@ -15,6 +15,76 @@ import (
 	"strings"
 )
 
+// BanRoute is a route that bans a user
+func BanRoute(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		queries := r.URL.Query()
+
+		if queries.Has("id") {
+			idUser := queries.Get("id")
+			fmt.Println(idUser)
+			Id, err := strconv.ParseInt(idUser, 10, 64)
+
+			user, err := sql2.GetUserByRequest(r)
+			if err != nil {
+				utils.RouteError(err)
+			}
+
+			if user.Role == "admin" {
+				err := sql2.BanUser(Id)
+				if err != nil {
+					utils.RouteError(err)
+				}
+			}
+
+			queriesId := url.Values{}
+			queriesId.Add("id", idUser)
+
+			http.Redirect(w, r, "/profile?"+queriesId.Encode(), http.StatusSeeOther)
+		}
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	}
+}
+
+// FollowUserRoute is a route that follows a user
+func FollowUserRoute(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		templateData, err := GetTemplatesDataFromRoute(w, r)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		if templateData.ConnectedUser == nil {
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+			return
+		}
+
+		body := r.Body
+		defer body.Close()
+
+		var response struct {
+			Id string `json:"id"`
+		}
+		err = json.NewDecoder(body).Decode(&response)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		idUserFollowed, err := strconv.ParseInt(response.Id, 10, 64)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		err = sql2.FollowUser(idUserFollowed, templateData.ConnectedUser.Id)
+		if err != nil {
+			w.WriteHeader(http.StatusForbidden)
+			utils.RouteError(err)
+			return
+		}
+	}
+	w.WriteHeader(http.StatusOK)
+}
+
 // IsActiveRoute is a middleware function that checks if the user is active
 func IsActiveRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
@@ -183,6 +253,67 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// UnBanRoute is a route that unbans a user
+func UnBanRoute(w http.ResponseWriter, r *http.Request) {
+	queries := r.URL.Query()
+
+	if queries.Has("id") {
+		fmt.Println("unban func")
+		idUser := queries.Get("id")
+		Id, err := strconv.ParseInt(idUser, 10, 64)
+
+		user, err := sql2.GetUserByRequest(r)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		if user.Role == "admin" {
+			err := sql2.UnbanUser(Id)
+			if err != nil {
+				utils.RouteError(err)
+			}
+		}
+		queriesId := url.Values{}
+		queriesId.Add("id", idUser)
+
+		http.Redirect(w, r, "/profile?"+queriesId.Encode(), http.StatusSeeOther)
+	}
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+// UnFollowUserRoute is a route that unfollows a user
+func UnFollowUserRoute(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		user, err := sql2.GetUserByRequest(r)
+		if err != nil || user == nil {
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+			return
+		}
+
+		body := r.Body
+		defer body.Close()
+
+		var response struct {
+			Id string `json:"id"`
+		}
+		err = json.NewDecoder(body).Decode(&response)
+		if err != nil {
+			utils.RouteError(err)
+		}
+		idUserFollowed, err := strconv.ParseInt(response.Id, 10, 64)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		err = sql2.UnfollowUser(idUserFollowed, user.Id)
+		if err != nil {
+			w.WriteHeader(http.StatusForbidden)
+			return
+		}
+	}
+	w.WriteHeader(http.StatusOK)
+}
+
 // UsersActive is a middleware function that checks if the users sent are active
 func UsersActive(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "PUT" {
@@ -211,6 +342,7 @@ func UsersActive(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// UserPostsRoute is a route that display the posts of a user
 func UserPostsRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		templateData, err := GetTemplatesDataFromRoute(w, r)
@@ -222,6 +354,7 @@ func UserPostsRoute(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		}
+
 		query := r.URL.Query()
 		if query.Has("id") {
 			queryId := query.Get("id")
@@ -250,10 +383,10 @@ func UserPostsRoute(w http.ResponseWriter, r *http.Request) {
 		} else {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 		}
-
 	}
 }
 
+// UserLikesRoute is a route that display the topics and messages liked by user
 func UserLikesRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		templateData, err := GetTemplatesDataFromRoute(w, r)
@@ -304,128 +437,4 @@ func UserLikesRoute(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 		}
 	}
-}
-
-func UserBan(w http.ResponseWriter, r *http.Request) {
-	queries := r.URL.Query()
-
-	if queries.Has("id") {
-		idUser := queries.Get("id")
-		fmt.Println(idUser)
-		Id, err := strconv.ParseInt(idUser, 10, 64)
-
-		user, err := sql2.GetUserByRequest(r)
-		if err != nil {
-			utils.RouteError(err)
-		}
-
-		if user.Role == "admin" {
-			err := sql2.BanUser(Id)
-			if err != nil {
-				utils.RouteError(err)
-			}
-		}
-		queriesId := url.Values{}
-		queriesId.Add("id", idUser)
-
-		http.Redirect(w, r, "/profile?"+queriesId.Encode(), http.StatusSeeOther)
-	}
-	http.Redirect(w, r, "/", http.StatusSeeOther)
-}
-
-func UserUnban(w http.ResponseWriter, r *http.Request) {
-	queries := r.URL.Query()
-
-	if queries.Has("id") {
-		fmt.Println("unban func")
-		idUser := queries.Get("id")
-		Id, err := strconv.ParseInt(idUser, 10, 64)
-
-		user, err := sql2.GetUserByRequest(r)
-		if err != nil {
-			utils.RouteError(err)
-		}
-
-		if user.Role == "admin" {
-			err := sql2.UnbanUser(Id)
-			if err != nil {
-				utils.RouteError(err)
-			}
-		}
-		queriesId := url.Values{}
-		queriesId.Add("id", idUser)
-
-		http.Redirect(w, r, "/profile?"+queriesId.Encode(), http.StatusSeeOther)
-	}
-	http.Redirect(w, r, "/", http.StatusSeeOther)
-}
-
-func FollowUserRoute(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "POST" {
-		templateData, err := GetTemplatesDataFromRoute(w, r)
-		if err != nil {
-			utils.RouteError(err)
-		}
-
-		if templateData.ConnectedUser == nil {
-			http.Redirect(w, r, "/", http.StatusSeeOther)
-			return
-		}
-
-		body := r.Body
-		defer body.Close()
-
-		var response struct {
-			Id string `json:"id"`
-		}
-		err = json.NewDecoder(body).Decode(&response)
-		if err != nil {
-			utils.RouteError(err)
-		}
-
-		idUserFollowed, err := strconv.ParseInt(response.Id, 10, 64)
-		if err != nil {
-			utils.RouteError(err)
-		}
-
-		err = sql2.FollowUser(idUserFollowed, templateData.ConnectedUser.Id)
-		if err != nil {
-			w.WriteHeader(http.StatusForbidden)
-			utils.RouteError(err)
-			return
-		}
-	}
-	w.WriteHeader(http.StatusOK)
-}
-
-func UnfollowUserRoute(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "POST" {
-		user, err := sql2.GetUserByRequest(r)
-		if err != nil || user == nil {
-			http.Redirect(w, r, "/", http.StatusSeeOther)
-			return
-		}
-
-		body := r.Body
-		defer body.Close()
-
-		var response struct {
-			Id string `json:"id"`
-		}
-		err = json.NewDecoder(body).Decode(&response)
-		if err != nil {
-			utils.RouteError(err)
-		}
-		idUserFollowed, err := strconv.ParseInt(response.Id, 10, 64)
-		if err != nil {
-			utils.RouteError(err)
-		}
-
-		err = sql2.UnfollowUser(idUserFollowed, user.Id)
-		if err != nil {
-			w.WriteHeader(http.StatusForbidden)
-			return
-		}
-	}
-	w.WriteHeader(http.StatusOK)
 }

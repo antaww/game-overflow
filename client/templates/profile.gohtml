@@ -72,18 +72,23 @@
 
             <p class="topic-content markdown">{{$user.Description.String}}</p>
 
-            <h2 id="posts">
-                {{if eq (len $topics) 0}}
-                    {{$user.Username}} hasn't posted anything yet.
-                {{else}}
-                    Posts ({{(len $topics)}})
-                {{end}}
-            </h2>
+            <a class="posts-link" href="/posts?id={{$user.Id}}">
+                <h2 id="posts">
+                    {{if eq (len $topics) 0}}
+                        {{$user.Username}} hasn't posted anything yet.
+                    {{else}}
+                        Posts ({{(len $topics)}})
+                    {{end}}
+                </h2>
+            </a>
             {{if gt (len $topics) 0}}
-                {{range $topic := $user.GetTopics}}
-                    {{template "feed-topic" $topic}}
+                {{range $index, $topic := $user.GetTopics}}
+                    {{if le $index 10}}
+                        {{template "feed-topic" $topic}}
+                    {{end}}
                 {{end}}
             {{end}}
+
             <h2 id="following">
                 {{if eq (len $following) 0}}
                     {{$user.Username}} hasn't followed anyone yet.
@@ -100,6 +105,7 @@
                     {{end}}
                 </ul>
             {{end}}
+
             <h2 id="followers">
                 {{if eq (len $followers) 0}}
                     {{$user.Username}} doesn't have any follower.
