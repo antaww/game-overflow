@@ -186,10 +186,12 @@
 #change-topic-category {
     background-color: #2b333d;
     margin-bottom: 1vh;
+    margin-left: 1vh;
 }
 
 #change-topic-category option {
     background: #2b333d;
+    text-transform: capitalize;
 }
 
 #change-topic-category option:hover {

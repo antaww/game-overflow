@@ -64,16 +64,16 @@
                                 <div class="topic-category-changer">
                                     {{if .ConnectedUser}}
                                         {{if or (eq .ConnectedUser.Role "admin") (eq .ConnectedUser.Role "moderator")}}
-                                            <label for="change-topic-category" class="change-topic-category-label">Change
-                                                category : </label>
+                                            <label for="change-topic-category" class="change-topic-category-label">
+                                                Change category :
+                                            </label>
+
                                             <select name="change-topic-category" id="change-topic-category">
                                                 <option value="">{{.ShownTopic.Category}}</option>
-                                                <option value="nintendo">Nintendo</option>
-                                                <option value="mobile">Mobile</option>
-                                                <option value="others">Others</option>
-                                                <option value="pc">Pc</option>
-                                                <option value="playstation">Playstation</option>
-                                                <option value="xbox">Xbox</option>
+                                                {{range .GetCategories}}
+                                                    <option class="change-category-value"
+                                                            value="{{.Name}}">{{.Name}}</option>
+                                                {{end}}
                                             </select>
                                         {{end}}
                                     {{end}}
