@@ -152,3 +152,7 @@
 .color::-webkit-color-swatch, .color::-moz-color-swatch {
     border-radius: 5px;
 }
+
+.ck-editor {
+    max-width: 70vw;
+}

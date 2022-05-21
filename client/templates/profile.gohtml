@@ -2,6 +2,8 @@
     {{template "navbar" .}}
     <script defer src="/scripts/ban.js"></script>
     <script defer type="module" src="/scripts/profile.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
     <link rel="stylesheet" href="/static/profile.css">
 
     {{$user := .ShownUser}}
@@ -67,9 +69,8 @@
                     {{end}}
                 {{end}}
             </h1>
-            <p class="description">
-                {{$user.Description.String}}
-            </p>
+
+            <p class="topic-content markdown">{{$user.Description.String}}</p>
 
             <h2 id="posts">
                 {{if eq (len $topics) 0}}

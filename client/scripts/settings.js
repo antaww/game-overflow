@@ -38,14 +38,6 @@ function selectDefaultColor() {
 	});
 }
 
-function resizeTextArea() {
-	const textArea = document.querySelector('textarea');
-	textArea.addEventListener('input', () => {
-		textArea.style.height = 'auto';
-		textArea.style.height = textArea.scrollHeight + 'px';
-	});
-}
-
 function setPasswordConfirmation() {
 	confirmationInput.addEventListener('keypress', checkPassword);
 }
@@ -64,8 +56,15 @@ function updateAvatarPreview() {
 }
 
 window.addEventListener('load', () => {
-	resizeTextArea();
 	setPasswordConfirmation();
 	selectDefaultColor();
 	updateAvatarPreview();
+
+
+	window.ClassicEditor.create(document.querySelector('#description'), {
+		toolbar: ['heading', '|', 'bold', 'strikethrough', 'italic', 'underline', 'code', '|', 'link', 'blockQuote', 'horizontalLine', '|', 'bulletedList', 'numberedList', '|', 'undo', 'redo'],
+	}).then(editor => {
+		editor.updateSourceElement();
+		editor.on('change:sate', () => editor.updateSourceElement());
+	}).catch(console.error);
 });

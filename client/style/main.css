@@ -8,12 +8,13 @@
     flex-direction: column;
     justify-content: center;
     padding: 10px calc((1vw + 10px) / 10);
-    position: absolute;
+    position: fixed;
     right: 5vw;
     top: 12rem;
 }
 
 .trends h2 {
+    font-size: 1.6rem;
     margin: 10px 0;
 }
 
@@ -28,18 +29,20 @@
 
 .trends li {
     list-style: none;
-    padding: 4px 0;
+    padding: 10px 0;
 }
 
 .trends .topic-tags {
-    padding: 3px 12px;
+    font-size: 1.1rem;
+    margin: 1rem;
+    padding: 5px 12px;
 }
 
 .tags-count {
     padding-right: 4px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1300px) {
     .feed-content {
         display: flex;
         flex-direction: column;

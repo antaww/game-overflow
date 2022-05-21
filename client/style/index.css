@@ -411,3 +411,27 @@ body {
 .none {
     display: none;
 }
+
+/* Markdown */
+
+.markdown * {
+    margin: 10px 0;
+}
+
+code {
+    backdrop-filter: brightness(0.5);
+    background-color: #1b1b20;
+    border-radius: 3px;
+    color: #fff;
+    font-family: Consolas, monospace;
+    padding: 4px 5px;
+}
+
+blockquote {
+    background: #00000014;
+    border-left: 3px solid #ccc;
+    border-radius: 3px;
+    padding: 0 5px 0 1rem;
+    position: relative;
+    width: fit-content;
+}

@@ -13,7 +13,7 @@
     display: flex;
     flex-direction: column;
     margin-top: 12vh;
-    width: min(50rem, 55vw);
+    width: min(55rem, 75vw);
 }
 
 .feed-topic {
@@ -73,7 +73,8 @@
 .sub-title {
     display: flex;
     flex-direction: row;
-    white-space: nowrap;
+
+    white-space: pre-wrap;;
 }
 
 .feed-topic-tag {
@@ -83,6 +84,11 @@
 .topic-open i, .topic-closed i {
     margin-left: 1vh;
 }
+
+/*.topic-title {
+    overflow-wrap: break-word;
+    word-break: break-word;
+}*/
 
 .topic-tags-box {
     display: flex;
@@ -115,12 +121,12 @@
     border-radius: 15px;
     bottom: 5rem;
     font-weight: 700;
-    left: calc(100% - 15rem);
+    left: calc(100% - max(15vw, 12rem));
     margin: 3vh;
     padding: .5rem;
     position: fixed;
     text-decoration: none;
-    transition: all .3s, bottom .0s;
+    transition: background .3s, padding-right .3s;
     white-space: nowrap;
 }
 

@@ -59,8 +59,8 @@
 .topic-content {
     font-size: 1em;
     max-width: 50rem;
-    word-break: break-all;
-    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .topic-content em {

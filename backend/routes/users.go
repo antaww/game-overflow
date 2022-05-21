@@ -134,10 +134,13 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 		newUser := sql2.User{
 			Username:    r.FormValue("username"),
 			Email:       r.FormValue("email"),
-			Description: sql.NullString{Valid: true, String: string(r.FormValue("description"))},
+			Description: sql.NullString{Valid: true, String: r.FormValue("description")},
 			Locale:      r.FormValue("locale"),
 			Color:       int(color),
 		}
+
+		/*newUser.Description.String = strings.ReplaceAll(newUser.Description.String, "&lt;", "<")
+		newUser.Description.String = strings.ReplaceAll(newUser.Description.String, "&gt;", ">")*/
 
 		var profilePicture string
 		file, header, err := r.FormFile("profile-picture")
