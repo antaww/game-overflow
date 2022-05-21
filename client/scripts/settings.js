@@ -22,13 +22,15 @@ function checkPassword() {
 }
 
 function selectDefaultColor() {
-	const color = document.querySelector('.color:not(.default)');
+	const color = document.querySelector('.color-wrapper.customisable');
+	const defaultColor = document.querySelector('.color-wrapper.default');
+
 	color.addEventListener('click', () => {
 		defaultColor.classList.remove('selected');
 		color.classList.add('selected');
 	});
-	const defaultColor = document.querySelector('.color.default');
-	defaultColor.addEventListener('pointerdown', e => {
+
+	defaultColor.addEventListener('click', e => {
 		e.preventDefault();
 		color.classList.remove('selected');
 		defaultColor.classList.add('selected');
@@ -61,9 +63,9 @@ function updateAvatarPreview() {
 	});
 }
 
-window.onload = () => {
+window.addEventListener('load', () => {
 	resizeTextArea();
 	setPasswordConfirmation();
 	selectDefaultColor();
 	updateAvatarPreview();
-};
+});

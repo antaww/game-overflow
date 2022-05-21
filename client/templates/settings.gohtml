@@ -1,16 +1,19 @@
 {{define "content"}}
+    {{template "navbar" .}}
+
     <link rel="stylesheet" href="/static/settings.css">
     <script defer src="/scripts/settings.js"></script>
 
-    {{template "navbar" .}}
     <div id="settings">
         <form action="/settings" enctype="multipart/form-data" id="settings-form" method="POST">
             <div class="form-group">
                 <label for="avatar">Profile Picture</label>
-                <img alt="" id="avatar-preview" src="{{template "avatar" .ConnectedUser.ProfilePic.String}}" height="120"
+                <img alt="" id="avatar-preview" src="{{template "avatar" .ConnectedUser.ProfilePic.String}}"
+                     height="120"
                      width="120" style="object-fit: scale-down;">
                 {{if ne .ConnectedUser.Role "banned"}}
-                    <input accept="image/jpeg, image/png, image/gif" id="avatar-input" name="profile-picture" type="file"
+                    <input accept="image/jpeg, image/png, image/gif" id="avatar-input" name="profile-picture"
+                           type="file"
                            value="Edit"/>
                 {{end}}
             </div>
@@ -18,12 +21,17 @@
             <div class="colors-wrapper">
                 <div class="form-group must-confirm">
                     <label for="color">Color</label>
-                    <input class="form-control color {{if ne .ConnectedUser.Color .ConnectedUser.DefaultColor}}selected{{end}}" id="color" name="color" type="color"
-                           value="{{decimalToHex .ConnectedUser.Color}}">
+                    <div class="color-wrapper customisable {{if ne .ConnectedUser.Color .ConnectedUser.DefaultColor}}selected{{end}}">
+                        <input class="form-control color" id="color" name="color" type="color"
+                               value="{{decimalToHex .ConnectedUser.Color}}">
+                    </div>
                 </div>
                 <div class="form-group must-confirm">
                     <label for="default-color">Dominant color from avatar</label>
-                    <input class="form-control color default {{if eq .ConnectedUser.Color .ConnectedUser.DefaultColor}}selected{{end}}" disabled id="default-color" name="color" type="color" value="{{decimalToHex .ConnectedUser.DefaultColor}}">
+                    <div class="color-wrapper default {{if eq .ConnectedUser.Color .ConnectedUser.DefaultColor}}selected{{end}}">
+                        <input class="form-control color" id="default-color" name="color" type="color"
+                               value="{{decimalToHex .ConnectedUser.DefaultColor}}">
+                    </div>
                 </div>
             </div>
 
