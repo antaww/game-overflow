@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"log"
 	"main/sql"
 	"main/utils"
@@ -9,81 +8,6 @@ import (
 	"regexp"
 	"strings"
 )
-
-type TemplatesDataType struct {
-	ConnectedUser *sql.User
-	FeedSort      sql.FeedSortType
-	GetAllTags    []string
-	Locales       map[string]string
-	ShownTopic    *sql.Topic
-	ShownTopics   sql.Topics
-	ShownMessages []sql.Message
-	ShownUser     *sql.User
-}
-
-// GetCategories returns all categories
-func (t TemplatesDataType) GetCategories() []sql.Category {
-	categories, err := sql.GetCategories()
-	if err != nil {
-		log.Println(err)
-	}
-	return categories
-}
-
-// GetFeedSortingTypes returns all feed sorting types
-func (t TemplatesDataType) GetFeedSortingTypes() []sql.FeedSortType {
-	return []sql.FeedSortType{sql.FeedSortNewest, sql.FeedSortOldest, sql.FeedSortPopular, sql.FeedSortFollow}
-}
-
-// GetLocales returns all locales
-func (t TemplatesDataType) GetLocales() map[string]string {
-	locales, err := sql.GetLocales()
-	if err != nil {
-		utils.RouteError(err)
-	}
-
-	return locales
-}
-
-// GetTags returns all tags
-func (t TemplatesDataType) GetTags() []sql.Tags {
-	tags, err := sql.GetAllTags()
-	if err != nil {
-		utils.RouteError(err)
-	}
-	fmt.Println("tags:", tags)
-	return tags
-}
-
-// GetTrendingTags returns the trending tags, limited by the limit
-func (t TemplatesDataType) GetTrendingTags(limit int) []sql.TagListItem {
-	tags, err := sql.GetTrendingTags(limit)
-	if err != nil {
-		utils.RouteError(err)
-	}
-
-	return tags
-}
-
-// GetTopicsSortedBy returns all topics depending on the sort type, limited by limit
-func (t TemplatesDataType) GetTopicsSortedBy(sortType sql.FeedSortType, limit int) ([]sql.Topic, error) {
-	switch sortType {
-	case sql.FeedSortNewest:
-		return sql.GetNewestTopics(limit)
-	case sql.FeedSortOldest:
-		return sql.GetOldestTopics(limit)
-	case sql.FeedSortPopular:
-		return sql.GetPopularTopics(limit)
-		//case sql.FeedSortFollow:
-		//	return sql.GetFollowedTopics(t.ConnectedUser.Id, limit)
-	}
-
-	return nil, nil
-}
-
-func (t TemplatesDataType) SortTopics() {
-	t.ShownTopics.SortBy(t.FeedSort)
-}
 
 // IndexRoute is the route for the home page
 func IndexRoute(w http.ResponseWriter, r *http.Request) {

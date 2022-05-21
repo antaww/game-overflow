@@ -1,3 +1,5 @@
+@import url('./ck-editors.css');
+
 :root {
     --button-color: #17629e;
     --field-color: #1f1f23;

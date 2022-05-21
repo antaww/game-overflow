@@ -57,9 +57,7 @@ window.onload = () => {
 		});
 		editor.updateSourceElement();
 		editor.on('change:sate', () => editor.updateSourceElement());
-	}).catch(error => {
-		console.error(error);
-	});
+	}).catch(console.error);
 
 	// on submit
 	document.querySelector('#btn-submit').addEventListener('click', () => deleteFields());
