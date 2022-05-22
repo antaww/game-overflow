@@ -79,6 +79,7 @@ func main() {
 		AllowNativePasswords: true,
 		ParseTime:            true,
 	}
+
 	// Get a database handle.
 	DB, err = sql.Open("mysql", DatabaseConfig.FormatDSN())
 	if err != nil {

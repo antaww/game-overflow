@@ -65,6 +65,18 @@
                 </select>
             </div>
 
+            <h3 class="links-title">Links</h3>
+            <div class="form-group links">
+                {{$links := .ConnectedUser.GetLinks}}
+                {{range $links}}
+                    {{template "link-settings" .}}
+                {{end}}
+
+                {{if lt (len $links) 5}}
+                    {{template "link-empty"}}
+                {{end}}
+            </div>
+
             <div class="form-group">
                 <label for="use-cookies">Use cookies</label>
                 <div class="cookies-wrapper">

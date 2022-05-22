@@ -243,12 +243,35 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 			newUser.ProfilePic.String = profilePicture
 		}
 
+		var links []sql2.Link
+		for index, linkName := range r.Form["link-name"] {
+			if linkName == "" {
+				continue
+			}
+
+			linkUrl := r.Form["link-url"][index]
+
+			if linkUrl == "" {
+				continue
+			}
+
+			links = append(links, sql2.Link{
+				Name: linkName,
+				Link: linkUrl,
+			})
+		}
+
 		user, err := sql2.GetUserByRequest(r)
 		if err != nil {
 			utils.RouteError(err)
 		}
 
 		_, err = sql2.EditUser(user.Id, newUser)
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		err = sql2.SetLinks(user.Id, links)
 		if err != nil {
 			utils.RouteError(err)
 		}

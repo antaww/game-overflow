@@ -40,13 +40,6 @@ type UserWithConnectedUser struct {
 	ConnectedUser *User
 }
 
-func (user *User) WithConnectedUser(connectedUser *User) *UserWithConnectedUser {
-	return &UserWithConnectedUser{
-		ConnectedUser: connectedUser,
-		User:          user,
-	}
-}
-
 type Like struct {
 	IdMessage int64 `db:"id_message" json:"idMessage"`
 	IdUser    int64 `db:"id_user" json:"idUser"`
@@ -118,6 +111,15 @@ func (user *User) GetFollowing() []User {
 	return following
 }
 
+func (user *User) GetLinks() []Link {
+	links, err := GetLinks(user.Id)
+	if err != nil {
+		utils.RouteError(err)
+	}
+
+	return links
+}
+
 func (user *User) GetTopics() []Topic {
 	topic, err := GetUserTopics(user.Id)
 	if err != nil {
@@ -145,6 +147,13 @@ func (user *User) SetCookiesEnabled(enabled bool) error {
 
 	user.CookiesEnabled = nullBool
 	return nil
+}
+
+func (user *User) WithConnectedUser(connectedUser *User) *UserWithConnectedUser {
+	return &UserWithConnectedUser{
+		ConnectedUser: connectedUser,
+		User:          user,
+	}
 }
 
 // ConfirmPassword checks if the password is correct

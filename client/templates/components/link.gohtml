@@ -1,0 +1,42 @@
+{{define "link-settings"}}
+    <div class="link">
+        {{template "link-simple" .}}
+
+        <button class="remove-link" type="button">
+            <i class="fa-solid fa-trash" aria-hidden="true"></i>
+        </button>
+    </div>
+{{end}}
+
+{{define "link-empty"}}
+    <div class="link link-empty">
+        {{template "link-simple"}}
+
+        <button class="add-link" type="button">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+        </button>
+    </div>
+{{end}}
+
+{{define "link-simple"}}
+    <label>
+        <input autocomplete="off"
+               class="link-name"
+               maxlength="16"
+               minlength="2"
+               name="link-name"
+               placeholder="Youtube"
+               type="text"
+               value="{{.Name}}">
+    </label>
+    <label>
+        <input autocomplete="off"
+               class="link-value"
+               maxlength="256"
+               minlength="6"
+               name="link-url"
+               placeholder="https://youtube.com/c/..."
+               type="url"
+               value="{{.Link}}">
+    </label>
+{{end}}

@@ -30,7 +30,7 @@
 }
 
 .form-group input:not(.color, .checkbox), .form-group textarea {
-    min-width: 15rem;
+    width: 15rem;
 }
 
 .form-group textarea {
@@ -176,6 +176,40 @@ input[type=checkbox] {
     height: 1.2rem;
     margin: 0 1rem 0 0 !important;
     width: 1.2rem;
+}
+
+.links-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.link {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.link-name {
+    max-width: 6rem;
+}
+
+.link button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.4rem;
+    margin-left: .5rem;
+    padding: 0;
+    transition: all 0.1s;
+}
+
+.link button:hover {
+    transform: scale(1.1);
+}
+
+.remove-link i {
+    color: var(--cancel-actions)
 }
 
 .hidden {
