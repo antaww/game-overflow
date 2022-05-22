@@ -146,7 +146,11 @@
     width: 140px;
 }
 
-.color::-webkit-color-swatch, .color::-moz-color-swatch {
+.color::-moz-color-swatch {
+    border-radius: 5px;
+}
+
+.color::-webkit-color-swatch {
     border-radius: 5px;
 }
 

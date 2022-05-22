@@ -22,16 +22,25 @@ function checkPassword() {
 }
 
 function addWarningChangingCookies() {
-	const cookiesInput = document.querySelector('.cookies');
+	const cookiesInput = document.querySelector('#use-cookies');
+	const actualValue = cookiesInput.checked;
 
 	cookiesInput.addEventListener('change', () => {
-		cookiesInput.parentElement.querySelector('.warning').classList.remove('hidden');
+
+		if (cookiesInput.checked !== actualValue) {
+			cookiesInput.parentElement.querySelector('.warning').classList.remove('hidden');
+		} else {
+			cookiesInput.parentElement.querySelector('.warning').classList.add('hidden');
+		}
 	});
 }
 
 function selectDefaultColor() {
-	const color = document.querySelector('.color-wrapper.customisable');
-	const defaultColor = document.querySelector('.color-wrapper.default');
+	const isInFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+	console.log(isInFirefox);
+
+	const color = document.querySelector(`.color-wrapper.customisable ${isInFirefox ? 'input' : ''}`);
+	const defaultColor = document.querySelector(`.color-wrapper.default ${isInFirefox ? 'input' : ''}`);
 
 	color.addEventListener('click', () => {
 		defaultColor.classList.remove('selected');
@@ -68,7 +77,6 @@ window.addEventListener('load', () => {
 	setPasswordConfirmation();
 	selectDefaultColor();
 	updateAvatarPreview();
-
 
 	window.ClassicEditor.create(document.querySelector('#description'), {
 		toolbar: ['heading', '|', 'bold', 'strikethrough', 'italic', 'underline', 'code', '|', 'link', 'blockQuote', 'horizontalLine', '|', 'bulletedList', 'numberedList', '|', 'undo', 'redo'],
