@@ -12,10 +12,20 @@ import (
 	"os"
 )
 
+const port = ":8091"
+
 func main() {
 	err := godotenv.Load("../.env")
 	if err != nil {
 		utils.MainError(err)
+	}
+
+	server := &http.Server{
+		Addr:         port,
+		Handler:      http.HandlerFunc(LogHandler),
+		IdleTimeout:  0,
+		ReadTimeout:  0,
+		WriteTimeout: 0,
 	}
 
 	css := http.FileServer(http.Dir("../client/style/"))
@@ -91,10 +101,9 @@ func main() {
 		utils.MainError(err)
 	}
 
-	const port = ":8091"
-
 	fmt.Println("Server started at localhost:", port)
-	err = http.ListenAndServe(port, http.HandlerFunc(LogHandler))
+
+	err = server.ListenAndServe()
 	if err != nil {
 		utils.MainError(err)
 	}
