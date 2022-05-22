@@ -115,25 +115,21 @@ func DeleteTopicRoute(w http.ResponseWriter, r *http.Request) {
 func DeleteMessageRoute(w http.ResponseWriter, r *http.Request) {
 	queries := r.URL.Query()
 
-	if queries.Has("idMessage") {
-		idMessage := queries.Get("idMessage")
-		idTopic := queries.Get("id")
+	if queries.Has("message-id") {
+		idMessage := queries.Get("message-id")
 
-		Id, err := strconv.ParseInt(idMessage, 10, 64)
+		id, err := strconv.ParseInt(idMessage, 10, 64)
 		if err != nil {
 			utils.RouteError(err)
 		}
 
-		err = sql.DeleteMessage(Id)
+		err = sql.DeleteMessage(id)
 		fmt.Println("Delete message")
 		if err != nil {
 			utils.RouteError(err)
 		}
 
-		queriesId := url.Values{}
-		queriesId.Add("id", idTopic)
-
-		http.Redirect(w, r, "/topic?"+queriesId.Encode(), http.StatusSeeOther)
+		http.Redirect(w, r, r.Header.Get("Referer"), http.StatusFound)
 	}
 }
 

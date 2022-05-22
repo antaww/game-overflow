@@ -58,9 +58,6 @@ function editMessage() {
 			const text = id.querySelector('md-block.topic-content');
 			text.setAttribute('contenteditable', 'true');
 			clickedParent.querySelector('.send-edited-form').querySelector('.send-edited-comment').classList.toggle('no-display');
-			if (!clickedParent.querySelector('.send-edited-comment').classList.contains('no-display')) {
-				text.style.backgroundColor = 'rgba(245, 245, 245, 0.35)';
-			}
 			clicked.classList.toggle('no-display');
 		});
 	});
@@ -99,9 +96,8 @@ window.addEventListener('load', () => {
 			e.preventDefault();
 			const confirmMessage = confirm('Are you sure you want to delete this message ?');
 			if (confirmMessage) {
-				const url = new URL(window.location.href);
-				const messageId = element.parentElement.parentElement.dataset.messageId;
-				window.location.href = `/delete-message?idMessage=${messageId}&id=${url.searchParams.get('id')}`;
+				const messageId = element.closest('.sub-post').dataset.messageId;
+				window.location.href = `/delete-message?message-id=${messageId}`;
 			}
 		});
 	});

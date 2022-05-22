@@ -1,5 +1,5 @@
 {{define "message"}}
-    <div class="topic sub-post" data-post-id="{{.Id}}">
+    <div class="topic sub-post" data-message-id="{{.Id}}">
         <div class="sub-post-top">
             <div class="sub-post-user-wrapper">
                 <a>
@@ -39,7 +39,7 @@
                     <div class="topic-general-info">
                         <div class="topic-date">{{formatDate .CreatedAt}}</div>
                         <div class="edit-delete-comment">
-                            <div data-id-message="{{.Message.Id}}">
+                            <div data-message-id="{{.Message.Id}}">
                                 <div class="delete-comment">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </div>
