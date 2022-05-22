@@ -5,9 +5,12 @@
             <div class="circle {{if $author.IsOnline}}connected {{else}} disconnected{{end}} avatar-wrapper" data-user-id="{{$author.Id}}">
                 <img alt="" class="avatar" src="{{template "avatar" $author.ProfilePic.String}}">
             </div>
-            <p class="username">
-                {{safeHTML $author.DisplayRole}} {{$author.Username}}
-            </p>
+            <div class="username-topic-wrapper">
+                {{safeHTML $author.DisplayRole}}
+                <p class="username username-topic">
+                    {{$author.Username}}
+                </p>
+            </div>
         </div>
         <div class="topic-info">
             <div class="topic-header">

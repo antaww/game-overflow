@@ -49,7 +49,11 @@ var TemplateMap = template.FuncMap{
 		return strconv.Itoa(int(diff.Hours()/24/365)) + " years ago"
 	},
 	"decimalToHex": func(i int) string {
-		s := "#" + strconv.FormatInt(int64(i), 16)
+		color := strconv.FormatInt(int64(i), 16)
+		if color == "0" {
+			color = "cccccc"
+		}
+		s := "#" + color
 		return s
 	},
 }

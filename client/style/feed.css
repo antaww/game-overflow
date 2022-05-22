@@ -43,21 +43,27 @@
 }
 
 .feed .topic-info {
+    margin-left: 1.2rem;
     width: 100%;
 }
 
 .avatar-wrapper, .topic-info {
     display: flex;
     flex-direction: column;
-    margin-left: 4%;
-    width: 90%;
+    width: min-content;
 }
 
 .user-wrapper {
     align-items: center;
     display: flex;
     flex-direction: column;
-    width: 4em;
+    width: 6rem;
+}
+
+.username-topic-wrapper {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
 }
 
 .username {

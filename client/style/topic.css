@@ -100,6 +100,13 @@
     flex-direction: row;
 }
 
+.sub-post-user-wrapper {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    width: 5rem;
+}
+
 .text-area {
     background-color: rgba(26, 102, 165, 0);
     border: none;
@@ -170,6 +177,12 @@
 
 .edit-delete-comment {
     display: flex;
+}
+
+.message-username {
+    text-align: center;
+    white-space: normal !important;
+    width: fit-content;
 }
 
 /* EDIT MESSAGE */

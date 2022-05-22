@@ -40,3 +40,9 @@
                value="{{.Link}}">
     </label>
 {{end}}
+
+{{define "link-profile"}}
+    <a class="user-link" href="{{.Link}}" target="_blank" title="{{.Link}}">
+        {{.Name}}
+    </a>
+{{end}}

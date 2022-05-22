@@ -91,5 +91,11 @@
 .topic-views {
     color: var(--topic-date);
     font-weight: 600;
-    mix-blend-mode: normal;
+    white-space: nowrap !important;
+}
+
+.username-topic {
+    max-width: 5rem;
+    text-align: center;
+    white-space: initial !important;
 }

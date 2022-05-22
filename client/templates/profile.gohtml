@@ -46,13 +46,21 @@
                     {{end}}
                 </div>
             {{end}}
+
+            <div class="user-links">
+                {{range $user.GetLinks}}
+                    {{template "link-profile" .}}
+                {{end}}
+            </div>
         </section>
+
         <section class="content">
             <h1 class="profile-username">
                 {{safeHTML $user.DisplayRole}} {{$user.Username}}
                 {{if .ConnectedUser}}
                     {{if eq .ConnectedUser.Role "admin"}}
                         <i class="fa-solid fa-ellipsis-vertical"></i>
+
                         <div class="ban-options no-display">
                             {{if eq $user.Role "banned"}}
                                 <div class="unban-option unban">

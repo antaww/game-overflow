@@ -50,10 +50,11 @@ body {
     align-items: center;
     display: flex;
     font-size: 2.5rem;
+    justify-content: start;
     margin-top: 0.3em;
 }
 
-.profile-username i {
+.profile-username i[class] {
     margin-right: 0.3em;
 }
 
@@ -78,7 +79,7 @@ section.profile a, section.profile p {
     margin: 0.2em 0;
 }
 
-section.profile a {
+section.profile a:not(.user-link) {
     color: #aaaaaa;
     margin: 0.2em 0;
     text-decoration: none;
@@ -100,10 +101,6 @@ section.content .topic-header {
 
 section.content .topic-header {
     margin-right: 20px;
-}
-
-section.content .topic:hover {
-    background-color: #1a1a20;
 }
 
 li .user:hover {
@@ -199,9 +196,22 @@ li .user:hover {
 }
 
 .posts-link:hover h2 {
-    color: #80c7ff;
+    color: var(--accent-color-100);
 }
 
 .posts-link {
     margin: 1.5rem 0;
+}
+
+.user-links {
+    margin-top: 1rem;
+}
+
+.user-link {
+    color: var(--accent-color-200);
+    padding: 0;
+}
+
+.user-link:hover {
+    color: var(--accent-color-100);
 }

@@ -62,7 +62,7 @@ func (user *User) DisplayRole() string {
 	case RoleModerator:
 		return "<i class=\"fa-solid fa-gavel fa-fw\"></i>"
 	case RoleUser:
-		return "<i class=\"fa-solid\"></i>"
+		return "<i></i>"
 	default:
 		return ""
 	}
