@@ -27,8 +27,8 @@
 }
 
 .accept-cookies {
-    background-color: #1a7cb7;
-    border: 1px solid #1a7cb7;
+    background-color: var(--btn-accent-color);
+    border: 1px solid var(--btn-accent-color);
 }
 
 .accept-cookies:hover {

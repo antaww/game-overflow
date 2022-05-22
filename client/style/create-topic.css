@@ -1,9 +1,5 @@
 @import url('./ck-editors.css');
 
-:root {
-    --confirm-color: #17629e;
-}
-
 .form {
     align-items: center;
     display: flex;
@@ -70,7 +66,7 @@
 }
 
 #btn-submit {
-    background-color: var(--confirm-color);
+    background-color: var(--btn-accent-color);
     border: #00000000 solid 1px;
     border-radius: 15px;
     color: #ffffff;
@@ -97,7 +93,7 @@
 
 #btn-submit:enabled:hover {
     background-color: #1f1f23;
-    border: var(--confirm-color) solid 1px;
+    border: var(--btn-accent-color) solid 1px;
 }
 
 .message-toolbar {

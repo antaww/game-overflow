@@ -1,6 +1,10 @@
 @import url('./topic-infos.css');
 
-/* FEED */
+:root {
+    --create-topic-bg: #7b61ff;
+    --create-topic-bg-hover: #5e4bbe;
+    --create-topic-text-hover-shadow: #7331a8;
+}
 
 .feed-content {
     align-items: center;
@@ -18,7 +22,7 @@
 
 .feed-topic {
     align-items: center;
-    background: #1b1b20;
+    background: var(--topic-background);
     border: 2px solid transparent;
     border-radius: 1vh;
     display: flex;
@@ -29,7 +33,7 @@
 }
 
 .feed-topic:hover {
-    background: #232b2f;
+    background: var(--topic-color-hover);
     border: 2px #ffffff5e solid;
 }
 
@@ -73,7 +77,6 @@
 .sub-title {
     display: flex;
     flex-direction: row;
-
     white-space: pre-wrap;;
 }
 
@@ -84,11 +87,6 @@
 .topic-open i, .topic-closed i {
     margin-left: 1vh;
 }
-
-/*.topic-title {
-    overflow-wrap: break-word;
-    word-break: break-word;
-}*/
 
 .topic-tags-box {
     display: flex;
@@ -116,7 +114,7 @@
 /* CREATE TOPIC */
 
 .create-topic {
-    background: #7b61ff;
+    background: var(--create-topic-bg);
     border: none;
     border-radius: 15px;
     bottom: 5rem;
@@ -131,7 +129,7 @@
 }
 
 .create-topic:hover {
-    background: #5e4bbe;
+    background: var(--create-topic-bg-hover);
     padding-right: 1rem;
 }
 
@@ -140,7 +138,7 @@
 }
 
 .create-topic:hover .post-question {
-    text-shadow: 0 3px #7331a8;
+    text-shadow: 0 3px var(--create-topic-text-hover-shadow);
 }
 
 .options {

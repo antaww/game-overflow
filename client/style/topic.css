@@ -1,5 +1,9 @@
 @import url('./topic-infos.css');
 
+:root {
+    --deleted-message: #808080;
+}
+
 .topic-page-wrapper {
     align-items: center;
     display: flex;
@@ -13,7 +17,7 @@
 }
 
 .topic {
-    background: #171a1d;
+    background: var(--topic-background);
     border-radius: 20px;
     display: flex;
     flex-direction: column;
@@ -117,7 +121,7 @@
 
 .write-message > form {
     align-items: flex-end;
-    background-color: #171a1d;
+    background-color: var(--topic-background);
     border-radius: 15px;
     display: flex;
     margin-bottom: 3vh;
@@ -139,9 +143,14 @@
 }
 
 .submit-plane {
-    color: #1a66a5;
+    color: var(--btn-accent-color-hover);
     cursor: pointer;
     font-size: 3vh;
+    transition: color 0.2s ease-in-out;
+}
+
+.submit-plane:hover {
+    color: var(--btn-accent-color);
 }
 
 .like-btn:hover, .dislike-btn:hover {
@@ -156,7 +165,7 @@
 }
 
 .delete-comment > i, .delete-topic > i {
-    color: #ff7373;
+    color: var(--cancel-actions);
 }
 
 .edit-delete-comment {
@@ -173,8 +182,8 @@
     cursor: pointer;
 }
 
-.message-deleted p {
-    color: #808080;
+.message-deleted {
+    color: var(--deleted-message);
 }
 
 /* OPTIONS TOPIC CATEGORY */
@@ -205,11 +214,11 @@
 }
 
 .dislike-color {
-    color: #ff7373;
+    color: var(--dislike-color);
 }
 
 .like-color {
-    color: #1a66a5;
+    color: var(--like-color);
 }
 
 .send-edited-comment:hover {

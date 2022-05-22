@@ -1,6 +1,12 @@
+:root {
+    --topic-category-bg: #5b37a8;
+    --topic-category-text: #bfbeff;
+    --topic-date: #6d808f;
+}
+
 .topic-title, .topic-likes, .feed-likes {
-    color: #ffffff;
-    font-size: 2.5vh;
+    color: white;
+    font-size: 1.2rem;
     font-weight: 700;
     margin: 0;
 }
@@ -20,9 +26,9 @@
 }
 
 .topic-category {
-    background: #5b37a8;
+    background: var(--topic-category-bg);
     border-radius: 9px;
-    color: #bfbeff;
+    color: var(--topic-category-text);
     font-weight: 800;
     padding: 0 1vh;
     text-transform: uppercase;
@@ -30,7 +36,7 @@
 }
 
 .topic-date {
-    color: #6d808f;
+    color: var(--topic-date);
     font-style: italic;
     font-weight: 400;
 }
@@ -48,9 +54,9 @@
 }
 
 .topic-tags {
-    background: #383359;
+    background: var(--tag-bg);
     border-radius: 6px;
-    color: #9b9dd6;
+    color: var(--tag-color);
     font-weight: 700;
     margin-left: 1vh;
     margin-top: 2px;
@@ -61,29 +67,29 @@
 }
 
 .topic-tags:hover {
-    background: #282633;
+    background: var(--tag-bg-hover);
 }
 
 .topic-open {
-    color: #4eee40;
+    color: var(--open-topic);
     margin-left: 1vw;
     white-space: nowrap;
 }
 
 .topic-closed {
-    color: #ff7373;
+    color: var(--closed-topic);
     margin-left: 1vw;
     white-space: nowrap;
 }
 
 .topic-answers {
-    color: #2975b2;
+    color: var(--accent-color-500);
     font-weight: 500;
     margin-left: 1vw;
 }
 
 .topic-views {
-    color: #435564;
+    color: var(--topic-date);
     font-weight: 600;
     mix-blend-mode: normal;
 }

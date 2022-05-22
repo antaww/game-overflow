@@ -1,11 +1,8 @@
 @import url('./ck-editors.css');
 
 :root {
-    --button-color: #17629e;
     --field-color: #1f1f23;
     --text-color: white;
-    --button-color-active: #0f5f91;
-    --button-color-hover: #1a7cb7;
 }
 
 #settings {
@@ -48,7 +45,7 @@
 
 .btn {
     align-items: center;
-    background-color: var(--button-color);
+    background-color: var(--btn-accent-color);
     border: none;
     border-radius: 11px;
     color: var(--text-color);
@@ -64,11 +61,11 @@
 }
 
 .btn:hover {
-    background-color: var(--button-color-hover);
+    background-color: var(--btn-accent-color-hover);
 }
 
 .btn:active {
-    background-color: var(--button-color-active);
+    background-color: var(--btn-accent-color-active);
 }
 
 .btn:hover i {

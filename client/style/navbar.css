@@ -1,5 +1,5 @@
 .menu {
-    background-color: #2E3944;
+    background-color: var(--navbar-color);
     display: flex;
     font-weight: 800;
     height: 10vh;
@@ -34,7 +34,7 @@
 
 .categories {
     align-items: center;
-    color: #FFF;
+    color: white;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -54,7 +54,7 @@
 }
 
 #search-input {
-    background: #1F1F23;
+    background: var(--search-color);
     border: none;
     border-radius: 11px 0 0 11px;
     color: white;
@@ -97,12 +97,12 @@
     padding-right: 1.5vw;
 }
 
-.actions {
+.menu .actions {
     text-align: center;
 }
 
-.actions > a > button, .actions .btn, .actions > button {
-    border: 2px solid #17629E;
+.menu .actions > a > button, .menu .actions .btn, .actions > button {
+    border: 2px solid var(--btn-accent-color);
     border-radius: 11px;
     color: #FFF;
     cursor: pointer;
@@ -113,7 +113,7 @@
 }
 
 .log-in {
-    background-color: #17629E;
+    background-color: var(--btn-accent-color);
     transition: all .3s;
 }
 
@@ -128,13 +128,13 @@
 }
 
 .block {
-    animation: rotateX 300ms ease-in-out forwards;
+    animation: rotate-x 300ms ease-in-out forwards;
     display: block !important;
     transform-origin: top center;
 }
 
 .block-reverse {
-    animation: rotateXreverse 300ms ease-in-out forwards;
+    animation: rotate-x-reverse 300ms ease-in-out forwards;
     transform-origin: top center;
 }
 
@@ -208,10 +208,10 @@
 }
 
 .log-out, .log-out * {
-    color: #FF7373;
+    color: var(--disconnect-btn-color);
 }
 
-@keyframes rotateX {
+@keyframes rotate-x {
     0% {
 
         transform: rotateX(-90deg);
@@ -226,7 +226,7 @@
     }
 }
 
-@keyframes rotateXreverse {
+@keyframes rotate-x-reverse {
     0% {
 
         transform: rotateX(0deg);
@@ -270,7 +270,7 @@
 
 .circle::after {
     border-radius: 50%;
-    content: "";
+    content: '';
     display: block;
     height: 12px;
     position: absolute;
@@ -280,11 +280,11 @@
 }
 
 .circle.connected::after {
-    background-color: #389d58;
+    background-color: var(--connected-color);
 }
 
 .circle.disconnected::after {
-    background-color: #ed4245;
+    background-color: var(--disconnected-color);
 }
 
 .circle {

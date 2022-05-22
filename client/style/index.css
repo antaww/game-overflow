@@ -5,138 +5,169 @@
 @import url('./cookies.css');
 
 :root {
-    --tooltip-color: #111111;
-    --tooltip-offset: -3em;
-    --tooltip-padding: 0.5em;
+	--btn-accent-color: var(--accent-color-500);
+	--btn-accent-color-active: var(--accent-color-600);
+	--btn-accent-color-hover: var(--accent-color-400);
+	--cancel-actions: #ff7373;
+	--topic-background: #1b1b20;
+	--tag-bg: #383359;
+	--main-bg-color: #1e2529;
+	--tag-bg-hover: #282633;
+	--disconnect-btn-color: var(--cancel-actions);
+	--connected-color: #389d58;
+	--disconnected-color: #ed4245;
+	--dislike-color: var(--cancel-actions);
+	--like-color: var(--accent-color-400);
+	--navbar-color: #2e3944;
+	--search-color: #1f1f23;
+	--tag-color: #9b9dd6;
+	--tooltip-color: #111111;
+	--unfollow-color: #7c222270;
+	--accent-color-100: hsl(203, 75%, 80%);
+	--accent-color-200: hsl(203, 75%, 70%);
+	--accent-color-300: hsl(203, 75%, 60%);
+	--accent-color-400: hsl(203, 75%, 50%);
+	--accent-color-500: hsl(203, 75%, 40%);
+	--accent-color-600: hsl(203, 75%, 30%);
+	--accent-color-700: hsl(203, 75%, 20%);
+	--accent-color-800: hsl(203, 75%, 10%);
+	--accent-color-900: hsl(203, 75%, 5%);
+	--topic-color-hover: #202325;
+	--authentification-container-bg: #30373c;
+	--authentification-input-text-color: grey;
+	--tooltip-offset: -3em;
+	--tooltip-padding: 0.5em;
+	--closed-topic: var(--cancel-actions);
+	--open-topic: #4eee40;
 }
 
 * {
-    color: #ffffff;
-    font-family: 'Poppins', sans-serif;
-    font-style: normal;
-    outline: none;
+	color: #ffffff;
+	font-family: 'Poppins', sans-serif;
+	font-style: normal;
+	outline: none;
 }
 
 html {
-    min-height: 100%;
-    padding-bottom: 12rem;
-    position: relative;
+	min-height: 100%;
+	padding-bottom: 12rem;
+	position: relative;
 }
 
 body {
-    background-color: #1e2529;
-    height: 100%;
-    margin: 0;
+	background-color: var(--main-bg-color);
+	height: 100%;
+	margin: 0;
 }
 
 .message-area {
-    color: black;
-    height: 165px;
-    left: 40%;
-    position: absolute;
-    top: 50%;
-    width: 323px;
+	color: black;
+	height: 165px;
+	left: 40%;
+	position: absolute;
+	top: 50%;
+	width: 323px;
 }
 
 .rotate {
-    animation: rotate180 .3s forwards;
+	animation: rotate180 .3s forwards;
 }
 
 .rotate-reverse {
-    animation: rotate180reverse .3s forwards;
+	animation: rotate180reverse .3s forwards;
 }
 
 @keyframes rotate180 {
-    0% {
-        transform: rotate(0deg);
-    }
+	0% {
+		transform: rotate(0deg);
+	}
 
-    100% {
-        transform: rotate(-180deg);
-    }
+	100% {
+		transform: rotate(-180deg);
+	}
 }
 
 @keyframes rotate180reverse {
-    0% {
-        transform: rotate(-180deg);
-    }
+	0% {
+		transform: rotate(-180deg);
+	}
 
-    100% {
-        transform: rotate(0deg);
-    }
+	100% {
+		transform: rotate(0deg);
+	}
 }
 
 .close {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    transition: all .3s;
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+	transition: all .3s;
 }
 
 .close:hover,
 .close:focus {
-    animation: pulse 2s infinite;
-    color: #ffffff;
-    cursor: pointer;
-    text-decoration: none;
+	animation: pulse 2s infinite;
+	color: #ffffff;
+	cursor: pointer;
+	text-decoration: none;
 }
 
 .topic {
-    box-sizing: content-box;
-    padding: 12px;
-    transition: all .1s;
+	box-sizing: content-box;
+	padding: 12px;
+	transition: all .1s;
 }
 
 .points-letters {
-    font-size: 80%;
+	font-size: 80%;
 }
 
 .tooltip:hover::after {
-    background-color: var(--tooltip-color);
-    border-radius: 5px;
-    content: attr(data-tooltip);
-    left: calc(-50% + 2 * var(--tooltip-padding));
-    padding: var(--tooltip-padding);
-    position: absolute;
-    top: var(--tooltip-offset);
-    white-space: nowrap;
+	background-color: var(--tooltip-color);
+	border-radius: 5px;
+	content: attr(data-tooltip);
+	left: calc(-50% + 2 * var(--tooltip-padding));
+	padding: var(--tooltip-padding);
+	position: absolute;
+	top: var(--tooltip-offset);
+	white-space: nowrap;
 }
 
 .tooltip:hover::before {
-    border-color: var(--tooltip-color) transparent transparent transparent;
-    border-style: solid;
-    border-width: 5px;
-    content: ' ';
-    left: calc(50% + var(--tooltip-padding));
-    margin-left: -5px;
-    position: absolute;
-    top: calc(var(--tooltip-offset) * 0.15);
+	border-color: var(--tooltip-color) transparent transparent transparent;
+	border-style: solid;
+	border-width: 5px;
+	content: ' ';
+	left: calc(50% + var(--tooltip-padding));
+	margin-left: -5px;
+	position: absolute;
+	top: calc(var(--tooltip-offset) * 0.15);
 }
 
 
 .user-follow.unfollow-btn:hover {
-    background-color: #7c222270;
+	background-color: var(--unfollow-color);
 }
 
 .user-follow.unfollow-btn:hover i {
-    opacity: 1;
-    padding-left: 3px;
-    width: 10px;
+	opacity: 1;
+	padding-left: 3px;
+	width: 10px;
 }
 
 .user-follow.unfollow-btn i {
-    opacity: 0;
-    transition: all .3s, opacity .15s ease-in;
-    width: 0;
+	opacity: 0;
+	transition: all .3s, opacity .15s ease-in;
+	width: 0;
 }
 
 .user-follow {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .none {
-    display: none;
+	display: none;
 }
 
 /* Fix color when hovering autocomplete */
@@ -144,35 +175,35 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-    transition: background-color 5000s ease-in-out 0s;
+	transition: background-color 5000s ease-in-out 0s;
 }
 
 
-input:-webkit-autofill{
-    font-family: 'Poppins', sans-serif;
-    -webkit-text-fill-color: white;
+input:-webkit-autofill {
+	font-family: 'Poppins', sans-serif;
+	-webkit-text-fill-color: white;
 }
 
 /* Markdown */
 
 .markdown * {
-    margin: 10px 0;
+	margin: 10px 0;
 }
 
 code {
-    backdrop-filter: brightness(0.5);
-    background-color: #1b1b20;
-    border-radius: 3px;
-    color: #ffffff;
-    font-family: Consolas, monospace;
-    padding: 4px 5px;
+	backdrop-filter: brightness(0.5);
+	background-color: #1b1b20;
+	border-radius: 3px;
+	color: white;
+	font-family: Consolas, monospace;
+	padding: 4px 5px;
 }
 
 blockquote {
-    background: #00000014;
-    border-left: 3px solid #cccccc;
-    border-radius: 3px;
-    padding: 0 5px 0 1rem;
-    position: relative;
-    width: fit-content;
+	background: #00000014;
+	border-left: 3px solid #cccccc;
+	border-radius: 3px;
+	padding: 0 5px 0 1rem;
+	position: relative;
+	width: fit-content;
 }
