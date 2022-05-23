@@ -58,10 +58,50 @@ func ConfirmPasswordRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// CookieRoute is the route to accept or decline the cookies
+func CookieRoute(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		queries := r.URL.Query()
+		if queries.Has("accept") {
+			accept, err := strconv.ParseBool(queries.Get("accept"))
+			if err != nil {
+				w.WriteHeader(http.StatusBadRequest)
+				return
+			}
+
+			user, err := sql.GetUserByRequest(r)
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
+
+			err = user.SetCookiesEnabled(accept)
+			if err != nil {
+				utils.RouteError(err)
+			}
+
+			w.WriteHeader(http.StatusOK)
+		}
+	}
+}
+
+// LegalNoticeRoute is the route with the legal notice
+func LegalNoticeRoute(w http.ResponseWriter, r *http.Request) {
+	templateData, err := GetTemplateDataFromRoute(w, r)
+	if err != nil {
+		utils.RouteError(err)
+	}
+
+	err = utils.CallTemplate("legal-notice", templateData, w)
+	if err != nil {
+		utils.RouteError(err)
+	}
+}
+
 // LoginRoute is the route for handling the login page
 func LoginRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		templateData, err := GetTemplatesDataFromRoute(w, r)
+		templateData, err := GetTemplateDataFromRoute(w, r)
 		if err != nil {
 			utils.RouteError(err)
 		}
@@ -179,7 +219,7 @@ func LogoutRoute(w http.ResponseWriter, r *http.Request) {
 // SignUpRoute is the route for handling the signup page
 func SignUpRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		templateData, err := GetTemplatesDataFromRoute(w, r)
+		templateData, err := GetTemplateDataFromRoute(w, r)
 		if err != nil {
 			utils.RouteError(err)
 		}
@@ -220,43 +260,5 @@ func SignUpRoute(w http.ResponseWriter, r *http.Request) {
 		} else {
 			http.Redirect(w, r, "/sign-up", http.StatusSeeOther)
 		}
-	}
-}
-
-func CookieRoute(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "POST" {
-		queries := r.URL.Query()
-		if queries.Has("accept") {
-			accept, err := strconv.ParseBool(queries.Get("accept"))
-			if err != nil {
-				w.WriteHeader(http.StatusBadRequest)
-				return
-			}
-
-			user, err := sql.GetUserByRequest(r)
-			if err != nil {
-				w.WriteHeader(http.StatusInternalServerError)
-				return
-			}
-
-			err = user.SetCookiesEnabled(accept)
-			if err != nil {
-				utils.RouteError(err)
-			}
-
-			w.WriteHeader(http.StatusOK)
-		}
-	}
-}
-
-func LegalNoticeRoute(w http.ResponseWriter, r *http.Request) {
-	templateData, err := GetTemplatesDataFromRoute(w, r)
-	if err != nil {
-		utils.RouteError(err)
-	}
-
-	err = utils.CallTemplate("legal-notice", templateData, w)
-	if err != nil {
-		utils.RouteError(err)
 	}
 }

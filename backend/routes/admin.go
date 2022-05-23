@@ -9,7 +9,7 @@ import (
 // AdminEditUsernameRoute is a route for editing a user's username
 func AdminEditUsernameRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		templateData, err := GetTemplatesDataFromRoute(w, r)
+		templateData, err := GetTemplateDataFromRoute(w, r)
 		if err != nil {
 			utils.RouteError(err)
 		}

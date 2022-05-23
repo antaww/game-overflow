@@ -14,7 +14,7 @@ func IndexRoute(w http.ResponseWriter, r *http.Request) {
 	path := strings.TrimPrefix(r.URL.Path, "/")
 
 	if path == "" {
-		templateData, err := GetTemplatesDataFromRoute(w, r)
+		templateData, err := GetTemplateDataFromRoute(w, r)
 		if err != nil {
 			utils.RouteError(err)
 		}

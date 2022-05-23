@@ -69,11 +69,13 @@ func (t TemplatesDataType) GetTopicsSortedBy(sortType sql.FeedSortType, limit in
 	return nil, nil
 }
 
+// SortTopics sorts the topics depending on the sort type
 func (t TemplatesDataType) SortTopics() {
 	t.ShownTopics.SortBy(t.FeedSort)
 }
 
-func GetTemplatesDataFromRoute(w http.ResponseWriter, r *http.Request) (*TemplatesDataType, error) {
+// GetTemplateDataFromRoute returns the template data from the route
+func GetTemplateDataFromRoute(w http.ResponseWriter, r *http.Request) (*TemplatesDataType, error) {
 	connectedUser, err := sql.GetUserByRequest(r)
 	if err != nil {
 		if err != http.ErrNoCookie {

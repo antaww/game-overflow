@@ -48,7 +48,7 @@ func BanRoute(w http.ResponseWriter, r *http.Request) {
 // FollowUserRoute is a route that follows a user
 func FollowUserRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
-		templateData, err := GetTemplatesDataFromRoute(w, r)
+		templateData, err := GetTemplateDataFromRoute(w, r)
 		if err != nil {
 			utils.RouteError(err)
 		}
@@ -173,7 +173,7 @@ func ProfileRoute(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	templateData, err := GetTemplatesDataFromRoute(w, r)
+	templateData, err := GetTemplateDataFromRoute(w, r)
 	if err != nil {
 		utils.RouteError(err)
 	}
@@ -189,7 +189,7 @@ func ProfileRoute(w http.ResponseWriter, r *http.Request) {
 // SettingsRoute is a route that handles the settings of the user
 func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		templateData, err := GetTemplatesDataFromRoute(w, r)
+		templateData, err := GetTemplateDataFromRoute(w, r)
 		if err != nil {
 			utils.RouteError(err)
 		}
@@ -386,7 +386,7 @@ func UsersActive(w http.ResponseWriter, r *http.Request) {
 // UserPostsRoute is a route that display the posts of a user
 func UserPostsRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		templateData, err := GetTemplatesDataFromRoute(w, r)
+		templateData, err := GetTemplateDataFromRoute(w, r)
 		if err != nil {
 			utils.RouteError(err)
 		}
@@ -430,7 +430,7 @@ func UserPostsRoute(w http.ResponseWriter, r *http.Request) {
 // UserLikesRoute is a route that display the topics and messages liked by user
 func UserLikesRoute(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		templateData, err := GetTemplatesDataFromRoute(w, r)
+		templateData, err := GetTemplateDataFromRoute(w, r)
 		if err != nil {
 			utils.RouteError(err)
 		}
