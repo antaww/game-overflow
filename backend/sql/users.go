@@ -3,7 +3,6 @@ package sql
 import (
 	"database/sql"
 	"fmt"
-	"log"
 	"main/utils"
 	"net/http"
 	"strings"
@@ -49,7 +48,7 @@ type Like struct {
 func (user *User) IsFollowingUser(userId int64) bool {
 	result, err := DB.Query("SELECT * FROM follow WHERE id_user_followed = ? AND id_user_follower = ? LIMIT 1", userId, user.Id)
 	if err != nil {
-		log.Fatal(err)
+		utils.SQLError(err)
 	}
 
 	return result.Next()
@@ -515,7 +514,7 @@ func SetAllUsersOffline() error {
 	if err != nil {
 		return fmt.Errorf("SetAllUsersOffline error: %v", err)
 	}
-	fmt.Println("All users have been set offline")
+	utils.Logger.Printf("%v All users have been set offline", utils.Reset)
 	return nil
 }
 
