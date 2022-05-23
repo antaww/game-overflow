@@ -67,7 +67,7 @@ type FeedSortType string
 const (
 	FeedSortNewest  FeedSortType = "newest"
 	FeedSortOldest  FeedSortType = "oldest"
-	FeedSortPopular FeedSortType = "popular"
+	FeedSortPopular FeedSortType = "views"
 	FeedSortPoints  FeedSortType = "points"
 )
 
