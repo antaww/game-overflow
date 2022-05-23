@@ -45,6 +45,6 @@ window.addEventListener('load', () => {
 		});
 
 		editor.updateSourceElement();
-		editor.on('change:sate', () => editor.updateSourceElement());
+		editor.model.document.on('change:data', () => editor.updateSourceElement());
 	}).catch(console.error);
 });

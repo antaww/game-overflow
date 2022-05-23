@@ -74,7 +74,7 @@ function splitTags() {
 		if (splitRegex.test(e.key)) updateTags();
 	});
 
-	input.addEventListener('change', (e) => updateTags());
+	input.addEventListener('change', () => updateTags());
 }
 
 function createTag(text) {
