@@ -30,7 +30,7 @@ func (t TemplatesDataType) GetCategories() []sql.Category {
 
 // GetFeedSortingTypes returns all feed sorting types
 func (t TemplatesDataType) GetFeedSortingTypes() []sql.FeedSortType {
-	return []sql.FeedSortType{sql.FeedSortNewest, sql.FeedSortOldest, sql.FeedSortPopular, sql.FeedSortFollow}
+	return sql.GetFeedSortingTypes()
 }
 
 // GetTags returns all tags
@@ -57,13 +57,15 @@ func (t TemplatesDataType) GetTrendingTags(limit int) []sql.TagListItem {
 func (t TemplatesDataType) GetTopicsSortedBy(sortType sql.FeedSortType, limit int) ([]sql.Topic, error) {
 	switch sortType {
 	case sql.FeedSortNewest:
-		return sql.GetNewestTopics(limit)
+		return sql.GetTopicsNewest(limit)
 	case sql.FeedSortOldest:
-		return sql.GetOldestTopics(limit)
+		return sql.GetTopicsOldest(limit)
 	case sql.FeedSortPopular:
-		return sql.GetPopularTopics(limit)
+		return sql.GetTopicsPopular(limit)
+	case sql.FeedSortPoints:
+		return sql.GetTopicsSortedByPoints(limit)
 		//case sql.FeedSortFollow:
-		//	return sql.GetFollowedTopics(t.ConnectedUser.Id, limit)
+		//	return sql.GetTopicsFollowed(t.ConnectedUser.Id, limit)
 	}
 
 	return nil, nil

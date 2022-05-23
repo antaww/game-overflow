@@ -62,6 +62,28 @@ func (message *Message) FetchLikes() error {
 	return nil
 }
 
+func (message *Message) IsLiked(userId int64) (bool, error) {
+	like, err := MessageGetLikeFrom(message.Id, userId)
+	if err != nil {
+		return false, err
+	}
+	if like != nil {
+		return like.IsLike, nil
+	}
+	return false, nil
+}
+
+func (message *Message) IsDisliked(userId int64) (bool, error) {
+	like, err := MessageGetLikeFrom(message.Id, userId)
+	if err != nil {
+		return false, err
+	}
+	if like != nil {
+		return !like.IsLike, nil
+	}
+	return false, nil
+}
+
 // WithConnectedUser returns a message with the connected user
 func (message *Message) WithConnectedUser(user *User) MessageWithConnectedUser {
 	return MessageWithConnectedUser{
@@ -259,26 +281,3 @@ func GetAllTags() ([]Tags, error) {
 	HandleSQLErrors(rows)
 	return tags, nil
 }
-
-func (message *Message) IsLiked(userId int64) (bool, error) {
-	like, err := MessageGetLikeFrom(message.Id, userId)
-	if err != nil {
-		return false, err
-	}
-	if like != nil {
-		return like.IsLike, nil
-	}
-	return false, nil
-}
-
-func (message *Message) IsDisliked(userId int64) (bool, error) {
-	like, err := MessageGetLikeFrom(message.Id, userId)
-	if err != nil {
-		return false, err
-	}
-	if like != nil {
-		return !like.IsLike, nil
-	}
-	return false, nil
-}
-

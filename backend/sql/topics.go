@@ -239,8 +239,8 @@ func GetTopicsByCategory(category string) ([]Topic, error) {
 	return GetTopics(rows)
 }
 
-// GetNewestTopics returns newest topics, limited by limit
-func GetNewestTopics(limit int) ([]Topic, error) {
+// GetTopicsNewest returns newest topics, limited by limit
+func GetTopicsNewest(limit int) ([]Topic, error) {
 	rows, err := DB.Query("SELECT * FROM topics ORDER BY id_topic DESC LIMIT ?", limit)
 	if err != nil {
 		return nil, err
@@ -249,8 +249,8 @@ func GetNewestTopics(limit int) ([]Topic, error) {
 	return GetTopics(rows)
 }
 
-// GetOldestTopics returns oldest topics, limited by limit
-func GetOldestTopics(limit int) ([]Topic, error) {
+// GetTopicsOldest returns oldest topics, limited by limit
+func GetTopicsOldest(limit int) ([]Topic, error) {
 	rows, err := DB.Query("SELECT * FROM topics ORDER BY id_topic LIMIT ?", limit)
 	if err != nil {
 		return nil, err
@@ -259,8 +259,8 @@ func GetOldestTopics(limit int) ([]Topic, error) {
 	return GetTopics(rows)
 }
 
-// GetPopularTopics returns popular topics, limited by limit
-func GetPopularTopics(limit int) ([]Topic, error) {
+// GetTopicsPopular returns popular topics, limited by limit
+func GetTopicsPopular(limit int) ([]Topic, error) {
 	rows, err := DB.Query("SELECT * FROM topics ORDER BY views DESC LIMIT ?", limit)
 	if err != nil {
 		return nil, err
@@ -269,7 +269,23 @@ func GetPopularTopics(limit int) ([]Topic, error) {
 	return GetTopics(rows)
 }
 
-func GetFollowedTopics(userId int64, limit int) ([]Topic, error) {
+func GetTopicsSortedByPoints(limit int) ([]Topic, error) {
+	rows, err := DB.Query(`
+SELECT topics.*
+FROM topics
+     INNER JOIN (SELECT SUM(IF(message_like.like = 0, -1, 1)) as likes, id_message
+         FROM message_like
+         GROUP BY id_message) as message_likes
+    ON topics.id_first_message = message_likes.id_message
+ORDER BY likes DESC LIMIT ?`, limit)
+	if err != nil {
+		return nil, err
+	}
+
+	return GetTopics(rows)
+}
+
+func GetTopicsFollowed(userId int64, limit int) ([]Topic, error) {
 	//from follow, select id_user_followed where id_user_follower = userId
 	//from messages, select id_message where id_user = id_user_followed and id_topic in (select id_topic from topics where id_first_message in (select id_message from messages where id_user = id_user_followed))
 	rows, err := DB.Query("SELECT * FROM topics WHERE id_topic in (SELECT id_topic FROM messages WHERE id_user in (SELECT id_user_followed FROM follow WHERE id_user_follower = ?)) ORDER BY id_topic DESC LIMIT ?", userId, limit)
