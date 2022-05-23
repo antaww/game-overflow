@@ -1,7 +1,7 @@
 {{define "feed-options"}}
     <div class="options">
         <div class="sorting">
-            <label for="feed-sorting">Sorts posts by: </label>
+            <label for="feed-sorting">Sort posts by: </label>
             <select name="sorting" id="feed-sorting">
                 {{$feedSortingType := .FeedSort}}
                 {{range .GetFeedSortingTypes}}

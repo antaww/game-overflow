@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"encoding/base64"
 	"encoding/json"
-	"fmt"
 	"io"
 	sql2 "main/sql"
 	"main/utils"
@@ -263,7 +262,6 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 			}
 
 			profilePicture += base64.StdEncoding.EncodeToString(bytes)
-			fmt.Println(profilePicture)
 			newUser.ProfilePic.String = profilePicture
 			newUser.ProfilePic.Valid = true
 		}

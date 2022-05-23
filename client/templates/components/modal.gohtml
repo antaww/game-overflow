@@ -17,14 +17,16 @@
                             <span class="modal-id">{{.User.Id}}</span>
                         </div>
                         {{if .ConnectedUser}}
-                            <div class="follow-button">
-                                {{if .ConnectedUser.IsFollowingUser .User.Id}}
-                                    <a data-id="{{.User.Id}}" class="user-follow unfollow-btn"><i
-                                                class="fa-solid fa-xmark"></i> Unfollow</a>
-                                {{else}}
-                                    <a data-id="{{.User.Id}}" class="user-follow follow-btn">Follow</a>
-                                {{end}}
-                            </div>
+                            {{if ne .ConnectedUser.Id .User.Id}}
+                                <div class="follow-button">
+                                    {{if .ConnectedUser.IsFollowingUser .User.Id}}
+                                        <a data-id="{{.User.Id}}" class="user-follow unfollow-btn"><i
+                                                    class="fa-solid fa-xmark"></i> Unfollow</a>
+                                    {{else}}
+                                        <a data-id="{{.User.Id}}" class="user-follow follow-btn">Follow</a>
+                                    {{end}}
+                                </div>
+                            {{end}}
                         {{end}}
                     </div>
                 </div>
