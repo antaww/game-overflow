@@ -68,14 +68,16 @@ func (user *User) DisplayRole() string {
 }
 
 func (user *User) CalculateDefaultColor() {
-	if user.ProfilePic.String != "" {
+	if user.ProfilePic.Valid && user.ProfilePic.String != "" {
 		img, err := utils.GetImageFromBase64(user.ProfilePic.String)
 		if err != nil {
 			utils.RouteError(err)
 		}
 
 		if img != nil {
-			user.DefaultColor = utils.GetDominantColor(img)
+			go func() {
+				user.DefaultColor = utils.GetDominantColor(img)
+			}()
 		}
 	} else {
 		user.DefaultColor = 0xcccccc

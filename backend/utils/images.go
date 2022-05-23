@@ -28,7 +28,12 @@ func GetImageFromBase64(data string) (image.Image, error) {
 }
 
 func GetDominantColor(image image.Image) int {
-	foundColor := dominantcolor.Find(image)
+	foundColors := dominantcolor.FindN(image, 4)
+	if len(foundColors) == 0 {
+		return 0
+	}
+
+	foundColor := foundColors[0]
 	r, g, b, _ := foundColor.R, foundColor.G, foundColor.B, foundColor.A
 	result := int(r)*256*256 + int(g)*256 + int(b)
 
