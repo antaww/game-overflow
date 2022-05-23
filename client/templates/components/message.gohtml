@@ -2,13 +2,11 @@
     <div class="topic sub-post" data-message-id="{{.Id}}">
         <div class="sub-post-top">
             <div class="sub-post-user-wrapper">
-                <a>
-                    <div class="circle {{if .Message.GetUser.IsOnline}} connected {{else}} disconnected {{end}}">
-                        <img alt="" class="avatar modal-profile-btn"
-                             src="{{template "avatar" .Message.GetUser.ProfilePic.String}}">
-                        {{template "modal" .Message.GetUser.WithConnectedUser .ConnectedUser}}
-                    </div>
-                </a>
+                <div class="circle {{if .Message.GetUser.IsOnline}} connected {{else}} disconnected {{end}}">
+                    <img alt="" class="avatar modal-profile-btn"
+                         src="{{template "avatar" .Message.GetUser.ProfilePic.String}}">
+                    {{template "modal" .Message.GetUser.WithConnectedUser .ConnectedUser}}
+                </div>
                 <a class="topic-user">
                     <p class="message-username">
                         {{safeHTML .Message.GetUser.DisplayRole}} {{.Message.GetUser.Username}}

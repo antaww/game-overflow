@@ -17,7 +17,7 @@ function preventDefaultForScrollKeys(e) {
     }
 }
 
-let supportsPassive = false;
+const supportsPassive = false;
 
 const wheelOpt = supportsPassive ? {passive: false} : false;
 const wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
@@ -38,10 +38,13 @@ function enableScroll() {
 
 btn.forEach(element => {
     element.addEventListener('click', e => {
-        let clicked = e.target;
+        const clicked = e.currentTarget;
         const modal = [...modals].find(modal => {
-            return clicked.parentElement.parentElement.parentElement.querySelector('.topic-user p').innerText === modal.querySelector('.modal-name').innerText;
+            const modalUsername = modal.querySelector('.modal-name');
+            const clickedUsername = clicked.parentElement.parentElement.parentElement.querySelector('.topic-user p');
+            return clickedUsername.textContent.trim() === modalUsername.textContent.trim();
         });
+        console.log(modal);
         modal.classList.add('modal-display');
         disableScroll();
     });
