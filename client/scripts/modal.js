@@ -1,4 +1,4 @@
-import {follow} from "../follow.js";
+import {follow} from "./follow.js";
 
 const modals = document.querySelectorAll('.myModal');
 const btn = document.querySelectorAll('.modal-profile-btn');
