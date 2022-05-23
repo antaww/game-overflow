@@ -3,6 +3,7 @@ package routes
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"main/sql"
 	"main/utils"
@@ -116,6 +117,7 @@ func LoginRoute(w http.ResponseWriter, r *http.Request) {
 		var response struct {
 			Success bool   `json:"success"`
 			Session string `json:"session"`
+			Error   string `json:"error"`
 		}
 
 		var data struct {
@@ -143,7 +145,17 @@ func LoginRoute(w http.ResponseWriter, r *http.Request) {
 
 		match := utils.CheckPasswordHash(password, userStruct.Password)
 		if !match {
-			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			if userStruct.Password == "" {
+				response.Error = fmt.Sprintf("User with username <span class=\"login-error-user\">%v</span> not found", username)
+			} else {
+				response.Error = fmt.Sprintf("Wrong password for user <span class=\"login-error-user\">%v</span>", username)
+			}
+
+			err = utils.SendResponse(w, response)
+			if err != nil {
+				utils.RouteError(err)
+			}
+
 			return
 		}
 
