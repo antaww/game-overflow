@@ -3,7 +3,6 @@ package routes
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"main/sql"
 	"main/utils"
@@ -206,7 +205,6 @@ func SignUpRoute(w http.ResponseWriter, r *http.Request) {
 			utils.RouteError(errors.New("Password does not match"))
 		}
 
-		fmt.Println(HashedPassword)
 		valid, err := sql.SaveUser(sql.CreateUser(
 			r.FormValue("username"),
 			HashedPassword,

@@ -21,7 +21,6 @@ window.addEventListener('load', () => {
 		});
 
 		const result = await response.json();
-
 		if (result.success) {
 			localStorage.setItem('session', result.session);
 			window.location.href = '/';

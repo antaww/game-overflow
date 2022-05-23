@@ -2,7 +2,8 @@
     {{template "navbar" .}}
 
     <script src="/scripts/topics/create-topic.js" defer></script>
-    <script src="/scripts/ckeditor.js"></script>
+    <script src="/scripts/dist/ckeditor.js"></script>
+    <script src="/scripts/editor.js"></script>
 
     <link rel="stylesheet" href="/static/create-topic.css">
 
@@ -32,15 +33,28 @@
 
                     <div class="create-topic-content create-topic-options">
                         <label class="required-input" for="editor">Content</label>
-                        <textarea id="editor" name="content" required minlength="1" maxlength="4000"></textarea>
+                        <textarea data-save="editor"
+                                  class="ck-editor"
+                                  id="editor"
+                                  maxlength="4000"
+                                  minlength="1"
+                                  name="content"
+                                  required></textarea>
                     </div>
 
                     <div class="create-topic-options">
                         <label for="tags">Tags</label>
                         <div class="create-topic-input create-topic-tags">
                             <span class="tag-list"></span>
-                            <input autocomplete="off" class="create-topic-input create-topic-tags-input" id="tags" list="tags-data" maxlength="32" minlength="2"
-                                   name="tags" placeholder="Tags" type="text">
+                            <input autocomplete="off"
+                                   class="create-topic-input create-topic-tags-input"
+                                   id="tags"
+                                   list="tags-data"
+                                   maxlength="32"
+                                   minlength="2"
+                                   name="tags"
+                                   placeholder="Tags"
+                                   type="text">
                             <datalist id="tags-data">
                                 {{range .GetTags}}
                                     <option value="{{.Name}}"></option>

@@ -67,6 +67,7 @@ func main() {
 	http.HandleFunc("/topic", TopicRoute)
 	http.HandleFunc("/unban-user", UnBanRoute)
 	http.HandleFunc("/unfollow", UnFollowUserRoute)
+	http.HandleFunc("/users", GetAllUsersRoute)
 	http.HandleFunc("/users-active", UsersActive)
 
 	// Capture connection properties.

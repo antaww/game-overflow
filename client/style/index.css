@@ -10,6 +10,7 @@
 	--btn-accent-color-hover: var(--accent-color-400);
 	--cancel-actions: #ff7373;
 	--topic-background: #1b1b20;
+	--mention-bg: hsla(203, 75%, 50%, 0.1);
 	--tag-bg: #383359;
 	--main-bg-color: #1e2529;
 	--tag-bg-hover: #282633;
@@ -37,6 +38,7 @@
 	--authentification-input-text-color: grey;
 	--tooltip-offset: -3em;
 	--tooltip-padding: 0.5em;
+	--mention-text: var(--accent-color-400);
 	--closed-topic: var(--cancel-actions);
 	--open-topic: #4eee40;
 }
@@ -188,6 +190,16 @@ input:-webkit-autofill {
 
 .markdown * {
 	margin: 10px 0;
+}
+
+.mention {
+	background: var(--mention-bg);
+	color: var(--mention-text);
+	transition: color .2s;
+}
+
+.mention:hover {
+	color: var(--accent-color-200);
 }
 
 code {

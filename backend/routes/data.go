@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"log"
 	"main/sql"
 	"main/utils"
@@ -40,7 +39,7 @@ func (t TemplatesDataType) GetTags() []sql.Tags {
 	if err != nil {
 		utils.RouteError(err)
 	}
-	fmt.Println("tags:", tags)
+
 	return tags
 }
 

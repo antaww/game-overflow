@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"io"
 	"main/sql"
 	"main/utils"
@@ -124,7 +123,6 @@ func DeleteMessageRoute(w http.ResponseWriter, r *http.Request) {
 		}
 
 		err = sql.DeleteMessage(id)
-		fmt.Println("Delete message")
 		if err != nil {
 			utils.RouteError(err)
 		}
@@ -550,7 +548,6 @@ func SearchRoute(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				utils.RouteError(err)
 			}
-			fmt.Println("search: ", search)
 
 			templateData.ShownTopics = topics
 			if len(templateData.ShownTopics) == 0 {

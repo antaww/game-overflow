@@ -1,5 +1,3 @@
-
-
 window.addEventListener('load', () => {
 	const category = document.querySelector('.topic-category').innerText;
 	const options = document.querySelectorAll('#change-topic-category option');
@@ -21,10 +19,5 @@ window.addEventListener('load', () => {
 				window.location.href = `/change-category?id=${topicId}&category=${e.target.value}`;
 			}
 		}
-	});
-
-	document.querySelectorAll('.markdown').forEach(markdown => {
-		const innerHTML = markdown.innerHTML.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-		markdown.innerHTML = window.marked.parse(innerHTML);
 	});
 });

@@ -3,7 +3,8 @@
 
     <link rel="stylesheet" href="/static/settings.css">
     <script defer src="/scripts/settings.js"></script>
-    <script src="/scripts/ckeditor.js"></script>
+    <script src="/scripts/dist/ckeditor.js"></script>
+    <script src="/scripts/editor.js"></script>
 
     <div id="settings">
         <form action="/settings" enctype="multipart/form-data" id="settings-form" method="POST">
@@ -49,8 +50,8 @@
             <div class="form-group">
                 {{if ne .ConnectedUser.Role "banned"}}
                     <label for="description">Description</label>
-                    <textarea class="form-control" id="description"
-                              name="description" minlength="1"
+                    <textarea class="form-control ck-editor" id="description"
+                              name="description" data-save="description" minlength="1"
                               maxlength="4000">{{.ConnectedUser.Description.String}}</textarea>
                 {{end}}
             </div>

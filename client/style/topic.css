@@ -13,7 +13,7 @@
 }
 
 .topic-page {
-    width: 50%;
+    width: min(max(50vw, 30rem), 50rem);
 }
 
 .topic {

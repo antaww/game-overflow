@@ -16,14 +16,14 @@
                 </a>
             </div>
             <div class="topic-content-likes">
-                {{$mesageDeleted := eq .Message.Content "Message deleted"}}
+                {{$messageDeleted := eq .Message.Content "Message deleted"}}
                 <div class="sub-post-content">
-                    <md-block {{if $mesageDeleted}}class="topic-content message-deleted" {{else}} class="topic-content" {{end}}>
+                    <p class="topic-content {{if $messageDeleted}}message-deleted{{else}}markdown{{end}}">
                         {{.Message.Content}}
-                    </md-block>
+                    </p>
                     <label class="edit-message" for="edit-text"></label>
                 </div>
-                {{if not $mesageDeleted}}
+                {{if not $messageDeleted}}
                     <div class="topic-likes">
                         {{template "message-likes" .}}
                     </div>

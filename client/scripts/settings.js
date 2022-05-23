@@ -153,11 +153,4 @@ window.addEventListener('load', () => {
 	setPasswordConfirmation();
 	selectDefaultColor();
 	updateAvatarPreview();
-
-	window.ClassicEditor.create(document.querySelector('#description'), {
-		toolbar: ['heading', '|', 'bold', 'strikethrough', 'italic', 'underline', 'code', '|', 'link', 'blockQuote', 'horizontalLine', '|', 'bulletedList', 'numberedList', '|', 'undo', 'redo'],
-	}).then(editor => {
-		editor.updateSourceElement();
-		editor.on('change:sate', () => editor.updateSourceElement());
-	}).catch(console.error);
 });

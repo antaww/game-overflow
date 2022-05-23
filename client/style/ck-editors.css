@@ -12,6 +12,8 @@
     --ck-color-button-on-background: hsl(240, 6%, 30%);
     --ck-color-button-on-hover-background: var(--ck-color-button-on-background);
     --ck-color-link-default: #57d9ff;
+    --ck-color-mention-background: --mention-bg;
+    --ck-color-mention-text: var(--mention-text);
     --ck-color-text: #ffffff;
     --ck-color-toolbar-background: #1f1f23;
     --ck-color-toolbar-border: #7d8080;

@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"encoding/base64"
 	"encoding/json"
-	"fmt"
 	"io"
 	sql2 "main/sql"
 	"main/utils"
@@ -23,7 +22,6 @@ func BanRoute(w http.ResponseWriter, r *http.Request) {
 
 		if queries.Has("id") {
 			idUser := queries.Get("id")
-			fmt.Println(idUser)
 			Id, err := strconv.ParseInt(idUser, 10, 64)
 
 			user, err := sql2.GetUserByRequest(r)
@@ -84,6 +82,22 @@ func FollowUserRoute(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	w.WriteHeader(http.StatusOK)
+}
+
+// GetAllUsersRoute is a route that returns all users
+func GetAllUsersRoute(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		users, err := sql2.GetAllUsers()
+		if err != nil {
+			utils.RouteError(err)
+		}
+
+		err = utils.SendResponse(w, users)
+		if err != nil {
+			utils.RouteError(err)
+		}
+		w.WriteHeader(http.StatusOK)
+	}
 }
 
 // IsActiveRoute is a middleware function that checks if the user is active
@@ -286,7 +300,6 @@ func UnBanRoute(w http.ResponseWriter, r *http.Request) {
 	queries := r.URL.Query()
 
 	if queries.Has("id") {
-		fmt.Println("unban func")
 		idUser := queries.Get("id")
 		Id, err := strconv.ParseInt(idUser, 10, 64)
 

@@ -244,6 +244,16 @@ func EditUser(idUser int64, newUser User) (bool, error) {
 	return true, nil
 }
 
+// GetAllUsers returns all users
+func GetAllUsers() ([]User, error) {
+	rows, err := DB.Query("SELECT * FROM users")
+	if err != nil {
+		return nil, err
+	}
+
+	return GetUsers(rows)
+}
+
 // GetFollowers returns the followers of the user with the given id
 func GetFollowers(idUser int64) ([]User, error) {
 	rows, err := DB.Query("SELECT * from users where id_user in (select id_user_follower from follow where id_user_followed = ?)", idUser)

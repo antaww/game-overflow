@@ -12,8 +12,6 @@ function checkFields() {
 		valid = false;
 	}
 
-	if (!checked) valid = false;
-
 	submit.disabled = !valid;
 	submit.querySelector('i').className = valid ? 'fas fa-check' : 'fas fa-times';
 	saveFields();
@@ -106,20 +104,6 @@ document.addEventListener('click', e => {
 });
 
 window.addEventListener('load', () => {
-	window.ClassicEditor.create(document.querySelector('#editor'), {
-		toolbar: ['heading', '|', 'bold', 'strikethrough', 'italic', 'underline', 'code', '|', 'link', 'blockQuote', 'horizontalLine', '|', 'bulletedList', 'numberedList', '|', 'undo', 'redo'],
-	}).then(editor => {
-		const content = window.localStorage.getItem('editor') || '';
-		if (content) editor.setData(content);
-
-		window.addEventListener('beforeunload', () => {
-			window.localStorage.setItem('editor', editor.getData());
-		});
-
-		editor.updateSourceElement();
-		editor.on('change:sate', () => editor.updateSourceElement());
-	}).catch(console.error);
-
 	document.querySelector('#btn-submit').addEventListener('click', () => deleteFields());
 
 	retrieveData();
