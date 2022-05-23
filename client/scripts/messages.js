@@ -12,13 +12,13 @@ function handleLikes() {
 
 			event.target.closest('.topic-likes').querySelector('.fa-angle-down').classList.remove('dislike-color');
 
-			const postId = event.target.closest('.topic').getAttribute('data-post-id');
+			const postId = event.target.closest('.topic').dataset.messageId;
 			const url = `/like?id=${postId}`;
 			fetch(url, {
 				method: 'PUT',
 				mode: 'cors',
 			}).then(r => r.json()).then(data => {
-				const likes = document.querySelector(`[data-post-id="${postId}"] .points`);
+				const likes = document.querySelector(`[data-message-id="${postId}"] .points`);
 				likes.innerText = data.points;
 			});
 		});
@@ -34,13 +34,13 @@ function handleLikes() {
 
 			event.target.closest('.topic-likes').querySelector('.fa-angle-up').classList.remove('like-color');
 
-			const postId = event.target.closest('.topic').getAttribute('data-post-id');
+			const postId = event.target.closest('.topic').dataset.messageId;
 			const url = `/dislike?id=${postId}`;
 			fetch(url, {
 				method: 'PUT',
 				mode: 'cors',
 			}).then(r => r.json()).then(data => {
-				const likes = document.querySelector(`[data-post-id="${postId}"] .points`);
+				const likes = document.querySelector(`[data-message-id="${postId}"] .points`);
 				likes.innerText = data.points;
 			});
 		});
@@ -80,7 +80,7 @@ function editMessage() {
 				method: 'POST',
 				mode: 'cors',
 				body: text.innerText,
-			});
+			}).catch(console.error);
 		});
 	});
 }

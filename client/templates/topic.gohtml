@@ -13,7 +13,7 @@
         <div class="topic-page">
             {{$firstMessage := (index .ShownTopic.Messages 0)}}
             {{$topicAuthor := $firstMessage.GetUser}}
-            <div class="topic" data-post-id="{{$firstMessage.Id}}">
+            <div class="topic" data-message-id="{{$firstMessage.Id}}">
                 <div class="topic-top">
                     <div class="topic-user-wrapper">
                         {{if not .ShownTopic.IsClosed}}
