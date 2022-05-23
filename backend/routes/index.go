@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"log"
 	"main/sql"
 	"main/utils"
 	"net/http"
@@ -48,7 +47,7 @@ func LogHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if !matches {
-		log.Printf("%v %v", r.Method, r.URL.RequestURI())
+		utils.Logger.Printf("%v%v%v %v", utils.Blue, r.Method, utils.Reset, r.URL.RequestURI())
 	}
 
 	if r.Method == "GET" {

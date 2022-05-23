@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
 	. "main/routes"
@@ -96,14 +95,15 @@ func main() {
 	if pingErr != nil {
 		utils.MainError(pingErr)
 	}
-	fmt.Println("Connected!")
+
+	utils.Logger.Printf("%vConnected!", utils.Reset)
 
 	err = SetAllUsersOffline()
 	if err != nil {
 		utils.MainError(err)
 	}
 
-	fmt.Println("Server started at localhost:", port)
+	utils.Logger.Printf("%vServer started at localhost: %v", utils.Reset, port)
 
 	err = server.ListenAndServe()
 	if err != nil {

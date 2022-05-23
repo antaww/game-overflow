@@ -245,7 +245,7 @@ func SignUpRoute(w http.ResponseWriter, r *http.Request) {
 		}
 		match := utils.CheckPasswordHash(r.FormValue("password"), HashedPassword)
 		if !match {
-			utils.RouteError(errors.New("Password does not match"))
+			utils.RouteError(errors.New("password does not match"))
 		}
 
 		valid, err := sql.SaveUser(sql.CreateUser(

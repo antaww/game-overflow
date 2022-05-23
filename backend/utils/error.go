@@ -1,21 +1,20 @@
 package utils
 
 import (
-	"log"
 	"runtime/debug"
 )
 
 func MainError(err error) {
 	debug.PrintStack()
-	log.Fatal(err)
+	Logger.Fatal(err)
 }
 
 func RouteError(err error) {
 	debug.PrintStack()
-	log.Fatal(err)
+	Logger.Fatal(err)
 }
 
 func SQLError(err error) {
 	debug.PrintStack()
-	log.Fatal(err)
+	Logger.Fatal(err)
 }
