@@ -80,6 +80,7 @@ document.addEventListener('mousemove', () => {
 
 window.addEventListener('beforeunload', () => {
 	const session = document.cookie.match(new RegExp('(^| )' + 'session' + '=([^;]+)'));
+	console.log(session);
 	const body = {
 		isOnline: false,
 		session: session[2],

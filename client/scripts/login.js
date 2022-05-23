@@ -1,7 +1,7 @@
 window.addEventListener('load', () => {
 	const form = document.querySelector('form');
 
-	form.addEventListener('submit', async (e) => {
+	form.addEventListener('submit', async e => {
 		e.preventDefault();
 
 		const username = document.querySelector('#username').value;

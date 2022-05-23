@@ -208,6 +208,9 @@ func LogoutRoute(w http.ResponseWriter, r *http.Request) {
 		utils.RouteError(err)
 	}
 
+	ip := r.Header.Get("X-Forwarded-For")
+	delete(utils.ConnectedUsersWithoutCookies, ip)
+
 	err = sql.SetUserOnline(connectedUser.Id, false)
 	if err != nil {
 		utils.RouteError(err)

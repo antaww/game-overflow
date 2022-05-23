@@ -1,5 +1,6 @@
 {{define "navbar"}}
     <script defer src="/scripts/dropdown.js"></script>
+    <script defer src="/scripts/logout.js"></script>
     <div class="menu">
         <a href="/" class="logo">
             <img src="/resources/logo.png" alt="logo">
@@ -122,7 +123,7 @@
                         </a>
                     </div>
                     <div class="dropdown-actions">
-                        <a href="/logout">
+                        <a href="/logout" class="logout-link">
                             <button value="logout" class="dropdown-options log-out">
                                 <i class="fa-solid fa-sign-out-alt"></i> Log out
                             </button>

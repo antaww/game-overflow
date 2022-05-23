@@ -274,8 +274,18 @@ func GetFollowing(idUser int64) ([]User, error) {
 
 // GetSessionId returns the session id of the user with the given id
 func GetSessionId(r *http.Request) (string, error) {
+	ip := r.Header.Get("X-Forwarded-For")
+	sessionWithoutCookie := utils.ConnectedUsersWithoutCookies[ip]
+	if sessionWithoutCookie != "" {
+		return sessionWithoutCookie, nil
+	}
+
 	sessionId, err := r.Cookie("session")
 	if err == http.ErrNoCookie {
+		return "", nil
+	}
+
+	if sessionId == nil {
 		return "", nil
 	}
 

@@ -1,5 +1,4 @@
 window.addEventListener('load', () => {
-
 	const element = document.querySelector('.ck-editor');
 	const save = element.dataset.save;
 
@@ -9,7 +8,7 @@ window.addEventListener('load', () => {
 			feeds: [
 				{
 					marker: '@',
-					feed: (queryText) => {
+					feed: queryText => {
 
 						let users;
 						if (localStorage.getItem('mention-users')) {
@@ -25,7 +24,7 @@ window.addEventListener('load', () => {
 								users = JSON.parse(r);
 							}).catch(console.error);
 						}
-						users = users.map((u) => {
+						users = users.map(u => {
 							return {id: `@${u.username}`, name: u.username};
 						}).sort((a, b) => a.id.localeCompare(b.id));
 

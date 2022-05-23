@@ -92,11 +92,11 @@ func GetAllUsersRoute(w http.ResponseWriter, r *http.Request) {
 			utils.RouteError(err)
 		}
 
+		w.WriteHeader(http.StatusOK)
 		err = utils.SendResponse(w, users)
 		if err != nil {
 			utils.RouteError(err)
 		}
-		w.WriteHeader(http.StatusOK)
 	}
 }
 
@@ -122,7 +122,9 @@ func IsActiveRoute(w http.ResponseWriter, r *http.Request) {
 		} else {
 			user, err = sql2.GetUserByRequest(r)
 			if err != nil {
-				utils.RouteError(err)
+				if err != http.ErrNoCookie {
+					utils.RouteError(err)
+				}
 			}
 		}
 
@@ -277,6 +279,11 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 
 		user, err := sql2.GetUserByRequest(r)
 		if err != nil {
+			if err == http.ErrNoCookie {
+				http.Redirect(w, r, "/login", http.StatusSeeOther)
+				return
+			}
+
 			utils.RouteError(err)
 		}
 

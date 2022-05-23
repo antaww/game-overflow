@@ -1,16 +1,11 @@
 function checkFields() {
 	const title = document.querySelector('#title');
-	const content = document.querySelector('#editor');
-	const category = document.querySelectorAll('input[type="radio"]');
+	const content = document.querySelector('.ck-content');
 	const submit = document.querySelector('#btn-submit');
 
 	let valid = true;
 	if (title.value.length < 1) valid = false;
-	if (content.innerText.length < 1) valid = false;
-
-	if (![...category].some(item => item.checked)) {
-		valid = false;
-	}
+	if (content.textContent.length < 1) valid = false;
 
 	submit.disabled = !valid;
 	submit.querySelector('i').className = valid ? 'fas fa-check' : 'fas fa-times';
@@ -109,6 +104,6 @@ window.addEventListener('load', () => {
 	retrieveData();
 	splitTags();
 	checkFields();
-	document.addEventListener('input', checkFields);
+	document.addEventListener('keyup', checkFields);
 	document.addEventListener('beforeunload', () => saveFields());
 });
