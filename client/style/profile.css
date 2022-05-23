@@ -215,3 +215,7 @@ li .user:hover {
 .user-link:hover {
     color: var(--accent-color-100);
 }
+
+.no-display {
+    display: none !important;
+}

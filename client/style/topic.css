@@ -189,6 +189,7 @@
 
 .no-display {
     display: none !important;
+    visibility: hidden !important;
 }
 
 .topic-status:hover, .topic-status-closed:hover {
