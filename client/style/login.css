@@ -11,9 +11,9 @@
     border-radius: 37px;
     display: flex;
     flex-direction: column;
-    height: 60vh;
+    height: 32rem;
     justify-content: space-around;
-    width: 40vh;
+    width: 22rem;
 }
 
 .header {
@@ -95,4 +95,13 @@
 
 .already-or-create:hover {
     color: var(--btn-accent-color-hover);
+}
+
+.login-error {
+    color: var(--cancel-actions);
+}
+
+.login-error-user {
+    font-weight: 600;
+    color: var(--cancel-actions);
 }

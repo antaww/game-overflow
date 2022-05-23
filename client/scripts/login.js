@@ -25,7 +25,13 @@ window.addEventListener('load', () => {
 			localStorage.setItem('session', result.session);
 			window.location.href = '/';
 		} else {
-			alert(result.message);
+			let errorElement = document.querySelector('.login-error');
+			if (!errorElement) {
+				errorElement = document.createElement('span');
+				errorElement.classList.add('login-error');
+				document.querySelector('.input-area').prepend(errorElement);
+			}
+			errorElement.innerHTML = result.error;
 		}
 	});
 });
