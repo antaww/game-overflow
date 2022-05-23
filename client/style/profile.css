@@ -205,6 +205,8 @@ li .user:hover {
 
 .user-links {
     margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .user-link {

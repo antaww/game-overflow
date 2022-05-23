@@ -43,6 +43,8 @@
 
 {{define "link-profile"}}
     <a class="user-link" href="{{.Link}}" target="_blank" title="{{.Link}}">
+        <img class="user-avatar" src="https://s2.googleusercontent.com/s2/favicons?domain_url={{.Link}}"
+             title="{{.Name}}">
         {{.Name}}
     </a>
 {{end}}

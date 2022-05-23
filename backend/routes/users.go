@@ -299,7 +299,7 @@ func SettingsRoute(w http.ResponseWriter, r *http.Request) {
 			utils.RouteError(err)
 		}
 
-		if len(links) > 1 {
+		if len(links) > 0 {
 			err = sql2.SetLinks(user.Id, links)
 			if err != nil {
 				utils.RouteError(err)
