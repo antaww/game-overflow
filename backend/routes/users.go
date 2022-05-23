@@ -92,6 +92,11 @@ func GetAllUsersRoute(w http.ResponseWriter, r *http.Request) {
 			utils.RouteError(err)
 		}
 
+		for i := range users {
+			users[i].Password = ""
+			users[i].CookiesEnabled = sql.NullBool{}
+		}
+
 		w.WriteHeader(http.StatusOK)
 		err = utils.SendResponse(w, users)
 		if err != nil {

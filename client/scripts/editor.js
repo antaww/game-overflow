@@ -19,14 +19,16 @@ window.addEventListener('load', () => {
 								headers: {
 									'Content-Type': 'application/json',
 								},
-							}).then(r => r.json()).then(r => {
-								localStorage.setItem('mention-users', JSON.stringify(r));
-								users = JSON.parse(r);
+							}).then(r => r.json()).then(json => {
+								console.log(json);
+								users = JSON.parse(json).map(u => {
+									return {name: u.username, userId: u.id, id: `@${u.username}`};
+								});
+
+								localStorage.setItem('mention-users', JSON.stringify(users));
 							}).catch(console.error);
 						}
-						users = users.map(u => {
-							return {id: `@${u.username}`, name: u.username};
-						}).sort((a, b) => a.id.localeCompare(b.id));
+						users = users.sort((a, b) => a.id.localeCompare(b.id));
 
 						return users.filter(user => user.id.toLowerCase().includes(queryText.toLowerCase()));
 					},

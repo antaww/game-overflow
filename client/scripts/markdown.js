@@ -9,11 +9,8 @@ window.addEventListener('load', () => {
 				'Content-Type': 'application/json',
 			},
 		}).then(r => r.text()).then(r => {
-			users = r.map(u => {
-				return {
-					name: u.username,
-					userId: u.id,
-				};
+			users = JSON.parse(r).map(u => {
+				return {name: u.username, userId: u.id, id: `@${u.username}`};
 			});
 
 			localStorage.setItem('mention-users', JSON.stringify(users));
