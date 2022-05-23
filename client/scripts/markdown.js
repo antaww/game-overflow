@@ -8,9 +8,8 @@ window.addEventListener('load', () => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-		}).then(r => r.json()).then(r => {
-			const usersRaw = JSON.parse(r);
-			users = usersRaw.map(u => {
+		}).then(r => r.text()).then(r => {
+			users = r.map(u => {
 				return {
 					name: u.username,
 					userId: u.id,
@@ -32,7 +31,7 @@ window.addEventListener('load', () => {
 				return `<a class="mention" href="${url}" title="${document.location.origin + url}">${match}</a>`;
 			}
 			return match;
-		}).trim();
+		}).trimEnd().trimStart();
 
 		element.innerHTML = marked.parse(innerHTML);
 	});

@@ -223,7 +223,7 @@
     background: #171a1d;
 }
 
-.topic-likes i {
+.topic-likes i:has(.like-btn, .dislike-btn) {
     cursor: pointer;
 }
 
