@@ -6,7 +6,7 @@ footer {
     height: 12rem;
     justify-content: center;
     left: 0;
-	position: absolute;
+    position: absolute;
     width: 100%;
     z-index: 10;
 }
@@ -20,7 +20,7 @@ footer {
 }
 
 .underline-footer {
-    background: linear-gradient(130deg, #6b6b6b, #111111 70%);
+    background: linear-gradient(130deg, #6b6b6b, #171a1d 70%);
     border-radius: 2px;
     content: '';
     height: 2px;
