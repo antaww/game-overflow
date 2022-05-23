@@ -20,8 +20,7 @@ window.addEventListener('load', () => {
 									'Content-Type': 'application/json',
 								},
 							}).then(r => r.json()).then(json => {
-								console.log(json);
-								users = JSON.parse(json).map(u => {
+								users = [...json].map(u => {
 									return {name: u.username, userId: u.id, id: `@${u.username}`};
 								});
 
