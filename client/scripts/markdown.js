@@ -1,4 +1,4 @@
-window.addEventListener('load',() => {
+window.addEventListener('load', () => {
 	let users;
 	if (localStorage.getItem('mention-users')) {
 		users = JSON.parse(localStorage.getItem('mention-users'));
@@ -9,16 +9,17 @@ window.addEventListener('load',() => {
 				'Content-Type': 'application/json',
 			},
 		}).then(r => r.json()).then(r => {
-			localStorage.setItem('mention-users', JSON.stringify(r));
-			users = JSON.parse(r);
+			const usersRaw = JSON.parse(r);
+			users = usersRaw.map(u => {
+				return {
+					name: u.username,
+					userId: u.id,
+				};
+			});
+
+			localStorage.setItem('mention-users', JSON.stringify(users));
 		}).catch(console.error);
 	}
-	users = users.map((u) => {
-		return {
-			name: u.username,
-			userId: u.id,
-		}
-	})
 
 	const markdownElements = document.querySelectorAll('.markdown');
 	markdownElements.forEach(element => {
@@ -31,7 +32,8 @@ window.addEventListener('load',() => {
 				return `<a class="mention" href="${url}" title="${document.location.origin + url}">${match}</a>`;
 			}
 			return match;
-		});
+		}).trim();
+
 		element.innerHTML = marked.parse(innerHTML);
 	});
 });

@@ -20,11 +20,11 @@ function sendUserStatus(status) {
 function setSelfOnline() {
 	sendUserStatus(mouseMove);
 
-	const id = document.querySelector('#user-id').getAttribute('data-user-id');
-
+	const id = document.querySelector('#user-id')?.getAttribute('data-user-id');
+	if (!id) return;
 	const elements = [...document.querySelectorAll('.circle')].filter(element => element.getAttribute('data-user-id') === id);
 
-	elements.forEach((item) => {
+	elements.forEach(item => {
 		if (mouseMove) {
 			item.classList.add('connected');
 			item.classList.remove('disconnected');
@@ -80,7 +80,6 @@ document.addEventListener('mousemove', () => {
 
 window.addEventListener('beforeunload', () => {
 	const session = document.cookie.match(new RegExp('(^| )' + 'session' + '=([^;]+)'));
-	console.log(session);
 	const body = {
 		isOnline: false,
 		session: session[2],

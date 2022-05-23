@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"log"
 	"main/sql"
 	"main/utils"
 	"net/http"
@@ -23,7 +22,7 @@ type TemplatesDataType struct {
 func (t TemplatesDataType) GetCategories() []sql.Category {
 	categories, err := sql.GetCategories()
 	if err != nil {
-		log.Println(err)
+		utils.RouteError(err)
 	}
 	return categories
 }

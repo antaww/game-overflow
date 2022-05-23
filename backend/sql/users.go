@@ -72,7 +72,7 @@ func (user *User) CalculateDefaultColor() {
 	if user.ProfilePic.String != "" {
 		img, err := utils.GetImageFromBase64(user.ProfilePic.String)
 		if err != nil {
-			log.Println(err)
+			utils.RouteError(err)
 		}
 
 		if img != nil {
@@ -161,12 +161,12 @@ func ConfirmPassword(userId int64, password string) bool {
 	var user User
 	rows, err := DB.Query("SELECT password FROM users WHERE id_user = ?", userId)
 	if err != nil {
-		log.Println(err)
+		utils.SQLError(err)
 		return false
 	}
 	err = Results(rows, &user.Password)
 	if err != nil {
-		log.Println(err)
+		utils.SQLError(err)
 		return false
 	}
 
@@ -177,8 +177,9 @@ func ConfirmPassword(userId int64, password string) bool {
 func CreateUser(username, password, email string) User {
 	id, err := utils.GenerateID()
 	if err != nil {
-		utils.RouteError(err)
+		utils.SQLError(err)
 	}
+
 	return User{
 		Id:           id,
 		Username:     username,
