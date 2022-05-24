@@ -99,3 +99,11 @@
     text-align: center;
     white-space: initial !important;
 }
+
+.trends .topic-tags {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 152px;
+    white-space: nowrap;
+}

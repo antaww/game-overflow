@@ -9,8 +9,9 @@
     justify-content: center;
     padding: 10px calc((1vw + 10px) / 10);
     position: fixed;
-    right: 5vw;
+    right: 2vw;
     top: 12rem;
+    width: 15rem;
 }
 
 .trends h2 {
@@ -34,7 +35,6 @@
 
 .trends .topic-tags {
     font-size: 1.1rem;
-    margin: 1rem;
     padding: 5px 12px;
 }
 
