@@ -36,11 +36,13 @@ window.addEventListener('load', () => {
 			],
 		},
 	}).then(editor => {
-		const content = window.localStorage.getItem(save) || '';
-		if (content) editor.setData(content);
+		if (save != null) {
+			const content = window.localStorage.getItem(save);
+			if (content) editor.setData(content);
+		}
 
 		window.addEventListener('beforeunload', () => {
-			window.localStorage.setItem(save, editor.getData());
+			if (save != null) window.localStorage.setItem(save, editor.getData());
 		});
 
 		editor.updateSourceElement();

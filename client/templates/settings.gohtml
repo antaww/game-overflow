@@ -51,7 +51,7 @@
                 {{if ne .ConnectedUser.Role "banned"}}
                     <label for="description">Description</label>
                     <textarea class="form-control ck-editor" id="description"
-                              name="description" data-save="description" minlength="1"
+                              name="description" minlength="1"
                               maxlength="4000">{{.ConnectedUser.Description.String}}</textarea>
                 {{end}}
             </div>
