@@ -50,3 +50,7 @@
 .ck-content i {
     font-style: italic !important;
 }
+
+.ck.ck-editor__main {
+    max-width: 622px;
+}

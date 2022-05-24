@@ -37,15 +37,17 @@
                 Id: {{$user.Id}}
             </p>
 
-            {{if ne .ConnectedUser.Id $user.Id}}
-                <div class="user-actions">
-                    {{if .ConnectedUser.IsFollowingUser $user.Id}}
-                        <a data-id="{{$user.Id}}" class="user-follow unfollow-btn"><i
-                                    class="fa-solid fa-xmark"></i> Unfollow</a>
-                    {{else}}
-                        <a data-id="{{$user.Id}}" class="user-follow follow-btn">Follow</a>
-                    {{end}}
-                </div>
+            {{if .ConnectedUser}}
+                {{if ne .ConnectedUser.Id $user.Id}}
+                    <div class="user-actions">
+                        {{if .ConnectedUser.IsFollowingUser $user.Id}}
+                            <a data-id="{{$user.Id}}" class="user-follow unfollow-btn"><i
+                                        class="fa-solid fa-xmark"></i> Unfollow</a>
+                        {{else}}
+                            <a data-id="{{$user.Id}}" class="user-follow follow-btn">Follow</a>
+                        {{end}}
+                    </div>
+                {{end}}
             {{end}}
 
             <div class="user-links">

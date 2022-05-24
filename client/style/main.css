@@ -33,7 +33,7 @@
     padding: 10px 0;
 }
 
-a.topic-tags  {
+a.topic-tags {
     display: flex;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -90,4 +90,6 @@ a.topic-tags  {
     top: 10vh;
     width: 100%;
 }
+
+
 
