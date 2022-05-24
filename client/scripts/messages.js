@@ -55,7 +55,7 @@ function editMessage() {
 			let clicked = e.target;
 			const clickedParent = clicked.parentElement.parentElement;
 			const id = clicked.closest('.sub-post');
-			const text = id.querySelector('md-block.topic-content');
+			const text = id.querySelector('.topic-content.markdown');
 			text.setAttribute('contenteditable', 'true');
 			clickedParent.querySelector('.send-edited-form').querySelector('.send-edited-comment').classList.toggle('no-display');
 			clicked.classList.toggle('no-display');
@@ -67,7 +67,7 @@ function editMessage() {
 			let clicked = e.target;
 			const clickedParent = clicked.parentElement.parentElement;
 			const id = clicked.closest('.sub-post');
-			const text = id.querySelector('md-block.topic-content');
+			const text = id.querySelector('.topic-content.markdown');
 			text.setAttribute('contenteditable', 'false');
 			text.style.backgroundColor = 'transparent';
 			clickedParent.querySelector('.edit-comment').querySelector('.fa-solid').classList.toggle('no-display');
