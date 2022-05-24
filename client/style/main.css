@@ -32,6 +32,13 @@
     padding: 10px 0;
 }
 
+a.topic-tags  {
+    display: flex;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 20vh;
+}
+
 .trends .topic-tags {
     font-size: 1.1rem;
     margin: 1rem;
@@ -60,6 +67,10 @@
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
+    }
+
+    .trends li {
+        max-width: 29vh;
     }
 }
 
